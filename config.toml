@@ -1,5 +1,5 @@
 baseURL = "http://www.example.com"
-title = "Luke Tomes Website"
+title = "Luke Tomes"
 theme = "hugo-coder"
 languageCode = "en"
 defaultContentLanguage = "en"
@@ -110,16 +110,16 @@ weight = 1
 url = "https://twitter.com/LukeDTomes"
 
 [[params.social]]
-name = "LinkedIn"
-icon = "fa fa-2x fa-linkedin"
+name = "RSS"
+icon = "fa fa-2x fa-envelope-open"
 weight = 2
-url = "https://www.linkedin.com/in/luketomes/"
+url = "mailto:luketomes1@gmail.com"
 
 [[params.social]]
-name = "Github"
-icon = "fa fa-2x fa-github"
+name = "LinkedIn"
+icon = "fa fa-2x fa-linkedin"
 weight = 3
-url = "https://github.com/luke-tomes"
+url = "https://www.linkedin.com/in/luketomes/"
 
 [[params.social]]
 name = "Instagram"
@@ -128,10 +128,10 @@ weight = 4
 url = "https://www.instagram.com/luke.tomes/"
 
 [[params.social]]
-name = "RSS"
-icon = "fa fa-2x fa-envelope-open"
+name = "Github"
+icon = "fa fa-2x fa-github"
 weight = 5
-url = "mailto:luketomes1@gmail.com"
+url = "https://github.com/luke-tomes"
 
 [languages.en]
 languageName = ":us:"
@@ -147,11 +147,6 @@ weight = 2
 url = "posts/"
 
 [[languages.en.menu.main]]
-name = "Projects"
-weight = 3
-url = "projects/"
-
-[[languages.en.menu.main]]
 name = "Contact me"
-weight = 5
+weight = 3
 url = "contact/"
