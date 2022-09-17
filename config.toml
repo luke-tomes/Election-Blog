@@ -18,7 +18,7 @@ description = "Luke Tomes' Website"
 keywords = "blog,student,politics"
 info = ["Student", "Harvard University"]
 avatarURL = "images/avatar.jpg"
-#gravatar = "luketomes1@example.com"
+#gravatar = "luketomes1@gmail.com"
 dateFormat = "January 2, 2006"
 since = 2022
 # Git Commit in Footer, uncomment the line below to enable it
