@@ -28,31 +28,13 @@ https://github.com/yuin/goldmark https://github.</description>
     </item>
     
     <item>
-      <title>About</title>
-      <link>http://www.example.com/about.pt-br/</link>
-      <pubDate>Thu, 28 Feb 2019 00:00:00 +0000</pubDate>
-      
-      <guid>http://www.example.com/about.pt-br/</guid>
-      <description>Escrito em Go, Hugo é um gerador de sites estáticos de código aberto disponível sobre a licença Apache Licence 2.0. O Hugo suporta TOML, YAML e JSON como arquivos de dados, Markdown e HTML como arquivos de conteúdo, e usa shortcodes para adicionar conteúdos ricos. Outras funcionalidades notaveis são taxonomias, modo multilingual, processamento de imagens, formatos de saída customizaveis, minificação de HTML/CSS/JS e suporte a fluxos SASS/SCSS.
-O Hugo faz o uso de vários projetos de código aberto incluíndo:</description>
-    </item>
-    
-    <item>
       <title>Contact</title>
       <link>http://www.example.com/contact/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://www.example.com/contact/</guid>
-      <description>Follow me, @johndoe.</description>
-    </item>
-    
-    <item>
-      <title>Contato</title>
-      <link>http://www.example.com/contact/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://www.example.com/contact/</guid>
-      <description>Me siga em @joaoninguem.</description>
+      <description>Feel free to contact me with any comments or questions, or follow the latest happenings in my life! I can be reached at:\n
+*Email *Twitter *Instagram *LinkedIn *Github</description>
     </item>
     
     <item>
@@ -62,15 +44,6 @@ O Hugo faz o uso de vários projetos de código aberto incluíndo:</description>
       
       <guid>http://www.example.com/projects/</guid>
       <description>Nothing to see here&amp;hellip; Move along!</description>
-    </item>
-    
-    <item>
-      <title>Projetos</title>
-      <link>http://www.example.com/projects/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://www.example.com/projects/</guid>
-      <description>Nada para ver aqui.. Circulando!</description>
     </item>
     
   </channel>
