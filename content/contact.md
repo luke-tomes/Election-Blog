@@ -3,7 +3,7 @@ title = "Contact"
 slug = "contact"
 +++
 
-Feel free to contact me with any comments or questions, or follow the latest happenings in my life! I can be reached at:
+Feel free to contact me with any comments or questions, or follow the latest happenings in my life! I can be reached at: 
 
 * [Email](mailto:luketomes1@gmail.com)
 

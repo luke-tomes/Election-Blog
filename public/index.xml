@@ -19,12 +19,10 @@
     <item>
       <title>About</title>
       <link>http://www.example.com/about/</link>
-      <pubDate>Thu, 28 Feb 2019 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 17 Sep 2002 00:00:00 +0000</pubDate>
       
       <guid>http://www.example.com/about/</guid>
-      <description>Written in Go, Hugo is an open source static site generator available under the Apache Licence 2.0. Hugo supports TOML, YAML and JSON data file types, Markdown and HTML content files and uses shortcodes to add rich content. Other notable features are taxonomies, multilingual mode, image processing, custom output formats, HTML/CSS/JS minification and support for Sass SCSS workflows.
-Hugo makes use of a variety of open source projects including:
-https://github.com/yuin/goldmark https://github.</description>
+      <description></description>
     </item>
     
     <item>
@@ -33,8 +31,12 @@ https://github.com/yuin/goldmark https://github.</description>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://www.example.com/contact/</guid>
-      <description>Feel free to contact me with any comments or questions, or follow the latest happenings in my life! I can be reached at:\n
-*Email *Twitter *Instagram *LinkedIn *Github</description>
+      <description>Feel free to contact me with any comments or questions, or follow the latest happenings in my life! I can be reached at:
+Email
+Twitter
+Instagram
+LinkedIn
+Github</description>
     </item>
     
     <item>
