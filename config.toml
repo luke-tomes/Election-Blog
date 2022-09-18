@@ -104,16 +104,16 @@ tag = "tags"
 author = "authors"
 
 [[params.social]]
-name = "Twitter"
-icon = "fa fa-2x fa-twitter"
-weight = 1
-url = "https://twitter.com/LukeDTomes"
-
-[[params.social]]
 name = "Email"
 icon = "fa fa-2x fa-envelope-open"
-weight = 2
+weight = 1
 url = "mailto:luketomes1@gmail.com"
+
+[[params.social]]
+name = "Twitter"
+icon = "fa fa-2x fa-twitter"
+weight = 2
+url = "https://twitter.com/LukeDTomes"
 
 [[params.social]]
 name = "LinkedIn"
