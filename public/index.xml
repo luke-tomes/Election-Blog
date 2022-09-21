@@ -8,17 +8,7 @@
     <language>en</language>
     <lastBuildDate>Tue, 20 Sep 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://www.example.com/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Finding Economic Indicators to Predict Elections</title>
-      <link>http://www.example.com/posts/economic-indicators/</link>
-      <pubDate>Tue, 20 Sep 2022 00:00:00 +0000</pubDate>
-      
-      <guid>http://www.example.com/posts/economic-indicators/</guid>
-      <description>President Bill Clinton’s 1992 campaign is famous for coining the phrase, “It’s the Economy, Stupid!” in reference to the importance of the economy when it comes to elections. This brings the question of which economic indicators can predict the election more accurately. In this blog, I will explore the relationships between key economic variables and voting data in order to see which display greater correlations.
-How Inflation Affects the Incumbent Party in the House of Representatives Over the course of the previous year, Americans have been strained by rocketing inflation that reached an annualized rate of 9.</description>
-    </item>
-    
-    <item>
-      <title>Using Economic Indicators to Predict Elections</title>
+      <title>Deploying Economic Indicators to Predict Elections</title>
       <link>http://www.example.com/posts/economic-indicators/</link>
       <pubDate>Tue, 20 Sep 2022 00:00:00 +0000</pubDate>
       

@@ -1,5 +1,5 @@
 ---
-title: Finding Economic Indicators to Predict Elections
+title: Deploying Economic Indicators to Predict Elections
 author: Luke Tomes
 date: '2022-09-20'
 slug: economic-indicators
