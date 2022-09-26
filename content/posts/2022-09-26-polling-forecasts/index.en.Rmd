@@ -1,0 +1,493 @@
+---
+title: Incorporating Polling into a Forecast
+author: Luke Tomes
+date: '2022-09-26'
+slug: polling-forecasts
+categories: []
+tags: []
+authors: []
+description: ''
+externalLink: ''
+series: []
+---
+
+Forecasting elections has been a pastime of politically savvy Americans ever since one can remember. After all, it's a challenge that no one has yet to master this practice on a consistent, election-to-election basis --- there are simply too many changing variables (in terms of presence and weighting) each cycle. 
+
+Professional polls attempt to conquer this task by going directly to the voters, asking how they anticipate voting in the next election. Oftentimes, outlets that create forecasts for the upcoming election will incorporate polls from all sources to inform their model. 
+
+FiveThirtyEight, famously founded by prediction expert Nate Silver, releases forecasts each election cycle based on a combination of fundamental variables and polling data. Their models are probabilistic in nature, meaning a 70% chance to win the House is not a guarantee. Depending on the type of election, their use of polling varies: House forecasts by 538 tend to be less polling centric. [Silver] describes that the magnitude of the races for the House --- 435, to be exact --- makes it impossible to accurately predict which factors matter and by how much in each district's race. Polling is sparse and unreliable from district to district, but if high-quality polls arise, they should be factored in as they are a direct measure of the people. 
+
+This is where the need for a generic Congressional ballot arrives. Silver states that generic ballot has an increasing importance in their models, even over fundamental variables (like the economy, fundraising, and incumbency). The reason for the generic ballot’s importance is because voters in congressional races tend to be less informed about the candidates and their positions on issues. Professor Ryan Enos has researched this phenomenon of low-information races, which lead to an outsized importance on a candidate’s party affiliation. Therefore, the voters’ affinity for a political party is of importance, and why I will incorporate the generic ballot poll into my own prediction.
+
+[G. Elliott Morris] runs The Economist’s forecasting operation. Morris highlights in the description of his forecasts that fundamentals-based forecasts tend to be much more steady and better predictors of election outcomes than poll-based forecasts. For a presidential forecast, for example, the fundamental variables that he uses are a president’s net approval rating, GDP growth, and whether or not a first-term incumbent is running for re-election. He acknowledges the ease of over-fitting “fundamental data” (like economic trends, for instance) to a model so it best matches a previous election, however. Because polls and fundamentals can both be useful in predicting elections, I will include both in this week’s updated forecast since my forecast using economic data alone that puts Dems winning big does not prove to be realistic.
+
+
+### Polling Date Importance
+
+Polls early on in an election cycle can be vastly different than ones closest to the election date. [Gelman and King]() describe how voters tend to learn during the campaign what issues are most important to them and which candidates with whom they agree on the issues. Gelman and King indicate that early polls do not always reflect the eventual outcome and polls closer to the election normally converge on the actual outcome. Therefore, when using generic ballot polls to inform my own model, I will only filter for polls conducted within 50 days of the election.
+
+
+```{r, echo = FALSE, message = FALSE, include = FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = FALSE,
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.align = "center")
+```
+
+```{r, include = FALSE}
+# Load Libraries
+library(tidyverse)
+library(usmap)
+library(sf)
+library(rmapshaper)
+library(car)
+library(moderndive)
+```
+
+```{r, include = FALSE}
+# load datasets for extension 1
+general_polls_1942_2020 <- read_csv("GenericPolls1942_2020.csv")
+generic_ballot_averages_2018_2022 <- read_csv("538_generic_ballot_averages_2018-2022.csv")
+
+
+# for model
+house_election_data <- read_csv('house_popvote_seats.csv') 
+RDI_monthly <- read_csv('RDI_monthly.csv') 
+```
+
+### What Happens To Democrats When There Is A Democratic Majority is in the House
+
+###### Democratic Vote Share
+
+```{r, echo = FALSE, message = FALSE, include = FALSE}
+# filter out variables from election data
+house_pres_data <- house_election_data %>%
+  select(year, R_seats, D_seats, Other_seats, winner_party, R_majorvote_pct, D_majorvote_pct, president_party, H_incumbent_party, H_incumbent_party_winner, H_incumbent_party_majorvote_pct)
+
+# filter the RDI data
+rdi_edit <- RDI_monthly %>%
+  mutate(year = substr(date, 1, 4),
+         month = substr(date, 6, 7),
+         year = as.numeric(year),
+         month = as.numeric(month)) %>%
+  rename(rdi = DSPIC96)
+
+# further edit the rdi dataset
+rdi_change <- rdi_edit %>%
+  filter(month %in% c(4,11)) %>%
+  group_by(year) %>%
+  mutate(rdi_change = (rdi - lag(rdi)),
+         rdi_change_pct = (rdi/lag(rdi) - 1) * 100,
+         midterm_year = if_else(
+           year %in% c(2018,2014,2010,2006,2002,1998,1994,1990,1986,1982,1978,1974,1970,1966,1962,1958,1954,1950), "midterm", "pres")) %>%
+  select(year, rdi, rdi_change, rdi_change_pct, midterm_year) %>%
+  na.omit()
+
+# join with house election data
+rdi_election_data_dem_joined <- inner_join(house_pres_data, rdi_change, by = c("year" = "year"))
+
+# filter for only dem house
+rdi_election_data_dem_control_house <- rdi_election_data_dem_joined %>%
+  filter(H_incumbent_party == "D")
+```
+
+```{r, echo = FALSE, message = FALSE, include = FALSE}
+# Look into Dem vote share for Dem house incumbent
+# correlation coefficient
+cor(rdi_election_data_dem_control_house$rdi_change_pct,
+    rdi_election_data_dem_control_house$D_majorvote_pct)
+
+# create linear model for RDI House Incumbent under Dem House data
+rdi_Hincumbent_votes_Dhouse_lm <- lm(D_majorvote_pct ~ rdi_change_pct, 
+                              data = rdi_election_data_dem_control_house)
+
+summary(rdi_Hincumbent_votes_Dhouse_lm)
+
+# According to BEA, cpi change from 4/1/22 to 8/1/22 is a 1.91% increase
+rdi_2022 <- data.frame(rdi_change_pct = 1.91)
+
+# predict House incumbent vote share with current RDI 
+predict(rdi_Hincumbent_votes_Dhouse_lm,
+        rdi_2022,
+        interval = "prediction",
+        level = 0.95)
+```
+
+```{r, echo = FALSE, message = FALSE, include = FALSE}
+# visualize rdi data for Dems vote share under Dem Pres
+ggplot(data = rdi_election_data_dem_control_house,
+       mapping = aes(x = rdi_change_pct,
+                     y = D_majorvote_pct,
+                     label = year)) +
+  geom_text() +
+  geom_smooth(method = "lm", se = TRUE) +
+  geom_hline(yintercept = 50, lty = 2) +
+  geom_vline(xintercept = 0.00, lty = 2) +
+  labs(x = "RDI Growth From April to November in Midterm Years Under a Democratic House",
+       y = "Democratic Party Vote Share",
+       subtitle = "p = 0.0025, Adjusted R-squared = 0.5775",
+       title = "Y = 55.3872 - 2.49x") +
+  theme_bw() +
+  theme(axis.text = element_text(size = 10))
+```
+
+###### Democratic Seat Share
+
+```{r, echo = FALSE, message = FALSE, include = FALSE}
+# Look into Dem seat share for Dem House incumbent
+# correlation coefficient
+cor(rdi_election_data_dem_control_house$rdi_change_pct,
+    rdi_election_data_dem_control_house$D_seats)
+
+# create linear model for RDI House Incumbent under Dem House data
+rdi_Hincumbent_seats_Dhouse_lm <- lm(D_seats ~ rdi_change_pct, 
+                              data = rdi_election_data_dem_control_house)
+
+summary(rdi_Hincumbent_seats_Dhouse_lm)
+
+# Create data frame of current statistics
+
+# predict House incumbent seat share with current RDI 
+predict(rdi_Hincumbent_seats_Dhouse_lm,
+        rdi_2022,
+        interval = "prediction",
+        level = 0.95)
+```
+
+```{r, echo = FALSE, message = FALSE, include = FALSE}
+# visualize rdi data for Dems seat share under Dem House
+ggplot(data = rdi_election_data_dem_control_house,
+       mapping = aes(x = rdi_change_pct,
+                     y = D_seats,
+                     label = year)) +
+  geom_text() +
+  geom_smooth(method = "lm", se = TRUE) +
+  geom_hline(yintercept = 218, lty = 2) +
+  geom_vline(xintercept = 0.00, lty = 2) +
+  labs(x = "RDI Growth From April to November in Midterm Years Under a Democratic House",
+       y = "Democratic Party Seat Share",
+       subtitle = "p = 0.0025, Adjusted R-squared = 0.4957",
+       title = "Y = 269.588 - 20.22x") +
+  theme_bw() +
+  theme(axis.text = element_text(size = 10))
+```
+
+#### Predicted House Incumbent Party Vote Share
+###### Based on Real Disposable Income
+```{r, echo = FALSE, message = FALSE, include = FALSE}
+# predict House incumbent vote share with current RDI 
+predict(rdi_Hincumbent_votes_Dhouse_lm,
+        rdi_2022,
+        interval = "prediction",
+        level = 0.95)
+```
+
+#### Predicted House Incumbent Party Seat Share
+###### Based on Real Disposable Income
+```{r, echo = FALSE, message = FALSE, include = FALSE}
+# predict House incumbent seat share with current RDI 
+predict(rdi_Hincumbent_seats_Dhouse_lm,
+        rdi_2022,
+        interval = "prediction",
+        level = 0.95)
+```
+
+#### How My Model Stacks Up Against the Past
+
+```{r, echo = FALSE, message = FALSE, include = FALSE}
+# True = line
+# prediction = dots
+# visualize rdi data for Dems vote share under Dem House
+ggplot(data = rdi_election_data_dem_control_house,
+       mapping = aes(x = year,
+                     y = D_majorvote_pct)) +
+  geom_line(aes(y = D_majorvote_pct,),
+            size = 1.5) +
+  geom_point(y = predict(rdi_Hincumbent_votes_Dhouse_lm, rdi_election_data_dem_control_house),
+             color = "red",
+             size = 2) +
+  geom_hline(yintercept = 50, lty = 2) +
+  labs(x = "Year",
+       y = "Democratic House Incumbent Party Vote Share ",
+       subtitle = "Vote Share Based on Real Disposable Income Change",
+       title = "True Results (Line) vs Model Prediction (Dots)") +
+  theme_bw() +
+  theme(axis.text = element_text(size = 10))
+
+
+# visualize rdi data for Dems seat share under Dem House
+ggplot(data = rdi_election_data_dem_control_house,
+       mapping = aes(x = year,
+                     y = D_seats)) +
+  geom_line(aes(y = D_seats,),
+            size = 1.5) +
+  geom_point(y = predict(rdi_Hincumbent_seats_Dhouse_lm, rdi_election_data_dem_control_house),
+             color = "red",
+             size = 2) +
+  geom_hline(yintercept = 50, lty = 2) +
+  labs(x = "Year",
+       y = "Democratic House Incumbent Party Vote Share ",
+       subtitle = "Seat Share Based on Real Disposable Income Change",
+       title = "True Results (Line) vs Model Prediction (Dots)") +
+  theme_bw() +
+  theme(axis.text = element_text(size = 10))
+```
+
+#### Frequency and Magnitude of My Models' Errors
+
+```{r, echo = FALSE, message = FALSE, include = FALSE}
+# Residuals for Vote Share
+ggplot(data = rdi_Hincumbent_votes_Dhouse_lm,
+       mapping = aes(x = rdi_Hincumbent_votes_Dhouse_lm$model$D_majorvote_pct -
+rdi_Hincumbent_votes_Dhouse_lm$fitted.values)) +
+  geom_histogram(bins = 15) +
+  labs(x = "Residuals Between True and Predicted Vote Shares",
+       y = "Frequency",
+       subtitle = "Vote Share Based on Real Disposable Income Change",
+       title = "Error in Model") +
+  theme_bw() +
+  theme(axis.text = element_text(size = 10))
+
+# Residuals for Seat Share
+ggplot(data = rdi_Hincumbent_seats_Dhouse_lm,
+       mapping = aes(x = rdi_Hincumbent_seats_Dhouse_lm$model$D_seats -
+rdi_Hincumbent_seats_Dhouse_lm$fitted.values)) +
+  geom_histogram(bins = 15) +
+  labs(x = "Residuals Between True and Predicted Seat Shares",
+       y = "Frequency",
+       subtitle = "Seat Share Based on Real Disposable Income Change",
+       title = "Error in Model") +
+  theme_bw() +
+  theme(axis.text = element_text(size = 10))
+```
+
+
+
+# Look at how polling helps with prediction
+
+##### Vote Share
+```{r}
+# vote share
+
+# join rdi and pres with general ballot
+polls_rdi_election <- left_join(general_polls_1942_2020, rdi_election_data_dem_joined, by = c("year" = "year"))
+
+# filter down
+polls_rdi_election_vote_filter <- polls_rdi_election %>%
+  mutate(poll_margin = dem - rep,
+         D_votemargin = D_majorvote_pct - R_majorvote_pct,
+         poll_vote_diff = dem - D_majorvote_pct) %>%
+  drop_na(rdi_change_pct) %>%
+  filter(days_until_election > 0,
+         days_until_election < 50,
+         year != 2008)
+
+# create averages by election year to avoid bias in polls
+polls_rdi_election_vote_sum <- polls_rdi_election_vote_filter %>%
+  group_by(year) %>%
+  summarize(mean_dem = mean(dem),
+         mean_rep = mean(rep),
+         mean_dem_margin = mean(poll_margin),
+         mean_days_until_election = mean(days_until_election),
+         rdi_change_pct = mean(rdi_change_pct),
+         D_majorvote_pct = mean(D_majorvote_pct),
+         D_votemargin = mean(D_votemargin),
+         poll_vote_diff = mean(poll_vote_diff))
+  
+  
+# plot graph
+ggplot(data = polls_rdi_election_vote_sum,
+       mapping = aes(x = mean_dem_margin,
+                     y = D_majorvote_pct,
+                     color = rdi_change_pct,
+                     label = year)) +
+  geom_text(size = 3) + 
+  geom_smooth(method = lm)
+
+# correlation coefficient
+cor(polls_rdi_election_vote_sum$D_majorvote_pct,
+    polls_rdi_election_vote_sum$mean_dem_margin)
+
+# create linear model
+rdi_polls_sum_vote_lm <- lm(D_majorvote_pct ~ mean_dem_margin + rdi_change_pct,
+                            data = polls_rdi_election_vote_sum)
+
+summary(rdi_polls_sum_vote_lm)
+
+# Create data frame of current statistics
+# dem margin: RCP average = D+0.3
+# According to BEA, cpi change from 4/1/22 to 8/1/22 is a 1.91% increase
+poll_and_rdi_data_vote <- data.frame(mean_dem_margin = 0.3,
+                                rdi_change_pct = 1.91)
+
+# predict Dem vote share with current RDI and Dem Margin
+predict(rdi_polls_sum_vote_lm,
+        poll_and_rdi_data_vote,
+        interval = "prediction",
+        level = 0.95)
+```
+
+##### Seat Share
+```{r}
+# seat share
+
+# join rdi and pres with general ballot
+polls_rdi_election <- left_join(general_polls_1942_2020, rdi_election_data_dem_joined, by = c("year" = "year"))
+
+# filter down
+polls_rdi_election_seat_filter <- polls_rdi_election %>%
+  mutate(poll_margin = dem - rep,
+         D_seat_margin = D_seats - R_seats) %>%
+  drop_na(rdi_change_pct) %>%
+  filter(days_until_election > 0,
+         days_until_election < 50,
+         year != 2008)
+
+# create averages by election year to avoid bias in polls
+polls_rdi_election_seat_sum <- polls_rdi_election_seat_filter %>%
+  group_by(year) %>%
+  summarize(mean_dem = mean(dem),
+         mean_rep = mean(rep),
+         mean_dem_margin = mean(poll_margin),
+         mean_days_until_election = mean(days_until_election),
+         rdi_change_pct = mean(rdi_change_pct),
+         D_seats = mean(D_seats))
+  
+  
+# plot graph
+ggplot(data = polls_rdi_election_seat_sum,
+       mapping = aes(x = mean_dem_margin,
+                     y = D_seats,
+                     color = rdi_change_pct,
+                     label = year)) +
+  geom_text(size = 3) + 
+  geom_smooth(method = lm)
+
+# correlation coefficient
+cor(polls_rdi_election_seat_sum$D_seats,
+    polls_rdi_election_seat_sum$mean_dem_margin)
+
+# create linear model
+rdi_polls_sum_seat_lm <- lm(D_seats ~ mean_dem_margin + rdi_change_pct,
+                            data = polls_rdi_election_seat_sum)
+
+summary(rdi_polls_sum_seat_lm)
+
+# Create data frame of current statistics
+# dem margin: RCP average = D+0.3
+# According to BEA, cpi change from 4/1/22 to 8/1/22 is a 1.91% increase
+poll_and_rdi_data_vote <- data.frame(mean_dem_margin = 0.3,
+                                rdi_change_pct = 1.91)
+
+# predict Dem seat share with current RDI and Dem Margin 
+predict(rdi_polls_sum_seat_lm,
+        poll_and_rdi_data_vote,
+        interval = "prediction",
+        level = 0.95)
+```
+
+#### Predicted Democratic Party Vote Share
+###### Based on Real Disposable Income and Polling Averages
+```{r, echo = FALSE, message = FALSE}
+# predict Dem vote share with current RDI and Dem Margin
+predict(rdi_polls_sum_vote_lm,
+        poll_and_rdi_data_vote,
+        interval = "prediction",
+        level = 0.95)
+```
+
+#### Predicted Democratic Party Seat Share
+###### Based on Real Disposable Income and Polling Averages
+```{r, echo = FALSE, message = FALSE}
+# predict House incumbent seat share with current RDI 
+predict(rdi_polls_sum_seat_lm,
+        poll_and_rdi_data_vote,
+        interval = "prediction",
+        level = 0.95)
+```
+
+
+#### How My Model Stacks Up Against the Past
+```{r, echo = FALSE, message = FALSE}
+# True = line
+# prediction = dots
+ggplot(data = polls_rdi_election_vote_sum,
+       mapping = aes(x = year,
+                     y = D_majorvote_pct)) +
+  geom_line(aes(y = D_majorvote_pct),
+            size = 1.5) +
+  geom_point(y = predict(rdi_polls_sum_vote_lm, polls_rdi_election_vote_sum),
+             color = "red",
+             size = 2) +
+  geom_hline(yintercept = 50, lty = 2) +
+  labs(x = "Year",
+       y = "Democratic House Incumbent Party Vote Share ",
+       subtitle = "Vote Share Based on Real Disposable Income Change",
+       title = "True Results (Line) vs Model Prediction (Dots)") +
+  theme_bw() +
+  theme(axis.text = element_text(size = 10))
+
+
+# visualize rdi data for Dems seat share under Dem House
+ggplot(data = polls_rdi_election_seat_sum,
+       mapping = aes(x = year,
+                     y = D_seats)) +
+  geom_line(aes(y = D_seats),
+            size = 1.5) +
+  geom_point(y = predict(rdi_polls_sum_seat_lm, polls_rdi_election_seat_sum),
+             color = "red",
+             size = 2) +
+  geom_hline(yintercept = 50, lty = 2) +
+  labs(x = "Year",
+       y = "Democratic House Incumbent Party Vote Share ",
+       subtitle = "Vote Share Based on Real Disposable Income Change",
+       title = "True Results (Line) vs Model Prediction (Dots)") +
+  theme_bw() +
+  theme(axis.text = element_text(size = 10))
+```
+
+
+#### Frequency and Magnitude of My Models' Errors
+```{r, echo = FALSE, message = FALSE}
+# Residuals for Vote Share
+ggplot(data = rdi_polls_sum_vote_lm,
+       mapping = aes(x = rdi_polls_sum_vote_lm$model$D_majorvote_pct -
+rdi_polls_sum_vote_lm$fitted.values)) +
+  geom_histogram(bins = 15) +
+  labs(x = "Residuals Between True and Predicted Vote Shares",
+       y = "Frequency",
+       subtitle = "Vote Share Based on RDI Change and Polling Averages",
+       title = "Error in Model") +
+  theme_bw() +
+  theme(axis.text = element_text(size = 10))
+
+# Residuals for Seat Share
+ggplot(data = rdi_polls_sum_seat_lm,
+       mapping = aes(x = rdi_polls_sum_seat_lm$model$D_seats -
+rdi_polls_sum_seat_lm$fitted.values)) +
+  geom_histogram(bins = 15) +
+  labs(x = "Residuals Between True and Predicted Seat Shares",
+       y = "Frequency",
+       subtitle = "Seat Share Based on Real Disposable Income Change",
+       title = "Error in Model") +
+  theme_bw() +
+  theme(axis.text = element_text(size = 10))
+```
+
+
+##### Notes:
+
+*This blog is part of a series of articles meant to progressively understand how election data can be used to predict future outcomes. I will add to this site on a weekly basis under the direction of [Professor Ryan D. Enos](https://www.ryandenos.com). In the run-up to the midterm elections on November 8, 2022, I will draw on all I have learned regarding what best forecasts election results, and I will predict the outcome of the NE-02 U.S. Congressional Election.*
+
+[My project repository can be viewed here.](https://github.com/luke-tomes/election-forecast)
+
+##### Sources:
+
+House general elections, All States, 2014 summary. (2022). CQ voting and elections collection (web site). <http://library.cqpress.com.ezp-prod1.hul.harvard.edu/elections/avg2014-3us1>
+
+[CNN: US inflation hit 40-year high in June, driven by record gas prices](https://www.cnn.com/2022/07/13/economy/cpi-inflation-june/index.html)
+
+[Bureau of Labor Statistics, CPI change](https://www.bls.gov/news.release/pdf/cpi.pdf)
+
+[Bureau of Economic Analysis, RDI Change](https://www.bea.gov/news/2022/personal-income-and-outlays-july-2022)
