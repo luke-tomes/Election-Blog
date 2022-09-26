@@ -494,7 +494,7 @@ However, something special to note is that my prediction intervals remain wide w
 
 *This blog is part of a series of articles meant to progressively understand how election data can be used to predict future outcomes. I will add to this site on a weekly basis under the direction of [Professor Ryan D. Enos](https://www.ryandenos.com). In the run-up to the midterm elections on November 8, 2022, I will draw on all I have learned regarding what best forecasts election results, and I will predict the outcome of the NE-02 U.S. Congressional Election.*
 
-[My project repository can be viewed here.](https://github.com/luke-tomes/election-forecast)
+[My project repository can be viewed here.](https://github.com/luke-tomes/election-blog)
 
 ##### Sources:
 
