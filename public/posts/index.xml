@@ -6,7 +6,17 @@
     <description>Recent content in Posts on Luke Tomes</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 20 Sep 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://www.example.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 26 Sep 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://www.example.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Incorporating Polling into a Forecast</title>
+      <link>http://www.example.com/posts/polling-forecasts/</link>
+      <pubDate>Mon, 26 Sep 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.example.com/posts/polling-forecasts/</guid>
+      <description>Why Polling Matters Forecasting elections has been a pastime of politically savvy Americans ever since one can remember. After all, it’s a challenge that no one has yet to master this practice on a consistent, election-to-election basis — there are simply too many changing variables (in terms of presence and weighting) each cycle.
+Professional polls attempt to conquer this task by going directly to the voters, asking how they anticipate voting in the next election.</description>
+    </item>
+    
     <item>
       <title>Deploying Economic Indicators to Predict Elections</title>
       <link>http://www.example.com/posts/economic-indicators/</link>
