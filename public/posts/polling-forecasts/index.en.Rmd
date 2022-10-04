@@ -274,18 +274,22 @@ polls_rdi_election_vote_filter <- polls_rdi_election %>%
          days_until_election < 50,
          year != 2008)
 
+write_csv(polls_rdi_election_vote_filter, "polls_rdi_election_vote_filter2008.csv")
+
+
 # create averages by election year to avoid bias in polls
 polls_rdi_election_vote_sum <- polls_rdi_election_vote_filter %>%
   group_by(year) %>%
   summarize(mean_dem = mean(dem),
-         mean_rep = mean(rep),
-         mean_dem_margin = mean(poll_margin),
-         mean_days_until_election = mean(days_until_election),
-         rdi_change_pct = mean(rdi_change_pct),
-         D_majorvote_pct = mean(D_majorvote_pct),
-         D_votemargin = mean(D_votemargin),
-         poll_vote_diff = mean(poll_vote_diff))
+            mean_rep = mean(rep),
+            mean_dem_margin = mean(poll_margin),
+            mean_days_until_election = mean(days_until_election),
+            rdi_change_pct = mean(rdi_change_pct),
+            D_majorvote_pct = mean(D_majorvote_pct),
+            D_votemargin = mean(D_votemargin),
+            poll_vote_diff = mean(poll_vote_diff))
   
+write_csv(polls_rdi_election_vote_sum, "polls_rdi_election_vote_filter2008_sum.csv")
   
 # plot graph
 ggplot(data = polls_rdi_election_vote_sum,
@@ -314,7 +318,7 @@ rdi_polls_sum_vote_lm <- lm(D_majorvote_pct ~ mean_dem_margin + rdi_change_pct,
 summary(rdi_polls_sum_vote_lm)
 
 # Create data frame of current statistics
-# dem margin: RCP average = D+0.3
+# dem margin: RCP average = D+0.3x
 # According to BEA, cpi change from 4/1/22 to 8/1/22 is a 1.91% increase
 poll_and_rdi_data_vote <- data.frame(mean_dem_margin = 0.3,
                                 rdi_change_pct = 1.91)
@@ -342,6 +346,8 @@ polls_rdi_election_seat_filter <- polls_rdi_election %>%
          days_until_election < 50,
          year != 2008)
 
+write_csv(polls_rdi_election_seat_filter, "polls_rdi_election_seat_filter2008.csv")
+
 # create averages by election year to avoid bias in polls
 polls_rdi_election_seat_sum <- polls_rdi_election_seat_filter %>%
   group_by(year) %>%
@@ -351,7 +357,8 @@ polls_rdi_election_seat_sum <- polls_rdi_election_seat_filter %>%
          mean_days_until_election = mean(days_until_election),
          rdi_change_pct = mean(rdi_change_pct),
          D_seats = mean(D_seats))
-  
+
+write_csv(polls_rdi_election_seat_sum, "polls_rdi_election_seat_filter2008_sum.csv")
   
 # plot graph
 ggplot(data = polls_rdi_election_seat_sum,

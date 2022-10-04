@@ -1,0 +1,507 @@
+---
+title: Incumbency Advantage
+author: Luke Tomes
+date: '2022-10-03'
+slug: []
+categories: []
+tags: []
+authors: []
+description: ''
+externalLink: ''
+series: []
+---
+
+In this blog, I will seek to highlight how incumbency and expert ratings can be used in predicting elections. To start, I will compare how expert predictions compare to the actual election results in 2018, and then extrapolate the variable of expert ratings into my election modeling forecast 
+
+```{r setup, echo = FALSE, message = FALSE, include = FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = FALSE,
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.align = "center")
+```
+
+```{r libraries, include = FALSE}
+# Load Libraries
+library(tidyverse)
+library(usmap)
+library(sf)
+library(rmapshaper)
+library(car)
+library(moderndive)
+library(janitor)
+```
+
+```{r load data, include = FALSE}
+# load existing datasets for model
+polls_rdi_election_vote_filter2008 <- read_csv("polls_rdi_election_vote_filter2008.csv")
+polls_rdi_election_vote_filter2008_sum <- read_csv("polls_rdi_election_vote_filter2008_sum.csv")
+polls_rdi_election_seat_filter2008 <- read_csv("polls_rdi_election_seat_filter2008.csv")
+polls_rdi_election_seat_filter2008_sum <- read_csv("polls_rdi_election_seat_filter2008_sum.csv")
+
+# load datasets for extension
+dist_polls_2018_2022 <- read_csv("dist_polls_2018-2022.csv")
+expert_rating <- read_csv("expert_rating.csv")
+house_party_vote_share_by_district_1948_2020 <- read_csv("house party vote share by district 1948-2020.csv")
+incumb_dist_1948_2022 <- read_csv("incumb_dist_1948-2022 (2).csv")
+all_expert_ratings_2018 <- read_csv("2018_ratings_share.csv")
+pvi_share_2022 <- read_csv("PVI_share.csv")
+state_and_districts <- read_csv("State and district names.csv")
+```
+
+```{r prep datasets}
+# edit election dataset 
+house_party_vote_share_by_district_1948_2020 <- house_party_vote_share_by_district_1948_2020 %>%
+  mutate(RepStatus = case_when(
+    DemVotesMajorPercent == 100.00 ~ "Challenger",
+    TRUE ~ RepStatus),
+    DemStatus = case_when(
+    RepVotesMajorPercent == 100.00 ~ "Challenger",
+    TRUE ~ DemStatus),
+    RepStatus = case_when(
+      RepCandidate == "Rothfus, Keith" & raceYear == 2018 ~ "Incumbent",
+      TRUE ~ RepStatus),
+    DemStatus = case_when(
+      DemCandidate == "Lamb, Conor" & raceYear == 2018 ~ "Challenger",
+      TRUE ~ DemStatus))
+    
+    
+# wrangle vote dataset for 2016 seat party affiliations
+seat_party_2016 <- house_party_vote_share_by_district_1948_2020 %>%
+  filter(raceYear == 2016) %>%
+  mutate(party_2016 = WinnerParty) %>%
+  select(party_2016, State, district_num)
+
+# wrangle vote dataset for 2018
+vote_data_wrangle <- house_party_vote_share_by_district_1948_2020 %>%
+  filter(raceYear == 2018) %>%
+  left_join(seat_party_2016, by = c("State" = "State", 
+                                    "district_num" = "district_num")) %>%
+  mutate(district_num = as.character(district_num)) %>%
+  select(State, raceYear, PluralityParty, RepVotesMajorPercent, DemVotesMajorPercent, state_abb, RepStatus, DemStatus, CD, district_num, district_id, WinnerParty, vote_margin, R_vote_margin, party_2016) %>%
+  rename(year = raceYear,
+         district = district_num)
+
+# Prep all-district 2018 expert ratings
+edit_all_expert_ratings_2018 <- all_expert_ratings_2018 %>%
+  mutate(State = as.character(State),
+         district_num = as.character(district_num)) %>%
+  mutate(district_num = case_when(
+           district_num == "AL" ~ "0",
+           TRUE ~ district_num)) %>%
+  select(-WinnerParty, -District, -CD, -state_abb, -district_id, -year) %>%
+  rename(State = State,
+         district = district_num)
+
+# combine datasets
+ratings_polls_2018 <- vote_data_wrangle %>% 
+  left_join(edit_all_expert_ratings_2018, by = c("State" = "State", "district" = "district")) %>%
+  mutate(RepStatus = case_when(
+    DemVotesMajorPercent == 100.00 ~ "Challenger",
+    TRUE ~ RepStatus),
+    DemStatus = case_when(
+    RepVotesMajorPercent == 100.00 ~ "Challenger",
+    TRUE ~ DemStatus),
+    D_vote_margin = DemVotesMajorPercent - RepVotesMajorPercent,
+    winner_status = case_when(
+      WinnerParty == "R" ~ RepStatus,
+      WinnerParty == "D" ~ DemStatus),
+    open_seat = case_when(
+      DemStatus == "Challenger" & RepStatus == "Challenger" ~ "Yes",
+      TRUE ~ "No"),
+    open_seat = case_when(
+      district_id == "MA07" ~ "No",
+      district_id == "NY14" ~ "No",
+      district_id == "NC09" ~ "No",
+      district_id == "SC01" ~ "No",
+      TRUE ~ open_seat),
+    incumbent_winner = case_when(
+           # 1 = incumbent won
+           # 0 = incumbent lost
+      winner_status == "Incumbent" ~ 1,
+      winner_status == "Challenger" ~ 0),
+    # take out ME-02 duplicate
+    take_out = case_when(
+      vote_margin == 0.008155614 ~ "yes",
+      TRUE ~ "no"),
+    incumbent_winner = as.character(incumbent_winner),
+    Hold_or_Gain = case_when(
+      WinnerParty == "R" & party_2016 == "R" ~ "Republican Hold",
+      WinnerParty == "R" & party_2016 == "D" ~ "Republican Gain",
+      WinnerParty == "D" & party_2016 == "D" ~ "Democratic Hold",
+      WinnerParty == "D" & party_2016 == "R" ~ "Democratic Gain",)) %>%
+  filter(take_out != "yes") %>%
+  select(-take_out) %>%
+  distinct(CD, .keep_all= TRUE) %>%
+  rename(DISTRICT = district) %>%
+  rename(STATENAME = State)
+```
+
+```{r explore, include = FALSE}
+ratings_polls_2018_sum <- ratings_polls_2018 %>%
+  group_by(incumbent_winner, open_seat) %>%
+  summarize(count = n())
+
+ratings_polls_2018_sum
+# 34 seats where incumbent lost
+# 4 incumbents lost in primary, 30 in general
+# 61 seats where incumbent abdicated seat (retirement, etc)
+# Total 374 ran for re-election, 340 won
+# 340/375 = 0.9066667
+
+ratings_polls_2018_sum_seats <- ratings_polls_2018 %>%
+  count(WinnerParty)
+# 235 D - 200 R
+```
+
+#### Seatshare from 2018 Congressional Elections by Party and Incumbency
+
+Below, I have mapped the actual result of the 2018 congresisonal midterms in terms of seat share attained by each party. Additionally, I have included the districts in which an incumbent party lost their seat to the other party. In total, the Democrats flipped 46 seats from the previous Congress, and Republicans flipped only 5, indicating just how successful Democrats were in 2018. I will elaborate more on incumbency later, especially because of how only 34 incumbents ran and lost in the 2018 election cycle (4 lost in their primary elections, and 30 lost in the general election). Incumbency alone does not seem to be a factor per [Adam R. Brown.](https://hollis.harvard.edu/primo-explore/fulldisplay?docid=TN_cdi_proquest_journals_1680832786&context=PC&vid=HVD2&search_scope=everything&tab=everything&lang=en_US) However, the advantages that go along with incumbency tend to provide incumbents an edge over their opponent.
+
+
+```{r code for actual seatshare, message = FALSE, include=FALSE}
+# PLOT SEAT SHARE IN 2018
+
+# load geographic data
+get_congress_map <- function(cong=114) {
+  tmp_file <- tempfile()
+  tmp_dir  <- tempdir()
+  zp <- sprintf("http://cdmaps.polisci.ucla.edu/shp/districts%03i.zip",cong)
+  download.file(zp, tmp_file)
+  unzip(zipfile = tmp_file, exdir = tmp_dir)
+  fpath <- paste(tmp_dir, sprintf("districtShapes/districts%03i.shp",cong), sep = "/")
+  st_read(fpath)
+}
+
+# load 114th congress data
+cd114 <- get_congress_map(114)
+
+# checking which variable class to merge on
+class(ratings_polls_2018$DISTRICT)
+
+# checking which variable class to merge on
+class(cd114$DISTRICT)
+
+# need to match up these classes of variables so I can merge
+# change cd114 variable class to numeric
+ratings_polls_2018$DISTRICT <- as.character(ratings_polls_2018$DISTRICT)
+
+# verifying new variable class
+class(ratings_polls_2018$DISTRICT)
+
+# join datasets based on DISTRICT
+district_map <- cd114 %>%
+  left_join(ratings_polls_2018,
+            by = c("DISTRICT",
+                   "STATENAME"))
+
+# To plot faster
+district_plot <- rmapshaper::ms_simplify(district_map, keep = 0.01)
+```
+
+```{r plot actual seatshare}
+# PLOT SEAT SHARE IN 2018
+
+# plot 2018 seat share
+ggplot() +
+  geom_sf(data = district_plot,
+          aes(fill = Hold_or_Gain),
+          inherit.aes = FALSE,
+          alpha = 1) +
+  scale_fill_manual(values = c("Blue", "#76CBFF", "Red", "#FF7676"),
+                   name = "Results") +
+  coord_sf(xlim = c(-125.27, -66.57),
+           ylim = c(23.75, 50.23),
+           expand = FALSE) +
+  labs(title = "Seat Map by U.S. Congressional District, 2018",
+       caption = "Data Provided by Professor Ryan Enos of Harvard\nUniversity along with Jeffrey B. Lewis of UCLA, et al.",
+       subtitle = "Democrats won 235 seats to the GOP's 200.\n") +
+  guides(fill = guide_legend(ncol = 1)) +
+  theme_void() +
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+```
+
+#### Expert Predictions
+The map below displays the seat share predicted by the "experts" in the 2018 cycle. These predictions hinge on a variety of factors, culminating into their overall district "rating" that provides a probability of the favored party's  chances at winning, [as detailed by Nate Silver of FiveThirtyEight](https://fivethirtyeight.com/methodology/how-fivethirtyeights-house-and-senate-models-work/). The categories "toss-up, lean, likely, and solid" go in order of increasing probability to win, respectively, with a toss-up signifying a race that is close to 50/50. We can see how the frequency of "Toss-up" or districts with a slight lean are uncommon, to say the least. This displays just how noncompetitive most races typically are. The effects of this lack of competition are substantial when it comes to predicting elections: most noncompetitive districts lack accurate polling and interest, therefore decreasing predictors that can be utilized in models.
+
+To counteract a lack of information about a specific district, expert outlets will often [lean on the fundamental predictors](https://fivethirtyeight.com/methodology/how-fivethirtyeights-house-and-senate-models-work/) (economy, incumbency, and demographics) that are not affected by a campaign and generic ballot congressional polls, or they will look to borrow available, accurate polling from districts with a large amount of similarities. This is how entire predictions maps, like the one below, are created. And one last note, it is best practice to average these expert predictions (from historically successful and trusted outlets like FiveThirtyEight, Cook Political Report, etc.), like we do with national polls, as to account and offset for any bias in the predictions (ideally).
+
+
+```{r code for for expert predictions}
+# Show the seat share expert picks would result in
+ratings_polls_2018_experts <- ratings_polls_2018 %>%
+  mutate(expert_rating = case_when(
+    avg <= 2 ~ "Solid Dem",
+    avg <= 2.75  ~ "Likely Dem",
+    avg <= 3.5 ~ "Lean Dem",
+    avg <= 4 ~ "Dem Toss-up",
+    avg == 4 ~ "Toss-up",
+    avg <= 4.5 ~ "GOP Toss-up",
+    avg <= 5.25 ~ "Lean GOP",
+    avg <= 6 ~ "Likely GOP",
+    avg <= 7 ~ "Solid GOP"))
+```
+
+```{r plot for expert predictions}
+# PLOT EXPERT RATINGS
+  
+
+# join datasets based on DISTRICT
+district_map_experts <- cd114 %>%
+  left_join(ratings_polls_2018_experts,
+            by = c("DISTRICT",
+                   "STATENAME"))
+
+# To plot faster
+district_plot_experts <- rmapshaper::ms_simplify(district_map_experts, keep = 0.01)
+
+# plot 2018 seat share
+ggplot() +
+  geom_sf(data = district_plot_experts,
+          aes(fill = expert_rating),
+          inherit.aes = FALSE,
+          alpha = 1) +
+  scale_fill_manual(values = c("#e6e7ff", "#fff1f0", "#c4d8ff", "#ffcfcf", "#6ea1ff", "#ff4040", "#0441ba", "#c70000", "White"),
+                   name = "Predictions") +
+  coord_sf(xlim = c(-125.27, -66.57),
+           ylim = c(23.75, 50.23),
+           expand = FALSE) +
+  labs(title = "Expert Seat Predictions by U.S. Congressional District, 2018",
+       caption = "Data Provided by Professor Ryan Enos of Harvard\nUniversity along with Jeffrey B. Lewis of UCLA, et al.") +
+  guides(fill = guide_legend(ncol = 1)) +
+  theme_void() +
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+```
+
+#### Accuracy of Expert Predictions
+Like weather predictions by expert meteorologists, expert election predictions are not always correct. Often, it is advantageous to see just how accurate the predictions are and where the mistakes lie, so one can hopefully make adjustments in the future. Below, the accuracy of the expert predictions for 2018 are plotted, displaying that the experts almost predicted all districts correctly.
+
+
+```{r code for difference in actual vs experts}
+# Compare actual vs expert prediction
+ratings_polls_2018_diff <- ratings_polls_2018_experts %>%
+  mutate(accurate_pred = case_when(
+    WinnerParty == "R" & avg > "4" ~ "Match",
+    WinnerParty == "R" & avg < "4" ~ "No Match",
+    WinnerParty == "D" & avg < "4" ~ "Match",
+    WinnerParty == "D" & avg > "4" ~ "No Match",
+    avg == "4" ~ "No Expert Prediction",
+    TRUE ~ "No Expert Prediction"),
+    actual_result = case_when(
+    DemVotesMajorPercent < 45 ~ "Solid GOP",
+    DemVotesMajorPercent < 47 ~ "Likely GOP",
+    DemVotesMajorPercent < 49 ~ "Lean GOP",
+    DemVotesMajorPercent < 49.5 ~ "GOP Toss-up",
+    DemVotesMajorPercent < 50.5 ~ "Tossup",
+    DemVotesMajorPercent < 51 ~ "Dem Tossup",
+    DemVotesMajorPercent < 53 ~ "Lean Dem",
+    DemVotesMajorPercent < 55 ~ "Likely Dem",
+    DemVotesMajorPercent <= 100 ~ "Solid Dem"),
+    rating_match = case_when(
+      expert_rating != actual_result ~ "No Match",
+      expert_rating == actual_result ~ "Match",
+      TRUE ~ "No expert prediction"))
+```
+
+```{r plot of difference in actual vs experts}
+# PLOT DIFFERENCE
+
+
+# join datasets based on DISTRICT
+district_map_diff <- cd114 %>%
+  left_join(ratings_polls_2018_diff,
+            by = c("DISTRICT",
+                   "STATENAME"))
+
+# To plot faster
+district_plot_diff <- rmapshaper::ms_simplify(district_map_diff, keep = 0.01)
+
+# plot 2018 seat share
+ggplot() +
+  geom_sf(data = district_plot_diff,
+          aes(fill = accurate_pred),
+          inherit.aes = FALSE,
+          alpha = 1) +
+  scale_fill_manual(values = c("Green", "Red"),
+                   name = "Predictions") +
+  coord_sf(xlim = c(-125.27, -66.57),
+           ylim = c(23.75, 50.23),
+           expand = FALSE) +
+  labs(title = "Expert Seat Predictions by U.S. Congressional District, 2018",
+       caption = "Data Provided by Professor Ryan Enos of Harvard\nUniversity along with Jeffrey B. Lewis of UCLA, et al.") +
+  guides(fill = guide_legend(ncol = 1)) +
+  theme_void() +
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+```
+
+#### Incumbency Advantage and Expert Predictions
+
+```{r incumbent advantage}
+ggplot(data = ratings_polls_2018,
+       mapping = aes(x = avg,
+                     y = DemVotesMajorPercent,
+                     color = Hold_or_Gain)) +
+  scale_color_manual(values = c("Blue", "#76CBFF", "#FF0000", "#FF9191"),
+                   name = "Results") +
+  geom_point(size = 2,
+             alpha = 0.75) +
+  labs(x = "Average Expert Prediction",
+       y = "Democratic Vote Share",
+       caption = 'A rating below 4 means higher favoribility for the Dem candidate.\nA rating above 4 means higher favoribility for the GOP candidate.\nA rating of 4 is a 50-50 "toss-up" prediction.') +
+  guides(color = guide_legend(nrow = 2)) +
+  coord_cartesian(xlim = c(.8, 7.2), ylim = c(35, 70)) +
+  geom_vline(xintercept = 4, lty = 2) +
+  geom_hline(yintercept = 50, lty = 2) +
+  theme(legend.position = "bottom")
+```
+
+The US map and graph of the experts' accuracy are testaments to the reliability in using their predictions for elections. By many measures, the average of their ratings tend to produce incredibly accurate results. One aspect to notice is that if a Democrat was predicted to win in 2018, they almost always won, while many Republican candidates who were favored to win ultimately lost. Inaccurate predictions lie in quadrants 1 and 3. This could indicate a potential bias that neglected the Democratic party's strength in 2018. 
+
+Another evident aspect to the plot is seeing how many incumbents ran and lost in the election. Ultimately, 34 incumbents who ran for re-election lost, with 4 losing their primary election and 30 losing their general election. Out of 374 races where an incumbent ran for reelection, only 34 losing is stark look at their resiliency. In fact, it has been noted that incumbents who seek reelection tend to [win more than 90% of the time](https://hollis.harvard.edu/primo-explore/fulldisplay?docid=TN_cdi_proquest_journals_1680832786&context=PC&vid=HVD2&search_scope=everything&tab=everything&lang=en_US).Even though some incumbents who have held office for a long time could be set at a disadvantage, this variable of incumbency seems to be an efficient predictor of elections.
+
+Incumbency seems to be a priviledged advantage for those in a race. However, it has been documented that incumbency alone (meaning other structural advantages are held constant) [is not enough to sway voters](https://hollis.harvard.edu/primo-explore/fulldisplay?docid=TN_cdi_proquest_journals_1680832786&context=PC&vid=HVD2&search_scope=everything&tab=everything&lang=en_US). The advantage lies in the incumbent's opportunity to gain name recognition and association with accomplishments, to raise huge sums of money as someone in power, the already-built-up wall that discourages challenges to challenge someone who seemingly has a 90% chance of winning, and the fact that incumbents may simply be more politically competent as they have already been through the campaign gauntlet.
+
+## Updated Prediction Model
+Because expert ratings incorporate incumbency into their predictions alongside other fundamental and polling variables, I will look to incorporate these into my forecasting model. Below I have listed my predictions for the Democratic Party's vote share by district (where expert predictions are currently available from the dataset I was provided through my class).
+
+
+```{r build dataset for models}
+# Reading in the data
+historical_results <- read_csv("house party vote share by district 1948-2020.csv") %>% 
+  clean_names()
+
+# 2018 expert rankings- clean to join
+to_join_expert_2018 <- all_expert_ratings_2018 %>%
+  select(State, district_num, year) %>%
+  rename(state = State,
+         district = district_num) %>%
+  mutate(district = as.character(district))
+  
+# Selecting columns
+avg_ratings <- expert_rating %>% 
+  left_join(to_join_expert_2018, by = c("year", "state", "district")) %>%
+  mutate(district = as.character(district)) %>%
+  rename(avg_expert_rating = avg_rating) %>%
+  select(year, state, district, avg_expert_rating)
+
+dem_results <- historical_results %>% 
+  select(race_year, state, area, dem_votes_major_percent) %>% 
+  rename("year" = "race_year") %>% 
+  separate(area, into = c("area", "district"), sep = " ") %>% 
+  select(-area) %>% 
+  mutate(district = case_when(
+    district == "Large" ~ "AL",
+    TRUE ~ district),
+    district = as.character(district))
+
+# Prep previous data
+polls_data <- polls_rdi_election_seat_filter2008_sum %>%
+  select(year, D_seats) %>%
+  left_join(polls_rdi_election_vote_filter2008_sum, by = "year") %>%
+  select(year, D_seats, mean_dem, mean_dem_margin, rdi_change_pct, D_majorvote_pct, D_votemargin)
+
+pvi_2022 <- pvi_share_2022 %>%
+  select(PVI, partymulti, PVI_num, State, district_num) %>%
+  mutate(party_pref = case_when(
+    partymulti == 1 ~ "D",
+    partymulti == 0 ~ "Even",
+    partymulti == -1 ~ "R")) %>%
+  select(-PVI, -partymulti) %>%
+  rename(state = State,
+         district = district_num) %>%
+  mutate(district = as.character(district))
+
+# Joining the data and nesting by state and district
+attached_data <- avg_ratings %>% 
+  # left join as there aren't ratings for every district
+  left_join(dem_results, by = c("year", "state", "district")) %>% 
+  left_join(polls_data, by = "year") %>%
+  filter(year != 2008,
+         year != 2022) %>%
+  group_by(state, district) %>%
+  filter(n() > 1) %>% # Filtering out single data rows
+  group_nest() %>% 
+  mutate(data = map(data, ~unnest(., cols = c())))
+
+data_2022 <- avg_ratings %>% 
+  filter(year == 2022) %>% 
+  mutate(mean_dem_margin = -1,
+         rdi_change_pct = 1.91) %>%
+  left_join(pvi_2022, by = c("state", "district")) %>%
+  group_by(state, district) %>% 
+  group_nest() %>% 
+  mutate(data = map(data, ~unnest(., cols = c())))
+```
+
+```{r vote share models}
+# Building models
+vote_model <- attached_data %>% 
+  mutate(model = map(data, ~lm(D_majorvote_pct ~
+                                 avg_expert_rating +
+                                 rdi_change_pct +
+                                 mean_dem_margin,
+                               data = .x))) %>% 
+  select(-data)
+
+# Extracting model results
+vote_model_results <- vote_model %>% 
+  mutate(r_squared = map_dbl(model, ~summary(.x)$r.squared))
+
+# Predicting 2022 with a model
+pred_vote_2022 <- data_2022 %>%
+  # inner join as there may not be historical models for some districts
+  inner_join(vote_model, by = c("state", "district"))%>% 
+  mutate(pred = map_dbl(.x = model,
+                        .y = data, 
+                        ~predict(object = .x, 
+                                 newdata = as.data.frame(.y)))) %>%
+  select(state, district, pred)
+```
+
+#### Results by Congressional District
+```{r district predictions table}
+print.data.frame(pred_vote_2022)
+```
+
+Here we can see some predictions that are plausible, especially when compared to previous election data. This includes my particular district of interest in this blog, Nebraska's 2nd congressional district, where the Democratic candidate is projected to earn 47.03% of the vote. This falls in line with previous elections in the district, since the Democratic candidate has often fallen just short of winning (and barely winning in 2014).
+
+However, there are some serious pitfalls to this model that need more examining.
+
+The first pitfall is some resulting Democratic Party vote share numbers. The Democrat in NY-25 is predicted to earn -47.08% of the vote, and a candidate never can win a negative share of the vote. Also, the candidate in PA-17 is projected to earn 199.39% of the vote, and a candidate can never win greater than a 100% share of the vote.
+
+Second, the R-squared numbers for my predictions by district are graphed below. While a higher R-squared is always desired, a value of 1 often should raise eyebrows in suspicion. Due to the sheer number that boast an R-squared value of 1, I am very pessismistic of this model and its effectiveness.
+
+#### R-Squared Comparisons
+```{r vote share graph rsquared}
+ggplot(data = vote_model_results,
+       mapping = aes(x = r_squared)) +
+  geom_histogram()
+```
+
+Thus, after some smooth sailing, this blog has shown that my model has taken a step back in its path toward improvement and accuracy. I suspect that the pitfalls of this model are the result of some coding errors and mistakes on the set-up of my model. Hopefully, next week will set me back on my course.
+
+
+##### Notes:
+
+*This blog is part of a series of articles meant to progressively understand how election data can be used to predict future outcomes. I will add to this site on a weekly basis under the direction of [Professor Ryan D. Enos](https://www.ryandenos.com). In the run-up to the midterm elections on November 8, 2022, I will draw on all I have learned regarding what best forecasts election results, and I will predict the outcome of the NE-02 U.S. Congressional Election.*
+
+[My project repository can be viewed here.](https://github.com/luke-tomes/election-blog)
+
+##### Sources:
+
+[Bureau of Economic Analysis, RDI Change](https://www.bea.gov/news/2022/personal-income-and-outlays-july-2022)

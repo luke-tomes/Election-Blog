@@ -6,7 +6,17 @@
     <description>Recent content in Posts on Luke Tomes</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 26 Sep 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://www.example.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 03 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://www.example.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Incumbency Advantage</title>
+      <link>http://www.example.com/posts/2022-10-03-incumbency-advantage/</link>
+      <pubDate>Mon, 03 Oct 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.example.com/posts/2022-10-03-incumbency-advantage/</guid>
+      <description>In this blog, I will seek to highlight how incumbency and expert ratings can be used in predicting elections. To start, I will compare how expert predictions compare to the actual election results in 2018, and then extrapolate the variable of expert ratings into my election modeling forecast
+Seatshare from 2018 Congressional Elections by Party and Incumbency Below, I have mapped the actual result of the 2018 congresisonal midterms in terms of seat share attained by each party.</description>
+    </item>
+    
     <item>
       <title>Incorporating Polling into a Forecast</title>
       <link>http://www.example.com/posts/polling-forecasts/</link>

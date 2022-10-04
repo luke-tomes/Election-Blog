@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>
+  Incumbency Advantage · Luke Tomes
+</title>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+
+
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; block-all-mixed-content; default-src 'self'; child-src 'self'; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net/; form-action 'self'; frame-src 'self'; img-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com/ https://cdn.jsdelivr.net/; script-src 'self' 'unsafe-inline' https://www.google-analytics.com https://cdn.jsdelivr.net/; prefetch-src 'self'; connect-src 'self' https://www.google-analytics.com;">
+
+
+
+
+<meta name="author" content="Luke Tomes">
+<meta name="description" content="In this blog, I will seek to highlight how incumbency and expert ratings can be used in predicting elections. To start, I will compare how expert predictions compare to the actual election results in 2018, and then extrapolate the variable of expert ratings into my election modeling forecast
+Seatshare from 2018 Congressional Elections by Party and Incumbency Below, I have mapped the actual result of the 2018 congresisonal midterms in terms of seat share attained by each party.">
+<meta name="keywords" content="blog,student,politics">
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Incumbency Advantage"/>
+<meta name="twitter:description" content="In this blog, I will seek to highlight how incumbency and expert ratings can be used in predicting elections. To start, I will compare how expert predictions compare to the actual election results in 2018, and then extrapolate the variable of expert ratings into my election modeling forecast
+Seatshare from 2018 Congressional Elections by Party and Incumbency Below, I have mapped the actual result of the 2018 congresisonal midterms in terms of seat share attained by each party."/>
+
+<meta property="og:title" content="Incumbency Advantage" />
+<meta property="og:description" content="In this blog, I will seek to highlight how incumbency and expert ratings can be used in predicting elections. To start, I will compare how expert predictions compare to the actual election results in 2018, and then extrapolate the variable of expert ratings into my election modeling forecast
+Seatshare from 2018 Congressional Elections by Party and Incumbency Below, I have mapped the actual result of the 2018 congresisonal midterms in terms of seat share attained by each party." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://www.example.com/posts/2022-10-03-incumbency-advantage/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-10-03T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-10-03T00:00:00+00:00" />
+
+
+
+
+
+<link rel="canonical" href="http://www.example.com/posts/2022-10-03-incumbency-advantage/">
+
+
+<link rel="preload" href="/fonts/forkawesome-webfont.woff2?v=1.2.0" as="font" type="font/woff2" crossorigin>
+
+
+  
+  
+  <link rel="stylesheet" href="/css/coder.min.c4d7e93a158eda5a65b3df343745d2092a0a1e2170feeec909b8a89443903c6a.css" integrity="sha256-xNfpOhWO2lpls980N0XSCSoKHiFw/u7JCbiolEOQPGo=" crossorigin="anonymous" media="screen" />
+
+
+
+
+
+
+  
+    
+    
+    <link rel="stylesheet" href="/css/coder-dark.min.78b5fe3864945faf5207fb8fe3ab2320d49c3365def0e88ac1df0ddadc54a03c.css" integrity="sha256-eLX&#43;OGSUX69SB/uP46sjINScM2Xe8OiKwd8N2txUoDw=" crossorigin="anonymous" media="screen" />
+  
+
+
+
+ 
+
+
+
+
+<link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+<meta name="generator" content="Hugo 0.103.0" />
+
+
+
+
+
+  </head>
+
+
+
+
+
+
+<body class="preload-transitions colorscheme-auto">
+  
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+  <main class="wrapper">
+    <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="/">
+      Luke Tomes
+    </a>
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/about/">About</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/contact/">Contact me</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+    <div class="content">
+      
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="http://www.example.com/posts/2022-10-03-incumbency-advantage/">
+              Incumbency Advantage
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+              <time datetime="2022-10-03T00:00:00Z">
+                October 3, 2022
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              8-minute read
+            </span>
+          </div>
+          
+          
+          
+        </div>
+      </header>
+
+      <div>
+        
+        
+
+
+<p>In this blog, I will seek to highlight how incumbency and expert ratings can be used in predicting elections. To start, I will compare how expert predictions compare to the actual election results in 2018, and then extrapolate the variable of expert ratings into my election modeling forecast</p>
+<div id="seatshare-from-2018-congressional-elections-by-party-and-incumbency" class="section level4">
+<h4>Seatshare from 2018 Congressional Elections by Party and Incumbency</h4>
+<p>Below, I have mapped the actual result of the 2018 congresisonal midterms in terms of seat share attained by each party. Additionally, I have included the districts in which an incumbent party lost their seat to the other party. In total, the Democrats flipped 46 seats from the previous Congress, and Republicans flipped only 5, indicating just how successful Democrats were in 2018. I will elaborate more on incumbency later, especially because of how only 34 incumbents ran and lost in the 2018 election cycle (4 lost in their primary elections, and 30 lost in the general election). Incumbency alone does not seem to be a factor per <a href="https://hollis.harvard.edu/primo-explore/fulldisplay?docid=TN_cdi_proquest_journals_1680832786&amp;context=PC&amp;vid=HVD2&amp;search_scope=everything&amp;tab=everything&amp;lang=en_US">Adam R. Brown.</a> However, the advantages that go along with incumbency tend to provide incumbents an edge over their opponent.</p>
+<p><img src="http://www.example.com/posts/2022-10-03-incumbency-advantage/index.en_files/figure-html/plot%20actual%20seatshare-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="expert-predictions" class="section level4">
+<h4>Expert Predictions</h4>
+<p>The map below displays the seat share predicted by the “experts” in the 2018 cycle. These predictions hinge on a variety of factors, culminating into their overall district “rating” that provides a probability of the favored party’s chances at winning, <a href="https://fivethirtyeight.com/methodology/how-fivethirtyeights-house-and-senate-models-work/">as detailed by Nate Silver of FiveThirtyEight</a>. The categories “toss-up, lean, likely, and solid” go in order of increasing probability to win, respectively, with a toss-up signifying a race that is close to 50/50. We can see how the frequency of “Toss-up” or districts with a slight lean are uncommon, to say the least. This displays just how noncompetitive most races typically are. The effects of this lack of competition are substantial when it comes to predicting elections: most noncompetitive districts lack accurate polling and interest, therefore decreasing predictors that can be utilized in models.</p>
+<p>To counteract a lack of information about a specific district, expert outlets will often <a href="https://fivethirtyeight.com/methodology/how-fivethirtyeights-house-and-senate-models-work/">lean on the fundamental predictors</a> (economy, incumbency, and demographics) that are not affected by a campaign and generic ballot congressional polls, or they will look to borrow available, accurate polling from districts with a large amount of similarities. This is how entire predictions maps, like the one below, are created. And one last note, it is best practice to average these expert predictions (from historically successful and trusted outlets like FiveThirtyEight, Cook Political Report, etc.), like we do with national polls, as to account and offset for any bias in the predictions (ideally).</p>
+<p><img src="http://www.example.com/posts/2022-10-03-incumbency-advantage/index.en_files/figure-html/plot%20for%20expert%20predictions-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="accuracy-of-expert-predictions" class="section level4">
+<h4>Accuracy of Expert Predictions</h4>
+<p>Like weather predictions by expert meteorologists, expert election predictions are not always correct. Often, it is advantageous to see just how accurate the predictions are and where the mistakes lie, so one can hopefully make adjustments in the future. Below, the accuracy of the expert predictions for 2018 are plotted, displaying that the experts almost predicted all districts correctly.</p>
+<p><img src="http://www.example.com/posts/2022-10-03-incumbency-advantage/index.en_files/figure-html/plot%20of%20difference%20in%20actual%20vs%20experts-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="incumbency-advantage-and-expert-predictions" class="section level4">
+<h4>Incumbency Advantage and Expert Predictions</h4>
+<p><img src="http://www.example.com/posts/2022-10-03-incumbency-advantage/index.en_files/figure-html/incumbent%20advantage-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The US map and graph of the experts’ accuracy are testaments to the reliability in using their predictions for elections. By many measures, the average of their ratings tend to produce incredibly accurate results. One aspect to notice is that if a Democrat was predicted to win in 2018, they almost always won, while many Republican candidates who were favored to win ultimately lost. Inaccurate predictions lie in quadrants 1 and 3. This could indicate a potential bias that neglected the Democratic party’s strength in 2018.</p>
+<p>Another evident aspect to the plot is seeing how many incumbents ran and lost in the election. Ultimately, 34 incumbents who ran for re-election lost, with 4 losing their primary election and 30 losing their general election. Out of 374 races where an incumbent ran for reelection, only 34 losing is stark look at their resiliency. In fact, it has been noted that incumbents who seek reelection tend to <a href="https://hollis.harvard.edu/primo-explore/fulldisplay?docid=TN_cdi_proquest_journals_1680832786&amp;context=PC&amp;vid=HVD2&amp;search_scope=everything&amp;tab=everything&amp;lang=en_US">win more than 90% of the time</a>.Even though some incumbents who have held office for a long time could be set at a disadvantage, this variable of incumbency seems to be an efficient predictor of elections.</p>
+<p>Incumbency seems to be a priviledged advantage for those in a race. However, it has been documented that incumbency alone (meaning other structural advantages are held constant) <a href="https://hollis.harvard.edu/primo-explore/fulldisplay?docid=TN_cdi_proquest_journals_1680832786&amp;context=PC&amp;vid=HVD2&amp;search_scope=everything&amp;tab=everything&amp;lang=en_US">is not enough to sway voters</a>. The advantage lies in the incumbent’s opportunity to gain name recognition and association with accomplishments, to raise huge sums of money as someone in power, the already-built-up wall that discourages challenges to challenge someone who seemingly has a 90% chance of winning, and the fact that incumbents may simply be more politically competent as they have already been through the campaign gauntlet.</p>
+</div>
+<div id="updated-prediction-model" class="section level2">
+<h2>Updated Prediction Model</h2>
+<p>Because expert ratings incorporate incumbency into their predictions alongside other fundamental and polling variables, I will look to incorporate these into my forecasting model. Below I have listed my predictions for the Democratic Party’s vote share by district (where expert predictions are currently available from the dataset I was provided through my class).</p>
+<div id="results-by-congressional-district" class="section level4">
+<h4>Results by Congressional District</h4>
+<pre><code>##             state district       pred
+## 1          Alaska       AL  69.441391
+## 2         Arizona        1  45.280269
+## 3         Arizona        2  48.271210
+## 4         Arizona        6  51.159434
+## 5      California       21  40.961311
+## 6      California       22  78.507143
+## 7      California       25  57.050825
+## 8      California       26  55.987778
+## 9      California        3  47.469831
+## 10     California       45  54.579310
+## 11     California       47  40.660737
+## 12     California       49  49.730952
+## 13     California        9  51.162657
+## 14       Colorado        3  56.083159
+## 15       Colorado        7  39.849298
+## 16    Connecticut        4  44.472978
+## 17    Connecticut        5  53.678653
+## 18        Florida       13  38.614971
+## 19        Florida       15  56.684286
+## 20        Florida       16  81.334853
+## 21        Florida        2  79.821954
+## 22        Florida       22  47.398042
+## 23        Florida       27  53.281050
+## 24        Florida        7  49.221475
+## 25        Georgia       12  50.649111
+## 26        Georgia        6  53.246089
+## 27       Illinois       11  48.755840
+## 28       Illinois       13  50.269034
+## 29       Illinois       14  53.164321
+## 30       Illinois       17  50.171631
+## 31       Illinois        6  54.795918
+## 32       Illinois        8  63.235380
+## 33           Iowa        1  47.235039
+## 34           Iowa        2  45.149679
+## 35           Iowa        3  48.469607
+## 36         Kansas        3  51.077168
+## 37          Maine        2  46.704484
+## 38       Maryland        6  54.998532
+## 39       Michigan       11  57.148761
+## 40       Michigan        3  37.346297
+## 41       Michigan        7  48.262001
+## 42       Michigan        8  50.261327
+## 43      Minnesota        1  49.843152
+## 44      Minnesota        2  42.591603
+## 45      Minnesota        3  52.851374
+## 46      Minnesota        8  48.605832
+## 47       Missouri        2  51.043785
+## 48       Nebraska        2  47.033199
+## 49         Nevada        3  48.980095
+## 50         Nevada        4  49.719551
+## 51  New Hampshire        1  45.980325
+## 52  New Hampshire        2  50.933172
+## 53     New Jersey       11  56.461111
+## 54     New Jersey        2  51.234360
+## 55     New Jersey        3  48.386586
+## 56     New Jersey        5  42.081903
+## 57     New Jersey        7  53.896826
+## 58     New Mexico        1  43.124130
+## 59     New Mexico        2  54.259972
+## 60       New York        1  49.092371
+## 61       New York       11  45.858288
+## 62       New York       18  48.493028
+## 63       New York       19  49.501115
+## 64       New York        2  51.631034
+## 65       New York       22  48.861609
+## 66       New York       25 -47.075003
+## 67       New York        3  44.548958
+## 68       New York        4  46.624566
+## 69 North Carolina       13  56.387236
+## 70 North Carolina        6  52.841280
+## 71 North Carolina        7  49.945113
+## 72 North Carolina        9  54.313462
+## 73           Ohio        1  87.190455
+## 74           Ohio       10   5.826923
+## 75           Ohio       13  38.233198
+## 76           Ohio       15  34.708216
+## 77           Ohio        7  20.450256
+## 78         Oregon        5  42.982183
+## 79   Pennsylvania        1  55.479730
+## 80   Pennsylvania       10  34.685212
+## 81   Pennsylvania       12  50.645417
+## 82   Pennsylvania       17 199.390820
+## 83   Pennsylvania        6  49.804774
+## 84   Pennsylvania        7  49.070487
+## 85   Pennsylvania        8  48.940465
+## 86 South Carolina        1  52.377619
+## 87          Texas       23  48.443030
+## 88       Virginia       10  49.144492
+## 89       Virginia        2  48.179994
+## 90       Virginia        5  48.671982
+## 91       Virginia        7  54.493396
+## 92     Washington        3  48.595811
+## 93     Washington        8  53.187348
+## 94      Wisconsin        3  41.034989</code></pre>
+<p>Here we can see some predictions that are plausible, especially when compared to previous election data. This includes my particular district of interest in this blog, Nebraska’s 2nd congressional district, where the Democratic candidate is projected to earn 47.03% of the vote. This falls in line with previous elections in the district, since the Democratic candidate has often fallen just short of winning (and barely winning in 2014).</p>
+<p>However, there are some serious pitfalls to this model that need more examining.</p>
+<p>The first pitfall is some resulting Democratic Party vote share numbers. The Democrat in NY-25 is predicted to earn -47.08% of the vote, and a candidate never can win a negative share of the vote. Also, the candidate in PA-17 is projected to earn 199.39% of the vote, and a candidate can never win greater than a 100% share of the vote.</p>
+<p>Second, the R-squared numbers for my predictions by district are graphed below. While a higher R-squared is always desired, a value of 1 often should raise eyebrows in suspicion. Due to the sheer number that boast an R-squared value of 1, I am very pessismistic of this model and its effectiveness.</p>
+</div>
+<div id="r-squared-comparisons" class="section level4">
+<h4>R-Squared Comparisons</h4>
+<p><img src="http://www.example.com/posts/2022-10-03-incumbency-advantage/index.en_files/figure-html/vote%20share%20graph%20rsquared-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Thus, after some smooth sailing, this blog has shown that my model has taken a step back in its path toward improvement and accuracy. I suspect that the pitfalls of this model are the result of some coding errors and mistakes on the set-up of my model. Hopefully, next week will set me back on my course.</p>
+<div id="notes" class="section level5">
+<h5>Notes:</h5>
+<p><em>This blog is part of a series of articles meant to progressively understand how election data can be used to predict future outcomes. I will add to this site on a weekly basis under the direction of <a href="https://www.ryandenos.com">Professor Ryan D. Enos</a>. In the run-up to the midterm elections on November 8, 2022, I will draw on all I have learned regarding what best forecasts election results, and I will predict the outcome of the NE-02 U.S. Congressional Election.</em></p>
+<p><a href="https://github.com/luke-tomes/election-blog">My project repository can be viewed here.</a></p>
+</div>
+<div id="sources" class="section level5">
+<h5>Sources:</h5>
+<p><a href="https://www.bea.gov/news/2022/personal-income-and-outlays-july-2022">Bureau of Economic Analysis, RDI Change</a></p>
+</div>
+</div>
+</div>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+    </div>
+
+    <footer class="footer">
+  <section class="container">
+    ©
+    
+    2022
+     Luke Tomes 
+    ·
+    
+    Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+    
+  </section>
+</footer>
+
+  </main>
+
+  
+
+  
+  
+  <script src="/js/coder.min.236049395dc3682fb2719640872958e12f1f24067bb09c327b233e6290c7edac.js" integrity="sha256-I2BJOV3DaC&#43;ycZZAhylY4S8fJAZ7sJwyeyM&#43;YpDH7aw="></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+
+</html>
