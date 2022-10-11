@@ -1,0 +1,436 @@
+Office,State,state_abb,CD,district_num,district_id,WinnerParty,ID
+House,Alabama,AL,AL-01,1,AL01,R,1
+House,Alabama,AL,AL-02,2,AL02,R,2
+House,Alabama,AL,AL-03,3,AL03,R,3
+House,Alabama,AL,AL-04,4,AL04,R,4
+House,Alabama,AL,AL-05,5,AL05,R,5
+House,Alabama,AL,AL-06,6,AL06,R,6
+House,Alabama,AL,AL-07,7,AL07,D,7
+House,Alaska,AK,AK-AL,0,AK00,R,8
+House,Arizona,AZ,AZ-01,1,AZ01,D,9
+House,Arizona,AZ,AZ-02,2,AZ02,D,10
+House,Arizona,AZ,AZ-03,3,AZ03,D,11
+House,Arizona,AZ,AZ-04,4,AZ04,R,12
+House,Arizona,AZ,AZ-05,5,AZ05,R,13
+House,Arizona,AZ,AZ-06,6,AZ06,R,14
+House,Arizona,AZ,AZ-07,7,AZ07,D,15
+House,Arizona,AZ,AZ-08,8,AZ08,R,16
+House,Arizona,AZ,AZ-09,9,AZ09,D,17
+House,Arkansas,AR,AR-01,1,AR01,R,18
+House,Arkansas,AR,AR-02,2,AR02,R,19
+House,Arkansas,AR,AR-03,3,AR03,R,20
+House,Arkansas,AR,AR-04,4,AR04,R,21
+House,California,CA,CA-01,1,CA01,R,22
+House,California,CA,CA-02,2,CA02,D,23
+House,California,CA,CA-03,3,CA03,D,24
+House,California,CA,CA-04,4,CA04,R,25
+House,California,CA,CA-05,5,CA05,D,26
+House,California,CA,CA-06,6,CA06,D,27
+House,California,CA,CA-07,7,CA07,D,28
+House,California,CA,CA-08,8,CA08,R,29
+House,California,CA,CA-09,9,CA09,D,30
+House,California,CA,CA-10,10,CA10,D,31
+House,California,CA,CA-11,11,CA11,D,32
+House,California,CA,CA-12,12,CA12,D,33
+House,California,CA,CA-13,13,CA13,D,34
+House,California,CA,CA-14,14,CA14,D,35
+House,California,CA,CA-15,15,CA15,D,36
+House,California,CA,CA-16,16,CA16,D,37
+House,California,CA,CA-17,17,CA17,D,38
+House,California,CA,CA-18,18,CA18,D,39
+House,California,CA,CA-19,19,CA19,D,40
+House,California,CA,CA-20,20,CA20,D,41
+House,California,CA,CA-21,21,CA21,D,42
+House,California,CA,CA-22,22,CA22,R,43
+House,California,CA,CA-23,23,CA23,R,44
+House,California,CA,CA-24,24,CA24,D,45
+House,California,CA,CA-25,25,CA25,D,46
+House,California,CA,CA-26,26,CA26,D,47
+House,California,CA,CA-27,27,CA27,D,48
+House,California,CA,CA-28,28,CA28,D,49
+House,California,CA,CA-29,29,CA29,D,50
+House,California,CA,CA-30,30,CA30,D,51
+House,California,CA,CA-31,31,CA31,D,52
+House,California,CA,CA-32,32,CA32,D,53
+House,California,CA,CA-33,33,CA33,D,54
+House,California,CA,CA-34,34,CA34,D,55
+House,California,CA,CA-35,35,CA35,D,56
+House,California,CA,CA-36,36,CA36,D,57
+House,California,CA,CA-37,37,CA37,D,58
+House,California,CA,CA-38,38,CA38,D,59
+House,California,CA,CA-39,39,CA39,D,60
+House,California,CA,CA-40,40,CA40,D,61
+House,California,CA,CA-41,41,CA41,D,62
+House,California,CA,CA-42,42,CA42,R,63
+House,California,CA,CA-43,43,CA43,D,64
+House,California,CA,CA-44,44,CA44,D,65
+House,California,CA,CA-45,45,CA45,D,66
+House,California,CA,CA-46,46,CA46,D,67
+House,California,CA,CA-47,47,CA47,D,68
+House,California,CA,CA-48,48,CA48,D,69
+House,California,CA,CA-49,49,CA49,D,70
+House,California,CA,CA-50,50,CA50,R,71
+House,California,CA,CA-51,51,CA51,D,72
+House,California,CA,CA-52,52,CA52,D,73
+House,California,CA,CA-53,53,CA53,D,74
+House,Colorado,CO,CO-01,1,CO01,D,75
+House,Colorado,CO,CO-02,2,CO02,D,76
+House,Colorado,CO,CO-03,3,CO03,R,77
+House,Colorado,CO,CO-04,4,CO04,R,78
+House,Colorado,CO,CO-05,5,CO05,R,79
+House,Colorado,CO,CO-06,6,CO06,D,80
+House,Colorado,CO,CO-07,7,CO07,D,81
+House,Connecticut,CT,CT-01,1,CT01,D,82
+House,Connecticut,CT,CT-02,2,CT02,D,83
+House,Connecticut,CT,CT-03,3,CT03,D,84
+House,Connecticut,CT,CT-04,4,CT04,D,85
+House,Connecticut,CT,CT-05,5,CT05,D,86
+House,Delaware,DE,DE-AL,0,DE00,D,87
+House,Florida,FL,FL-01,1,FL01,R,88
+House,Florida,FL,FL-02,2,FL02,R,89
+House,Florida,FL,FL-03,3,FL03,R,90
+House,Florida,FL,FL-04,4,FL04,R,91
+House,Florida,FL,FL-05,5,FL05,D,92
+House,Florida,FL,FL-06,6,FL06,R,93
+House,Florida,FL,FL-07,7,FL07,D,94
+House,Florida,FL,FL-08,8,FL08,R,95
+House,Florida,FL,FL-09,9,FL09,D,96
+House,Florida,FL,FL-10,10,FL10,D,97
+House,Florida,FL,FL-11,11,FL11,R,98
+House,Florida,FL,FL-12,12,FL12,R,99
+House,Florida,FL,FL-13,13,FL13,D,100
+House,Florida,FL,FL-14,14,FL14,D,101
+House,Florida,FL,FL-15,15,FL15,R,102
+House,Florida,FL,FL-16,16,FL16,R,103
+House,Florida,FL,FL-17,17,FL17,R,104
+House,Florida,FL,FL-18,18,FL18,R,105
+House,Florida,FL,FL-19,19,FL19,R,106
+House,Florida,FL,FL-20,20,FL20,D,107
+House,Florida,FL,FL-21,21,FL21,D,108
+House,Florida,FL,FL-22,22,FL22,D,109
+House,Florida,FL,FL-24,24,FL24,D,110
+House,Florida,FL,FL-25,25,FL25,R,111
+House,Florida,FL,FL-26,26,FL26,D,112
+House,Florida,FL,FL-27,27,FL27,D,113
+House,Florida,FL,FL-23,23,FL23,D,114
+House,Georgia,GA,GA-01,1,GA01,R,115
+House,Georgia,GA,GA-02,2,GA02,D,116
+House,Georgia,GA,GA-03,3,GA03,R,117
+House,Georgia,GA,GA-04,4,GA04,D,118
+House,Georgia,GA,GA-05,5,GA05,D,119
+House,Georgia,GA,GA-06,6,GA06,D,120
+House,Georgia,GA,GA-07,7,GA07,R,121
+House,Georgia,GA,GA-08,8,GA08,R,122
+House,Georgia,GA,GA-09,9,GA09,R,123
+House,Georgia,GA,GA-10,10,GA10,R,124
+House,Georgia,GA,GA-11,11,GA11,R,125
+House,Georgia,GA,GA-12,12,GA12,R,126
+House,Georgia,GA,GA-13,13,GA13,D,127
+House,Georgia,GA,GA-14,14,GA14,R,128
+House,Hawaii,HI,HI-01,1,HI01,D,129
+House,Hawaii,HI,HI-02,2,HI02,D,130
+House,Idaho,ID,ID-01,1,ID01,R,131
+House,Idaho,ID,ID-02,2,ID02,R,132
+House,Illinois,IL,IL-01,1,IL01,D,133
+House,Illinois,IL,IL-02,2,IL02,D,134
+House,Illinois,IL,IL-03,3,IL03,D,135
+House,Illinois,IL,IL-04,4,IL04,D,136
+House,Illinois,IL,IL-05,5,IL05,D,137
+House,Illinois,IL,IL-06,6,IL06,D,138
+House,Illinois,IL,IL-07,7,IL07,D,139
+House,Illinois,IL,IL-08,8,IL08,D,140
+House,Illinois,IL,IL-09,9,IL09,D,141
+House,Illinois,IL,IL-10,10,IL10,D,142
+House,Illinois,IL,IL-11,11,IL11,D,143
+House,Illinois,IL,IL-12,12,IL12,R,144
+House,Illinois,IL,IL-13,13,IL13,R,145
+House,Illinois,IL,IL-14,14,IL14,D,146
+House,Illinois,IL,IL-15,15,IL15,R,147
+House,Illinois,IL,IL-16,16,IL16,R,148
+House,Illinois,IL,IL-17,17,IL17,D,149
+House,Illinois,IL,IL-18,18,IL18,R,150
+House,Indiana,IN,IN-01,1,IN01,D,151
+House,Indiana,IN,IN-02,2,IN02,R,152
+House,Indiana,IN,IN-03,3,IN03,R,153
+House,Indiana,IN,IN-04,4,IN04,R,154
+House,Indiana,IN,IN-05,5,IN05,R,155
+House,Indiana,IN,IN-06,6,IN06,R,156
+House,Indiana,IN,IN-07,7,IN07,D,157
+House,Indiana,IN,IN-08,8,IN08,R,158
+House,Indiana,IN,IN-09,9,IN09,R,159
+House,Iowa,IA,IA-01,1,IA01,D,160
+House,Iowa,IA,IA-02,2,IA02,D,161
+House,Iowa,IA,IA-03,3,IA03,D,162
+House,Iowa,IA,IA-04,4,IA04,R,163
+House,Kansas,KS,KS-01,1,KS01,R,164
+House,Kansas,KS,KS-02,2,KS02,R,165
+House,Kansas,KS,KS-03,3,KS03,D,166
+House,Kansas,KS,KS-04,4,KS04,R,167
+House,Kentucky,KY,KY-01,1,KY01,R,168
+House,Kentucky,KY,KY-02,2,KY02,R,169
+House,Kentucky,KY,KY-03,3,KY03,D,170
+House,Kentucky,KY,KY-04,4,KY04,R,171
+House,Kentucky,KY,KY-05,5,KY05,R,172
+House,Kentucky,KY,KY-06,6,KY06,R,173
+House,Louisiana,LA,LA-01,1,LA01,R,174
+House,Louisiana,LA,LA-02,2,LA02,D,175
+House,Louisiana,LA,LA-03,3,LA03,R,176
+House,Louisiana,LA,LA-04,4,LA04,R,177
+House,Louisiana,LA,LA-05,5,LA05,R,178
+House,Louisiana,LA,LA-06,6,LA06,R,179
+House,Maine,ME,ME-01,1,ME01,D,180
+House,Maine,ME,ME-02,2,ME02,D,181
+House,Maryland,MD,MD-01,1,MD01,R,182
+House,Maryland,MD,MD-02,2,MD02,D,183
+House,Maryland,MD,MD-03,3,MD03,D,184
+House,Maryland,MD,MD-04,4,MD04,D,185
+House,Maryland,MD,MD-07,7,MD07,D,186
+House,Maryland,MD,MD-05,5,MD05,D,187
+House,Maryland,MD,MD-06,6,MD06,D,188
+House,Maryland,MD,MD-08,8,MD08,D,189
+House,Massachusetts,MA,MA-01,1,MA01,D,190
+House,Massachusetts,MA,MA-02,2,MA02,D,191
+House,Massachusetts,MA,MA-03,3,MA03,D,192
+House,Massachusetts,MA,MA-04,4,MA04,D,193
+House,Massachusetts,MA,MA-05,5,MA05,D,194
+House,Massachusetts,MA,MA-06,6,MA06,D,195
+House,Massachusetts,MA,MA-07,7,MA07,D,196
+House,Massachusetts,MA,MA-08,8,MA08,D,197
+House,Massachusetts,MA,MA-09,9,MA09,D,198
+House,Michigan,MI,MI-01,1,MI01,R,199
+House,Michigan,MI,MI-02,2,MI02,R,200
+House,Michigan,MI,MI-03,3,MI03,R,201
+House,Michigan,MI,MI-04,4,MI04,R,202
+House,Michigan,MI,MI-05,5,MI05,D,203
+House,Michigan,MI,MI-06,6,MI06,R,204
+House,Michigan,MI,MI-07,7,MI07,R,205
+House,Michigan,MI,MI-08,8,MI08,D,206
+House,Michigan,MI,MI-09,9,MI09,D,207
+House,Michigan,MI,MI-10,10,MI10,R,208
+House,Michigan,MI,MI-11,11,MI11,D,209
+House,Michigan,MI,MI-12,12,MI12,D,210
+House,Michigan,MI,MI-13,13,MI13,D,211
+House,Michigan,MI,MI-14,14,MI14,D,212
+House,Minnesota,MN,MN-01,1,MN01,R,213
+House,Minnesota,MN,MN-02,2,MN02,D,214
+House,Minnesota,MN,MN-03,3,MN03,D,215
+House,Minnesota,MN,MN-04,4,MN04,D,216
+House,Minnesota,MN,MN-05,5,MN05,D,217
+House,Minnesota,MN,MN-06,6,MN06,R,218
+House,Minnesota,MN,MN-07,7,MN07,D,219
+House,Minnesota,MN,MN-08,8,MN08,R,220
+House,Mississippi,MS,MS-01,1,MS01,R,221
+House,Mississippi,MS,MS-02,2,MS02,D,222
+House,Mississippi,MS,MS-03,3,MS03,R,223
+House,Mississippi,MS,MS-04,4,MS04,R,224
+House,Missouri,MO,MO-01,1,MO01,D,225
+House,Missouri,MO,MO-02,2,MO02,R,226
+House,Missouri,MO,MO-03,3,MO03,R,227
+House,Missouri,MO,MO-04,4,MO04,R,228
+House,Missouri,MO,MO-05,5,MO05,D,229
+House,Missouri,MO,MO-06,6,MO06,R,230
+House,Missouri,MO,MO-07,7,MO07,R,231
+House,Missouri,MO,MO-08,8,MO08,R,232
+House,Montana,MT,MT-AL,0,MT00,R,233
+House,Nebraska,NE,NE-01,1,NE01,R,234
+House,Nebraska,NE,NE-02,2,NE02,R,235
+House,Nebraska,NE,NE-03,3,NE03,R,236
+House,Nevada,NV,NV-01,1,NV01,D,237
+House,Nevada,NV,NV-02,2,NV02,R,238
+House,Nevada,NV,NV-03,3,NV03,D,239
+House,Nevada,NV,NV-04,4,NV04,D,240
+House,New Hampshire,NH,NH-01,1,NH01,D,241
+House,New Hampshire,NH,NH-02,2,NH02,D,242
+House,New Jersey,NJ,NJ-01,1,NJ01,D,243
+House,New Jersey,NJ,NJ-02,2,NJ02,D,244
+House,New Jersey,NJ,NJ-03,3,NJ03,D,245
+House,New Jersey,NJ,NJ-04,4,NJ04,R,246
+House,New Jersey,NJ,NJ-05,5,NJ05,D,247
+House,New Jersey,NJ,NJ-06,6,NJ06,D,248
+House,New Jersey,NJ,NJ-07,7,NJ07,D,249
+House,New Jersey,NJ,NJ-08,8,NJ08,D,250
+House,New Jersey,NJ,NJ-09,9,NJ09,D,251
+House,New Jersey,NJ,NJ-11,11,NJ11,D,252
+House,New Jersey,NJ,NJ-12,12,NJ12,D,253
+House,New Jersey,NJ,NJ-10,10,NJ10,D,254
+House,New Mexico,NM,NM-01,1,NM01,D,255
+House,New Mexico,NM,NM-02,2,NM02,D,256
+House,New Mexico,NM,NM-03,3,NM03,D,257
+House,New York,NY,NY-01,1,NY01,R,258
+House,New York,NY,NY-02,2,NY02,R,259
+House,New York,NY,NY-03,3,NY03,D,260
+House,New York,NY,NY-04,4,NY04,D,261
+House,New York,NY,NY-05,5,NY05,D,262
+House,New York,NY,NY-06,6,NY06,D,263
+House,New York,NY,NY-07,7,NY07,D,264
+House,New York,NY,NY-08,8,NY08,D,265
+House,New York,NY,NY-09,9,NY09,D,266
+House,New York,NY,NY-10,10,NY10,D,267
+House,New York,NY,NY-11,11,NY11,D,268
+House,New York,NY,NY-12,12,NY12,D,269
+House,New York,NY,NY-13,13,NY13,D,270
+House,New York,NY,NY-14,14,NY14,D,271
+House,New York,NY,NY-15,15,NY15,D,272
+House,New York,NY,NY-16,16,NY16,D,273
+House,New York,NY,NY-17,17,NY17,D,274
+House,New York,NY,NY-18,18,NY18,D,275
+House,New York,NY,NY-19,19,NY19,D,276
+House,New York,NY,NY-20,20,NY20,D,277
+House,New York,NY,NY-21,21,NY21,R,278
+House,New York,NY,NY-22,22,NY22,D,279
+House,New York,NY,NY-23,23,NY23,R,280
+House,New York,NY,NY-24,24,NY24,R,281
+House,New York,NY,NY-25,25,NY25,D,282
+House,New York,NY,NY-26,26,NY26,D,283
+House,New York,NY,NY-27,27,NY27,R,284
+House,North Carolina,NC,NC-01,1,NC01,D,285
+House,North Carolina,NC,NC-02,2,NC02,R,286
+House,North Carolina,NC,NC-03,3,NC03,R,287
+House,North Carolina,NC,NC-04,4,NC04,D,288
+House,North Carolina,NC,NC-05,5,NC05,R,289
+House,North Carolina,NC,NC-06,6,NC06,R,290
+House,North Carolina,NC,NC-07,7,NC07,R,291
+House,North Carolina,NC,NC-08,8,NC08,R,292
+House,North Carolina,NC,NC-09,9,NC09,R,293
+House,North Carolina,NC,NC-10,10,NC10,R,294
+House,North Carolina,NC,NC-11,11,NC11,R,295
+House,North Carolina,NC,NC-12,12,NC12,D,296
+House,North Carolina,NC,NC-13,13,NC13,R,297
+House,North Dakota,ND,ND-AL,0,ND00,R,298
+House,Ohio,OH,OH-03,3,OH03,D,299
+House,Ohio,OH,OH-04,4,OH04,R,300
+House,Ohio,OH,OH-05,5,OH05,R,301
+House,Ohio,OH,OH-01,1,OH01,R,302
+House,Ohio,OH,OH-02,2,OH02,R,303
+House,Ohio,OH,OH-06,6,OH06,R,304
+House,Ohio,OH,OH-07,7,OH07,R,305
+House,Ohio,OH,OH-08,8,OH08,R,306
+House,Ohio,OH,OH-09,9,OH09,D,307
+House,Ohio,OH,OH-10,10,OH10,R,308
+House,Ohio,OH,OH-11,11,OH11,D,309
+House,Ohio,OH,OH-12,12,OH12,R,310
+House,Ohio,OH,OH-13,13,OH13,D,311
+House,Ohio,OH,OH-14,14,OH14,R,312
+House,Ohio,OH,OH-15,15,OH15,R,313
+House,Ohio,OH,OH-16,16,OH16,R,314
+House,Oklahoma,OK,OK-01,1,OK01,R,315
+House,Oklahoma,OK,OK-02,2,OK02,R,316
+House,Oklahoma,OK,OK-03,3,OK03,R,317
+House,Oklahoma,OK,OK-04,4,OK04,R,318
+House,Oklahoma,OK,OK-05,5,OK05,D,319
+House,Oregon,OR,OR-01,1,OR01,D,320
+House,Oregon,OR,OR-02,2,OR02,R,321
+House,Oregon,OR,OR-03,3,OR03,D,322
+House,Oregon,OR,OR-04,4,OR04,D,323
+House,Oregon,OR,OR-05,5,OR05,D,324
+House,Pennsylvania,PA,PA-01,1,PA01,R,325
+House,Pennsylvania,PA,PA-02,2,PA02,D,326
+House,Pennsylvania,PA,PA-03,3,PA03,D,327
+House,Pennsylvania,PA,PA-04,4,PA04,D,328
+House,Pennsylvania,PA,PA-05,5,PA05,D,329
+House,Pennsylvania,PA,PA-06,6,PA06,D,330
+House,Pennsylvania,PA,PA-07,7,PA07,D,331
+House,Pennsylvania,PA,PA-08,8,PA08,D,332
+House,Pennsylvania,PA,PA-09,9,PA09,R,333
+House,Pennsylvania,PA,PA-10,10,PA10,R,334
+House,Pennsylvania,PA,PA-11,11,PA11,R,335
+House,Pennsylvania,PA,PA-12,12,PA12,R,336
+House,Pennsylvania,PA,PA-13,13,PA13,R,337
+House,Pennsylvania,PA,PA-14,14,PA14,R,338
+House,Pennsylvania,PA,PA-15,15,PA15,R,339
+House,Pennsylvania,PA,PA-16,16,PA16,R,340
+House,Pennsylvania,PA,PA-17,17,PA17,D,341
+House,Pennsylvania,PA,PA-18,18,PA18,D,342
+House,Rhode Island,RI,RI-01,1,RI01,D,343
+House,Rhode Island,RI,RI-02,2,RI02,D,344
+House,South Carolina,SC,SC-01,1,SC01,D,345
+House,South Carolina,SC,SC-02,2,SC02,R,346
+House,South Carolina,SC,SC-03,3,SC03,R,347
+House,South Carolina,SC,SC-04,4,SC04,R,348
+House,South Carolina,SC,SC-05,5,SC05,R,349
+House,South Carolina,SC,SC-06,6,SC06,D,350
+House,South Carolina,SC,SC-07,7,SC07,R,351
+House,South Dakota,SD,SD-AL,0,SD00,R,352
+House,Tennessee,TN,TN-01,1,TN01,R,353
+House,Tennessee,TN,TN-03,3,TN03,R,354
+House,Tennessee,TN,TN-04,4,TN04,R,355
+House,Tennessee,TN,TN-05,5,TN05,D,356
+House,Tennessee,TN,TN-02,2,TN02,R,357
+House,Tennessee,TN,TN-06,6,TN06,R,358
+House,Tennessee,TN,TN-07,7,TN07,R,359
+House,Tennessee,TN,TN-08,8,TN08,R,360
+House,Tennessee,TN,TN-09,9,TN09,D,361
+House,Texas,TX,TX-01,1,TX01,R,362
+House,Texas,TX,TX-02,2,TX02,R,363
+House,Texas,TX,TX-03,3,TX03,R,364
+House,Texas,TX,TX-04,4,TX04,R,365
+House,Texas,TX,TX-05,5,TX05,R,366
+House,Texas,TX,TX-06,6,TX06,R,367
+House,Texas,TX,TX-07,7,TX07,D,368
+House,Texas,TX,TX-08,8,TX08,R,369
+House,Texas,TX,TX-09,9,TX09,D,370
+House,Texas,TX,TX-10,10,TX10,R,371
+House,Texas,TX,TX-11,11,TX11,R,372
+House,Texas,TX,TX-12,12,TX12,R,373
+House,Texas,TX,TX-13,13,TX13,R,374
+House,Texas,TX,TX-14,14,TX14,R,375
+House,Texas,TX,TX-15,15,TX15,D,376
+House,Texas,TX,TX-16,16,TX16,D,377
+House,Texas,TX,TX-17,17,TX17,R,378
+House,Texas,TX,TX-18,18,TX18,D,379
+House,Texas,TX,TX-19,19,TX19,R,380
+House,Texas,TX,TX-20,20,TX20,D,381
+House,Texas,TX,TX-21,21,TX21,R,382
+House,Texas,TX,TX-22,22,TX22,R,383
+House,Texas,TX,TX-23,23,TX23,R,384
+House,Texas,TX,TX-24,24,TX24,R,385
+House,Texas,TX,TX-25,25,TX25,R,386
+House,Texas,TX,TX-26,26,TX26,R,387
+House,Texas,TX,TX-27,27,TX27,R,388
+House,Texas,TX,TX-28,28,TX28,D,389
+House,Texas,TX,TX-29,29,TX29,D,390
+House,Texas,TX,TX-30,30,TX30,D,391
+House,Texas,TX,TX-31,31,TX31,R,392
+House,Texas,TX,TX-32,32,TX32,D,393
+House,Texas,TX,TX-33,33,TX33,D,394
+House,Texas,TX,TX-34,34,TX34,D,395
+House,Texas,TX,TX-35,35,TX35,D,396
+House,Texas,TX,TX-36,36,TX36,R,397
+House,Utah,UT,UT-01,1,UT01,R,398
+House,Utah,UT,UT-02,2,UT02,R,399
+House,Utah,UT,UT-03,3,UT03,R,400
+House,Utah,UT,UT-04,4,UT04,D,401
+House,Vermont,VT,VT-AL,0,VT00,D,402
+House,Virginia,VA,VA-01,1,VA01,R,403
+House,Virginia,VA,VA-02,2,VA02,D,404
+House,Virginia,VA,VA-03,3,VA03,D,405
+House,Virginia,VA,VA-04,4,VA04,D,406
+House,Virginia,VA,VA-05,5,VA05,R,407
+House,Virginia,VA,VA-06,6,VA06,R,408
+House,Virginia,VA,VA-07,7,VA07,D,409
+House,Virginia,VA,VA-08,8,VA08,D,410
+House,Virginia,VA,VA-09,9,VA09,R,411
+House,Virginia,VA,VA-10,10,VA10,D,412
+House,Virginia,VA,VA-11,11,VA11,D,413
+House,Washington,WA,WA-01,1,WA01,D,414
+House,Washington,WA,WA-02,2,WA02,D,415
+House,Washington,WA,WA-03,3,WA03,R,416
+House,Washington,WA,WA-04,4,WA04,R,417
+House,Washington,WA,WA-05,5,WA05,R,418
+House,Washington,WA,WA-06,6,WA06,D,419
+House,Washington,WA,WA-07,7,WA07,D,420
+House,Washington,WA,WA-08,8,WA08,D,421
+House,Washington,WA,WA-09,9,WA09,D,422
+House,Washington,WA,WA-10,10,WA10,D,423
+House,West Virginia,WV,WV-01,1,WV01,R,424
+House,West Virginia,WV,WV-02,2,WV02,R,425
+House,West Virginia,WV,WV-03,3,WV03,R,426
+House,Wisconsin,WI,WI-01,1,WI01,R,427
+House,Wisconsin,WI,WI-02,2,WI02,D,428
+House,Wisconsin,WI,WI-03,3,WI03,D,429
+House,Wisconsin,WI,WI-04,4,WI04,D,430
+House,Wisconsin,WI,WI-05,5,WI05,R,431
+House,Wisconsin,WI,WI-06,6,WI06,R,432
+House,Wisconsin,WI,WI-08,8,WI08,R,433
+House,Wisconsin,WI,WI-07,7,WI07,R,434
+House,Wyoming,WY,WY-AL,0,WY00,R,435

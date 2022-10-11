@@ -1,0 +1,49 @@
+---
+title: Does Media Advertising Matter?
+author: Luke Tomes
+date: '2022-10-11'
+slug: media-advertising
+categories: []
+tags: []
+authors: []
+description: ''
+externalLink: ''
+series: []
+---
+
+```{r setup, echo = FALSE, message = FALSE, include = FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = FALSE,
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.align = "center")
+```
+
+```{r libraries, include = FALSE}
+# Load Libraries
+library(tidyverse)
+library(usmap)
+library(sf)
+library(rmapshaper)
+library(car)
+library(moderndive)
+library(janitor)
+```
+
+```{r load data, include = FALSE}
+# load existing datasets for model
+polls_rdi_election_vote_filter2008 <- read_csv("polls_rdi_election_vote_filter2008.csv")
+polls_rdi_election_vote_filter2008_sum <- read_csv("polls_rdi_election_vote_filter2008_sum.csv")
+polls_rdi_election_seat_filter2008 <- read_csv("polls_rdi_election_seat_filter2008.csv")
+polls_rdi_election_seat_filter2008_sum <- read_csv("polls_rdi_election_seat_filter2008_sum.csv")
+district_by_district_model_data <- read_csv("district_by_district_model_data.csv")
+
+
+ads_compress <- readRDS("ads_2006_2018.rds")
+ads_issues_compress <-readRDS("ads_issues_2012-2018.rds")
+
+
+# load datasets for extension
+
+state_and_districts <- read_csv("State and district names.csv")
+```
