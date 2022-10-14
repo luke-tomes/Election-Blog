@@ -266,7 +266,15 @@ ggplot() +
           aes(fill = expert_rating),
           inherit.aes = FALSE,
           alpha = 1) +
-  scale_fill_manual(values = c("#e6e7ff", "#fff1f0", "#c4d8ff", "#ffcfcf", "#6ea1ff", "#ff4040", "#0441ba", "#c70000", "White"),
+  scale_fill_manual(values = c("#e6e7ff", # Dem Toss up
+                               "#fff1f0", # GOP Toss up
+                               "#c4d8ff", # Lean Dem
+                               "#ffcfcf", # Lean GOP
+                               "#6ea1ff", # Likely Dem
+                               "#ff4040", # Likely GOP
+                               "#0441ba", # Solid Dem
+                               "#c70000", # Solid GOP
+                               "White"), # Toss-up
                    name = "Predictions") +
   coord_sf(xlim = c(-125.27, -66.57),
            ylim = c(23.75, 50.23),
@@ -484,7 +492,7 @@ However, there are some serious pitfalls to this model that need more examining.
 
 The first pitfall is some resulting Democratic Party vote share numbers. The Democrat in NY-25 is predicted to earn -47.08% of the vote, and a candidate never can win a negative share of the vote. Also, the candidate in PA-17 is projected to earn 199.39% of the vote, and a candidate can never win greater than a 100% share of the vote.
 
-Second, the R-squared numbers for my predictions by district are graphed below. While a higher R-squared is always desired, a value of 1 often should raise eyebrows in suspicion. Due to the sheer number that boast an R-squared value of 1, I am very pessismistic of this model and its effectiveness.
+Second, the R-squared numbers for my predictions by district are graphed below. While a higher R-squared is always desired, a value of 1 often should raise eyebrows in suspicion. Due to the sheer number that boast an R-squared value of 1, I am very pessimistic of this model and its effectiveness.
 
 #### R-Squared Comparisons
 ```{r vote share graph rsquared}
