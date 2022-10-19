@@ -323,7 +323,6 @@ ggplot() +
            expand = FALSE) +
   labs(title = "Total Ads Run in Each U.S. Congressional District, 2018",
        caption = "Data Provided by Professor Ryan Enos of Harvard\nUniversity along with Jeffrey B. Lewis of UCLA, et al.") +
-  guides(fill = guide_legend(ncol = 1)) +
   theme_void() +
   theme(axis.title.x=element_blank(),
         axis.text.x=element_blank(),

@@ -1,0 +1,436 @@
+,District,cpr,cpr_num,inside_elections,inside_elections_num,crystal_ball,crystal_ball_num,avg,State,state_abb,CD,district_num,district_id,WinnerParty,year
+1,AK-01,Lean Republican,5,Likely Republican,6,Lean Republican,5,5.333333333,Alaska,AK,AK-AL,0,AK00,R,2018
+2,AL-01,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Alabama,AL,AL-01,1,AL01,R,2018
+3,AL-02,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Alabama,AL,AL-02,2,AL02,R,2018
+4,AL-03,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Alabama,AL,AL-03,3,AL03,R,2018
+5,AL-04,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Alabama,AL,AL-04,4,AL04,R,2018
+6,AL-05,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Alabama,AL,AL-05,5,AL05,R,2018
+7,AL-06,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Alabama,AL,AL-06,6,AL06,R,2018
+8,AL-07,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Alabama,AL,AL-07,7,AL07,D,2018
+9,AR-01,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Arkansas,AR,AR-01,1,AR01,R,2018
+10,AR-02,Likely Republican,6,Likely Republican,6,Lean Republican,5,5.666666667,Arkansas,AR,AR-02,2,AR02,R,2018
+11,AR-03,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Arkansas,AR,AR-03,3,AR03,R,2018
+12,AR-04,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Arkansas,AR,AR-04,4,AR04,R,2018
+13,AZ-01,Lean Democratic,3,Lean Democratic,3,Likely Democratic,2,2.666666667,Arizona,AZ,AZ-01,1,AZ01,D,2018
+14,AZ-02,Lean Democratic,3,Lean Democratic,3,Likely Democratic,2,2.666666667,Arizona,AZ,AZ-02,2,AZ02,D,2018
+15,AZ-03,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Arizona,AZ,AZ-03,3,AZ03,D,2018
+16,AZ-04,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Arizona,AZ,AZ-04,4,AZ04,R,2018
+17,AZ-05,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Arizona,AZ,AZ-05,5,AZ05,R,2018
+18,AZ-06,Likely Republican,6,Solid Republican,7,Likely Republican,6,6.333333333,Arizona,AZ,AZ-06,6,AZ06,R,2018
+19,AZ-07,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Arizona,AZ,AZ-07,7,AZ07,D,2018
+20,AZ-08,Likely Republican,6,Likely Republican,6,Likely Republican,6,6,Arizona,AZ,AZ-08,8,AZ08,R,2018
+21,AZ-09,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Arizona,AZ,AZ-09,9,AZ09,D,2018
+22,CA-01,Likely Republican,6,Solid Republican,7,Safe Republican,7,6.666666667,California,CA,CA-01,1,CA01,R,2018
+23,CA-02,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-02,2,CA02,D,2018
+24,CA-03,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-03,3,CA03,D,2018
+25,CA-04,Likely Republican,6,Likely Republican,6,Likely Republican,6,6,California,CA,CA-04,4,CA04,R,2018
+26,CA-05,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-05,5,CA05,D,2018
+27,CA-06,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-06,6,CA06,D,2018
+28,CA-07,Likely Democratic,2,Solid Democratic,1,Likely Democratic,2,1.666666667,California,CA,CA-07,7,CA07,D,2018
+29,CA-08,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,California,CA,CA-08,8,CA08,R,2018
+30,CA-09,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-09,9,CA09,D,2018
+31,CA-10,Toss-up,4,Toss-up,4,Lean Democratic,3,3.666666667,California,CA,CA-10,10,CA10,D,2018
+32,CA-11,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-11,11,CA11,D,2018
+33,CA-12,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-12,12,CA12,D,2018
+34,CA-13,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-13,13,CA13,D,2018
+35,CA-14,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-14,14,CA14,D,2018
+36,CA-15,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-15,15,CA15,D,2018
+37,CA-16,Likely Democratic,2,Solid Democratic,1,Likely Democratic,2,1.666666667,California,CA,CA-16,16,CA16,D,2018
+38,CA-17,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-17,17,CA17,D,2018
+39,CA-18,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-18,18,CA18,D,2018
+40,CA-19,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-19,19,CA19,D,2018
+41,CA-20,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-20,20,CA20,D,2018
+42,CA-21,Likely Republican,6,Likely Republican,6,Lean Republican,5,5.666666667,California,CA,CA-21,21,CA21,D,2018
+43,CA-22,Likely Republican,6,Solid Republican,7,Likely Republican,6,6.333333333,California,CA,CA-22,22,CA22,R,2018
+44,CA-23,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,California,CA,CA-23,23,CA23,R,2018
+45,CA-24,Solid Democratic,1,Solid Democratic,1,Likely Democratic,2,1.333333333,California,CA,CA-24,24,CA24,D,2018
+46,CA-25,Toss-up,4,Toss-up,4,Lean Republican,5,4.333333333,California,CA,CA-25,25,CA25,D,2018
+47,CA-26,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-26,26,CA26,D,2018
+48,CA-27,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-27,27,CA27,D,2018
+49,CA-28,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-28,28,CA28,D,2018
+50,CA-29,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-29,29,CA29,D,2018
+51,CA-30,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-30,30,CA30,D,2018
+52,CA-31,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-31,31,CA31,D,2018
+53,CA-32,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-32,32,CA32,D,2018
+54,CA-33,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-33,33,CA33,D,2018
+55,CA-34,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-34,34,CA34,D,2018
+56,CA-35,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-35,35,CA35,D,2018
+57,CA-36,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-36,36,CA36,D,2018
+58,CA-37,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-37,37,CA37,D,2018
+59,CA-38,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-38,38,CA38,D,2018
+60,CA-39,Toss-up,4,Toss-up,4,Lean Republican,5,4.333333333,California,CA,CA-39,39,CA39,D,2018
+61,CA-40,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-40,40,CA40,D,2018
+62,CA-41,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-41,41,CA41,D,2018
+63,CA-42,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,California,CA,CA-42,42,CA42,R,2018
+64,CA-43,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-43,43,CA43,D,2018
+65,CA-44,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-44,44,CA44,D,2018
+66,CA-45,Toss-up,4,Toss-up,4,Lean Democratic,3,3.666666667,California,CA,CA-45,45,CA45,D,2018
+67,CA-46,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-46,46,CA46,D,2018
+68,CA-47,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-47,47,CA47,D,2018
+69,CA-48,Toss-up,4,Tilt Democratic,3.5,Lean Democratic,3,3.5,California,CA,CA-48,48,CA48,D,2018
+70,CA-49,Lean Democratic,3,Lean Democratic,3,Likely Democratic,2,2.666666667,California,CA,CA-49,49,CA49,D,2018
+71,CA-50,Lean Republican,5,Lean Republican,5,Lean Republican,5,5,California,CA,CA-50,50,CA50,R,2018
+72,CA-51,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-51,51,CA51,D,2018
+73,CA-52,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-52,52,CA52,D,2018
+74,CA-53,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,California,CA,CA-53,53,CA53,D,2018
+75,CO-01,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Colorado,CO,CO-01,1,CO01,D,2018
+76,CO-02,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Colorado,CO,CO-02,2,CO02,D,2018
+77,CO-03,Likely Republican,6,Solid Republican,7,Lean Republican,5,6,Colorado,CO,CO-03,3,CO03,R,2018
+78,CO-04,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Colorado,CO,CO-04,4,CO04,R,2018
+79,CO-05,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Colorado,CO,CO-05,5,CO05,R,2018
+80,CO-06,Lean Democratic,3,Tilt Democratic,3.5,Lean Democratic,3,3.166666667,Colorado,CO,CO-06,6,CO06,D,2018
+81,CO-07,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Colorado,CO,CO-07,7,CO07,D,2018
+82,CT-01,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Connecticut,CT,CT-01,1,CT01,D,2018
+83,CT-02,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Connecticut,CT,CT-02,2,CT02,D,2018
+84,CT-03,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Connecticut,CT,CT-03,3,CT03,D,2018
+85,CT-04,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Connecticut,CT,CT-04,4,CT04,D,2018
+86,CT-05,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Connecticut,CT,CT-05,5,CT05,D,2018
+87,DE-01,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Delaware,DE,DE-AL,0,DE00,D,2018
+88,FL-01,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Florida,FL,FL-01,1,FL01,R,2018
+89,FL-02,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Florida,FL,FL-02,2,FL02,R,2018
+90,FL-03,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Florida,FL,FL-03,3,FL03,R,2018
+91,FL-04,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Florida,FL,FL-04,4,FL04,R,2018
+92,FL-05,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Florida,FL,FL-05,5,FL05,D,2018
+93,FL-06,Lean Republican,5,Lean Republican,5,Lean Republican,5,5,Florida,FL,FL-06,6,FL06,R,2018
+94,FL-07,Likely Democratic,2,Solid Democratic,1,Likely Democratic,2,1.666666667,Florida,FL,FL-07,7,FL07,D,2018
+95,FL-08,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Florida,FL,FL-08,8,FL08,R,2018
+96,FL-09,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Florida,FL,FL-09,9,FL09,D,2018
+97,FL-10,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Florida,FL,FL-10,10,FL10,D,2018
+98,FL-11,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Florida,FL,FL-11,11,FL11,R,2018
+99,FL-12,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Florida,FL,FL-12,12,FL12,R,2018
+100,FL-13,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Florida,FL,FL-13,13,FL13,D,2018
+101,FL-14,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Florida,FL,FL-14,14,FL14,D,2018
+102,FL-15,Toss-up,4,Tilt Republican,4.5,Lean Republican,5,4.5,Florida,FL,FL-15,15,FL15,R,2018
+103,FL-16,Lean Republican,5,Likely Republican,6,Likely Republican,6,5.666666667,Florida,FL,FL-16,16,FL16,R,2018
+104,FL-17,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Florida,FL,FL-17,17,FL17,R,2018
+105,FL-18,Lean Republican,5,Likely Republican,6,Lean Republican,5,5.333333333,Florida,FL,FL-18,18,FL18,R,2018
+106,FL-19,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Florida,FL,FL-19,19,FL19,R,2018
+107,FL-20,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Florida,FL,FL-20,20,FL20,D,2018
+108,FL-21,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Florida,FL,FL-21,21,FL21,D,2018
+109,FL-22,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Florida,FL,FL-22,22,FL22,D,2018
+110,FL-23,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Florida,FL,FL-23,23,FL23,D,2018
+111,FL-24,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Florida,FL,FL-24,24,FL24,D,2018
+112,FL-25,Lean Republican,5,Solid Republican,7,Likely Republican,6,6,Florida,FL,FL-25,25,FL25,R,2018
+113,FL-26,Toss-up,4,Toss-up,4,Lean Republican,5,4.333333333,Florida,FL,FL-26,26,FL26,D,2018
+114,FL-27,Lean Democratic,3,Lean Democratic,3,Lean Democratic,3,3,Florida,FL,FL-27,27,FL27,D,2018
+115,GA-01,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Georgia,GA,GA-01,1,GA01,R,2018
+116,GA-02,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Georgia,GA,GA-02,2,GA02,D,2018
+117,GA-03,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Georgia,GA,GA-03,3,GA03,R,2018
+118,GA-04,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Georgia,GA,GA-04,4,GA04,D,2018
+119,GA-05,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Georgia,GA,GA-05,5,GA05,D,2018
+120,GA-06,Toss-up,4,Lean Republican,5,Lean Republican,5,4.666666667,Georgia,GA,GA-06,6,GA06,D,2018
+121,GA-07,Lean Republican,5,Lean Republican,5,Lean Republican,5,5,Georgia,GA,GA-07,7,GA07,R,2018
+122,GA-08,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Georgia,GA,GA-08,8,GA08,R,2018
+123,GA-09,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Georgia,GA,GA-09,9,GA09,R,2018
+124,GA-10,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Georgia,GA,GA-10,10,GA10,R,2018
+125,GA-11,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Georgia,GA,GA-11,11,GA11,R,2018
+126,GA-12,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Georgia,GA,GA-12,12,GA12,R,2018
+127,GA-13,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Georgia,GA,GA-13,13,GA13,D,2018
+128,GA-14,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Georgia,GA,GA-14,14,GA14,R,2018
+129,HI-01,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Hawaii,HI,HI-01,1,HI01,D,2018
+130,HI-02,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Hawaii,HI,HI-02,2,HI02,D,2018
+131,IA-01,Lean Democratic,3,Lean Democratic,3,Lean Democratic,3,3,Iowa,IA,IA-01,1,IA01,D,2018
+132,IA-02,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Iowa,IA,IA-02,2,IA02,D,2018
+133,IA-03,Toss-up,4,Toss-up,4,Lean Democratic,3,3.666666667,Iowa,IA,IA-03,3,IA03,D,2018
+134,IA-04,Lean Republican,5,Likely Republican,6,Lean Republican,5,5.333333333,Iowa,IA,IA-04,4,IA04,R,2018
+135,ID-01,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Idaho,ID,ID-01,1,ID01,R,2018
+136,ID-02,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Idaho,ID,ID-02,2,ID02,R,2018
+137,IL-01,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Illinois,IL,IL-01,1,IL01,D,2018
+138,IL-02,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Illinois,IL,IL-02,2,IL02,D,2018
+139,IL-03,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Illinois,IL,IL-03,3,IL03,D,2018
+140,IL-04,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Illinois,IL,IL-04,4,IL04,D,2018
+141,IL-05,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Illinois,IL,IL-05,5,IL05,D,2018
+142,IL-06,Lean Democratic,3,Tilt Democratic,3.5,Lean Democratic,3,3.166666667,Illinois,IL,IL-06,6,IL06,D,2018
+143,IL-07,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Illinois,IL,IL-07,7,IL07,D,2018
+144,IL-08,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Illinois,IL,IL-08,8,IL08,D,2018
+145,IL-09,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Illinois,IL,IL-09,9,IL09,D,2018
+146,IL-10,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Illinois,IL,IL-10,10,IL10,D,2018
+147,IL-11,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Illinois,IL,IL-11,11,IL11,D,2018
+148,IL-12,Lean Republican,5,Tilt Republican,4.5,Lean Republican,5,4.833333333,Illinois,IL,IL-12,12,IL12,R,2018
+149,IL-13,Lean Republican,5,Lean Republican,5,Lean Republican,5,5,Illinois,IL,IL-13,13,IL13,R,2018
+150,IL-14,Toss-up,4,Toss-up,4,Lean Democratic,3,3.666666667,Illinois,IL,IL-14,14,IL14,D,2018
+151,IL-15,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Illinois,IL,IL-15,15,IL15,R,2018
+152,IL-16,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Illinois,IL,IL-16,16,IL16,R,2018
+153,IL-17,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Illinois,IL,IL-17,17,IL17,D,2018
+154,IL-18,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Illinois,IL,IL-18,18,IL18,R,2018
+155,IN-01,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Indiana,IN,IN-01,1,IN01,D,2018
+156,IN-02,Likely Republican,6,Likely Republican,6,Likely Republican,6,6,Indiana,IN,IN-02,2,IN02,R,2018
+157,IN-03,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Indiana,IN,IN-03,3,IN03,R,2018
+158,IN-04,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Indiana,IN,IN-04,4,IN04,R,2018
+159,IN-05,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Indiana,IN,IN-05,5,IN05,R,2018
+160,IN-06,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Indiana,IN,IN-06,6,IN06,R,2018
+161,IN-07,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Indiana,IN,IN-07,7,IN07,D,2018
+162,IN-08,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Indiana,IN,IN-08,8,IN08,R,2018
+163,IN-09,Solid Republican,7,Solid Republican,7,Likely Republican,6,6.666666667,Indiana,IN,IN-09,9,IN09,R,2018
+164,KS-01,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Kansas,KS,KS-01,1,KS01,R,2018
+165,KS-02,Toss-up,4,Toss-up,4,Lean Democratic,3,3.666666667,Kansas,KS,KS-02,2,KS02,R,2018
+166,KS-03,Lean Democratic,3,Lean Democratic,3,Lean Democratic,3,3,Kansas,KS,KS-03,3,KS03,D,2018
+167,KS-04,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Kansas,KS,KS-04,4,KS04,R,2018
+168,KY-01,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Kentucky,KY,KY-01,1,KY01,R,2018
+169,KY-02,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Kentucky,KY,KY-02,2,KY02,R,2018
+170,KY-03,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Kentucky,KY,KY-03,3,KY03,D,2018
+171,KY-04,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Kentucky,KY,KY-04,4,KY04,R,2018
+172,KY-05,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Kentucky,KY,KY-05,5,KY05,R,2018
+173,KY-06,Toss-up,4,Toss-up,4,Lean Republican,5,4.333333333,Kentucky,KY,KY-06,6,KY06,R,2018
+174,LA-01,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Louisiana,LA,LA-01,1,LA01,R,2018
+175,LA-02,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Louisiana,LA,LA-02,2,LA02,D,2018
+176,LA-03,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Louisiana,LA,LA-03,3,LA03,R,2018
+177,LA-04,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Louisiana,LA,LA-04,4,LA04,R,2018
+178,LA-05,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Louisiana,LA,LA-05,5,LA05,R,2018
+179,LA-06,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Louisiana,LA,LA-06,6,LA06,R,2018
+180,MA-01,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Massachusetts,MA,MA-01,1,MA01,D,2018
+181,MA-02,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Massachusetts,MA,MA-02,2,MA02,D,2018
+182,MA-03,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Massachusetts,MA,MA-03,3,MA03,D,2018
+183,MA-04,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Massachusetts,MA,MA-04,4,MA04,D,2018
+184,MA-05,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Massachusetts,MA,MA-05,5,MA05,D,2018
+185,MA-06,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Massachusetts,MA,MA-06,6,MA06,D,2018
+186,MA-07,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Massachusetts,MA,MA-07,7,MA07,D,2018
+187,MA-08,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Massachusetts,MA,MA-08,8,MA08,D,2018
+188,MA-09,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Massachusetts,MA,MA-09,9,MA09,D,2018
+189,MD-01,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Maryland,MD,MD-01,1,MD01,R,2018
+190,MD-02,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Maryland,MD,MD-02,2,MD02,D,2018
+191,MD-03,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Maryland,MD,MD-03,3,MD03,D,2018
+192,MD-04,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Maryland,MD,MD-04,4,MD04,D,2018
+193,MD-05,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Maryland,MD,MD-05,5,MD05,D,2018
+194,MD-06,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Maryland,MD,MD-06,6,MD06,D,2018
+195,MD-07,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Maryland,MD,MD-07,7,MD07,D,2018
+196,MD-08,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Maryland,MD,MD-08,8,MD08,D,2018
+197,ME-01,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Maine,ME,ME-01,1,ME01,D,2018
+198,ME-02,Toss-up,4,Toss-up,4,Lean Democratic,3,3.666666667,Maine,ME,ME-02,2,ME02,D,2018
+199,MI-01,Likely Republican,6,Solid Republican,7,Likely Republican,6,6.333333333,Michigan,MI,MI-01,1,MI01,R,2018
+200,MI-02,Solid Republican,7,Solid Republican,7,Likely Republican,6,6.666666667,Michigan,MI,MI-02,2,MI02,R,2018
+201,MI-03,Likely Republican,6,Solid Republican,7,Likely Republican,6,6.333333333,Michigan,MI,MI-03,3,MI03,R,2018
+202,MI-04,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Michigan,MI,MI-04,4,MI04,R,2018
+203,MI-05,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Michigan,MI,MI-05,5,MI05,D,2018
+204,MI-06,Lean Republican,5,Likely Republican,6,Lean Republican,5,5.333333333,Michigan,MI,MI-06,6,MI06,R,2018
+205,MI-07,Likely Republican,6,Likely Republican,6,Likely Republican,6,6,Michigan,MI,MI-07,7,MI07,R,2018
+206,MI-08,Toss-up,4,Toss-up,4,Lean Democratic,3,3.666666667,Michigan,MI,MI-08,8,MI08,D,2018
+207,MI-09,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Michigan,MI,MI-09,9,MI09,D,2018
+208,MI-10,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Michigan,MI,MI-10,10,MI10,R,2018
+209,MI-11,Lean Democratic,3,Tilt Democratic,3.5,Lean Democratic,3,3.166666667,Michigan,MI,MI-11,11,MI11,D,2018
+210,MI-12,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Michigan,MI,MI-12,12,MI12,D,2018
+211,MI-13,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Michigan,MI,MI-13,13,MI13,D,2018
+212,MI-14,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Michigan,MI,MI-14,14,MI14,D,2018
+213,MN-01,Toss-up,4,Toss-up,4,Lean Democratic,3,3.666666667,Minnesota,MN,MN-01,1,MN01,R,2018
+214,MN-02,Lean Democratic,3,Tilt Democratic,3.5,Lean Democratic,3,3.166666667,Minnesota,MN,MN-02,2,MN02,D,2018
+215,MN-03,Lean Democratic,3,Tilt Democratic,3.5,Lean Democratic,3,3.166666667,Minnesota,MN,MN-03,3,MN03,D,2018
+216,MN-04,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Minnesota,MN,MN-04,4,MN04,D,2018
+217,MN-05,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Minnesota,MN,MN-05,5,MN05,D,2018
+218,MN-06,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Minnesota,MN,MN-06,6,MN06,R,2018
+219,MN-07,Likely Democratic,2,Solid Democratic,1,Likely Democratic,2,1.666666667,Minnesota,MN,MN-07,7,MN07,D,2018
+220,MN-08,Lean Republican,5,Lean Republican,5,Lean Republican,5,5,Minnesota,MN,MN-08,8,MN08,R,2018
+221,MO-01,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Missouri,MO,MO-01,1,MO01,D,2018
+222,MO-02,Lean Republican,5,Solid Republican,7,Likely Republican,6,6,Missouri,MO,MO-02,2,MO02,R,2018
+223,MO-03,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Missouri,MO,MO-03,3,MO03,R,2018
+224,MO-04,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Missouri,MO,MO-04,4,MO04,R,2018
+225,MO-05,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Missouri,MO,MO-05,5,MO05,D,2018
+226,MO-06,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Missouri,MO,MO-06,6,MO06,R,2018
+227,MO-07,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Missouri,MO,MO-07,7,MO07,R,2018
+228,MO-08,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Missouri,MO,MO-08,8,MO08,R,2018
+229,MS-01,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Mississippi,MS,MS-01,1,MS01,R,2018
+230,MS-02,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Mississippi,MS,MS-02,2,MS02,D,2018
+231,MS-03,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Mississippi,MS,MS-03,3,MS03,R,2018
+232,MS-04,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Mississippi,MS,MS-04,4,MS04,R,2018
+233,MT-01,Lean Republican,5,Likely Republican,6,Lean Republican,5,5.333333333,Montana,MT,MT-AL,0,MT00,R,2018
+234,NC-01,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,North Carolina,NC,NC-01,1,NC01,D,2018
+235,NC-02,Lean Republican,5,Lean Republican,5,Lean Republican,5,5,North Carolina,NC,NC-02,2,NC02,R,2018
+236,NC-03,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,North Carolina,NC,NC-03,3,NC03,R,2018
+237,NC-04,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,North Carolina,NC,NC-04,4,NC04,D,2018
+238,NC-05,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,North Carolina,NC,NC-05,5,NC05,R,2018
+239,NC-06,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,North Carolina,NC,NC-06,6,NC06,R,2018
+240,NC-07,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,North Carolina,NC,NC-07,7,NC07,R,2018
+241,NC-08,Likely Republican,6,Solid Republican,7,Likely Republican,6,6.333333333,North Carolina,NC,NC-08,8,NC08,R,2018
+242,NC-09,Toss-up,4,Toss-up,4,Lean Democratic,3,3.666666667,North Carolina,NC,NC-09,9,NC09,R,2018
+243,NC-10,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,North Carolina,NC,NC-10,10,NC10,R,2018
+244,NC-11,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,North Carolina,NC,NC-11,11,NC11,R,2018
+245,NC-12,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,North Carolina,NC,NC-12,12,NC12,D,2018
+246,NC-13,Toss-up,4,Tilt Republican,4.5,Lean Republican,5,4.5,North Carolina,NC,NC-13,13,NC13,R,2018
+247,ND-01,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,North Dakota,ND,ND-AL,0,ND00,R,2018
+248,NE-01,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Nebraska,NE,NE-01,1,NE01,R,2018
+249,NE-02,Lean Republican,5,Lean Republican,5,Lean Republican,5,5,Nebraska,NE,NE-02,2,NE02,R,2018
+250,NE-03,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Nebraska,NE,NE-03,3,NE03,R,2018
+251,NH-01,Likely Democratic,2,Lean Democratic,3,Likely Democratic,2,2.333333333,New Hampshire,NH,NH-01,1,NH01,D,2018
+252,NH-02,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,New Hampshire,NH,NH-02,2,NH02,D,2018
+253,NJ-01,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,New Jersey,NJ,NJ-01,1,NJ01,D,2018
+254,NJ-02,Likely Democratic,2,Likely Democratic,2,Safe Democratic,1,1.666666667,New Jersey,NJ,NJ-02,2,NJ02,D,2018
+255,NJ-03,Toss-up,4,Tilt Democratic,3.5,Lean Democratic,3,3.5,New Jersey,NJ,NJ-03,3,NJ03,D,2018
+256,NJ-04,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,New Jersey,NJ,NJ-04,4,NJ04,R,2018
+257,NJ-05,Likely Democratic,2,Solid Democratic,1,Likely Democratic,2,1.666666667,New Jersey,NJ,NJ-05,5,NJ05,D,2018
+258,NJ-06,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,New Jersey,NJ,NJ-06,6,NJ06,D,2018
+259,NJ-07,Toss-up,4,Toss-up,4,Lean Democratic,3,3.666666667,New Jersey,NJ,NJ-07,7,NJ07,D,2018
+260,NJ-08,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,New Jersey,NJ,NJ-08,8,NJ08,D,2018
+261,NJ-09,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,New Jersey,NJ,NJ-09,9,NJ09,D,2018
+262,NJ-10,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,New Jersey,NJ,NJ-10,10,NJ10,D,2018
+263,NJ-11,Lean Democratic,3,Lean Democratic,3,Lean Democratic,3,3,New Jersey,NJ,NJ-11,11,NJ11,D,2018
+264,NJ-12,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,New Jersey,NJ,NJ-12,12,NJ12,D,2018
+265,NM-01,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,New Mexico,NM,NM-01,1,NM01,D,2018
+266,NM-02,Toss-up,4,Tilt Republican,4.5,Lean Democratic,3,3.833333333,New Mexico,NM,NM-02,2,NM02,D,2018
+267,NM-03,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,New Mexico,NM,NM-03,3,NM03,D,2018
+268,NV-01,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Nevada,NV,NV-01,1,NV01,D,2018
+269,NV-02,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Nevada,NV,NV-02,2,NV02,R,2018
+270,NV-03,Lean Democratic,3,Tilt Democratic,3.5,Lean Democratic,3,3.166666667,Nevada,NV,NV-03,3,NV03,D,2018
+271,NV-04,Lean Democratic,3,Lean Democratic,3,Likely Democratic,2,2.666666667,Nevada,NV,NV-04,4,NV04,D,2018
+272,NY-01,Likely Republican,6,Solid Republican,7,Lean Republican,5,6,New York,NY,NY-01,1,NY01,R,2018
+273,NY-02,Likely Republican,6,Solid Republican,7,Likely Republican,6,6.333333333,New York,NY,NY-02,2,NY02,R,2018
+274,NY-03,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,New York,NY,NY-03,3,NY03,D,2018
+275,NY-04,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,New York,NY,NY-04,4,NY04,D,2018
+276,NY-05,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,New York,NY,NY-05,5,NY05,D,2018
+277,NY-06,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,New York,NY,NY-06,6,NY06,D,2018
+278,NY-07,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,New York,NY,NY-07,7,NY07,D,2018
+279,NY-08,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,New York,NY,NY-08,8,NY08,D,2018
+280,NY-09,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,New York,NY,NY-09,9,NY09,D,2018
+281,NY-10,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,New York,NY,NY-10,10,NY10,D,2018
+282,NY-11,Lean Republican,5,Lean Republican,5,Lean Republican,5,5,New York,NY,NY-11,11,NY11,D,2018
+283,NY-12,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,New York,NY,NY-12,12,NY12,D,2018
+284,NY-13,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,New York,NY,NY-13,13,NY13,D,2018
+285,NY-14,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,New York,NY,NY-14,14,NY14,D,2018
+286,NY-15,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,New York,NY,NY-15,15,NY15,D,2018
+287,NY-16,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,New York,NY,NY-16,16,NY16,D,2018
+288,NY-17,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,New York,NY,NY-17,17,NY17,D,2018
+289,NY-18,Solid Democratic,1,Solid Democratic,1,Likely Democratic,2,1.333333333,New York,NY,NY-18,18,NY18,D,2018
+290,NY-19,Toss-up,4,Tilt Democratic,3.5,Lean Democratic,3,3.5,New York,NY,NY-19,19,NY19,D,2018
+291,NY-20,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,New York,NY,NY-20,20,NY20,D,2018
+292,NY-21,Likely Republican,6,Solid Republican,7,Likely Republican,6,6.333333333,New York,NY,NY-21,21,NY21,R,2018
+293,NY-22,Toss-up,4,Tilt Democratic,3.5,Lean Democratic,3,3.5,New York,NY,NY-22,22,NY22,D,2018
+294,NY-23,Likely Republican,6,Solid Republican,7,Likely Republican,6,6.333333333,New York,NY,NY-23,23,NY23,R,2018
+295,NY-24,Lean Republican,5,Lean Republican,5,Lean Republican,5,5,New York,NY,NY-24,24,NY24,R,2018
+296,NY-25,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,New York,NY,NY-25,25,NY25,D,2018
+297,NY-26,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,New York,NY,NY-26,26,NY26,D,2018
+298,NY-27,Lean Republican,5,Lean Republican,5,Lean Republican,5,5,New York,NY,NY-27,27,NY27,R,2018
+299,OH-01,Lean Republican,5,Tilt Republican,4.5,Lean Republican,5,4.833333333,Ohio,OH,OH-01,1,OH01,R,2018
+300,OH-02,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Ohio,OH,OH-02,2,OH02,R,2018
+301,OH-03,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Ohio,OH,OH-03,3,OH03,D,2018
+302,OH-04,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Ohio,OH,OH-04,4,OH04,R,2018
+303,OH-05,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Ohio,OH,OH-05,5,OH05,R,2018
+304,OH-06,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Ohio,OH,OH-06,6,OH06,R,2018
+305,OH-07,Solid Republican,7,Solid Republican,7,Likely Republican,6,6.666666667,Ohio,OH,OH-07,7,OH07,R,2018
+306,OH-08,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Ohio,OH,OH-08,8,OH08,R,2018
+307,OH-09,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Ohio,OH,OH-09,9,OH09,D,2018
+308,OH-10,Likely Republican,6,Solid Republican,7,Likely Republican,6,6.333333333,Ohio,OH,OH-10,10,OH10,R,2018
+309,OH-11,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Ohio,OH,OH-11,11,OH11,D,2018
+310,OH-12,Toss-up,4,Toss-up,4,Lean Republican,5,4.333333333,Ohio,OH,OH-12,12,OH12,R,2018
+311,OH-13,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Ohio,OH,OH-13,13,OH13,D,2018
+312,OH-14,Likely Republican,6,Likely Republican,6,Lean Republican,5,5.666666667,Ohio,OH,OH-14,14,OH14,R,2018
+313,OH-15,Solid Republican,7,Solid Republican,7,Likely Republican,6,6.666666667,Ohio,OH,OH-15,15,OH15,R,2018
+314,OH-16,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Ohio,OH,OH-16,16,OH16,R,2018
+315,OK-01,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Oklahoma,OK,OK-01,1,OK01,R,2018
+316,OK-02,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Oklahoma,OK,OK-02,2,OK02,R,2018
+317,OK-03,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Oklahoma,OK,OK-03,3,OK03,R,2018
+318,OK-04,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Oklahoma,OK,OK-04,4,OK04,R,2018
+319,OK-05,Likely Republican,6,Solid Republican,7,Likely Republican,6,6.333333333,Oklahoma,OK,OK-05,5,OK05,D,2018
+320,OR-01,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Oregon,OR,OR-01,1,OR01,D,2018
+321,OR-02,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Oregon,OR,OR-02,2,OR02,R,2018
+322,OR-03,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Oregon,OR,OR-03,3,OR03,D,2018
+323,OR-04,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Oregon,OR,OR-04,4,OR04,D,2018
+324,OR-05,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Oregon,OR,OR-05,5,OR05,D,2018
+325,PA-01,Toss-up,4,Toss-up,4,Lean Republican,5,4.333333333,Pennsylvania,PA,PA-01,1,PA01,R,2018
+326,PA-02,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Pennsylvania,PA,PA-02,2,PA02,D,2018
+327,PA-03,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Pennsylvania,PA,PA-03,3,PA03,D,2018
+328,PA-04,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Pennsylvania,PA,PA-04,4,PA04,D,2018
+329,PA-05,Likely Democratic,2,Likely Democratic,2,Safe Democratic,1,1.666666667,Pennsylvania,PA,PA-05,5,PA05,D,2018
+330,PA-06,Likely Democratic,2,Likely Democratic,2,Safe Democratic,1,1.666666667,Pennsylvania,PA,PA-06,6,PA06,D,2018
+331,PA-07,Lean Democratic,3,Lean Democratic,3,Lean Democratic,3,3,Pennsylvania,PA,PA-07,7,PA07,D,2018
+332,PA-08,Likely Democratic,2,Lean Democratic,3,Likely Democratic,2,2.333333333,Pennsylvania,PA,PA-08,8,PA08,D,2018
+333,PA-09,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Pennsylvania,PA,PA-09,9,PA09,R,2018
+334,PA-10,Toss-up,4,Lean Republican,5,Lean Republican,5,4.666666667,Pennsylvania,PA,PA-10,10,PA10,R,2018
+335,PA-11,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Pennsylvania,PA,PA-11,11,PA11,R,2018
+336,PA-12,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Pennsylvania,PA,PA-12,12,PA12,R,2018
+337,PA-13,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Pennsylvania,PA,PA-13,13,PA13,R,2018
+338,PA-14,Likely Republican,6,Likely Republican,6,Safe Republican,7,6.333333333,Pennsylvania,PA,PA-14,14,PA14,R,2018
+339,PA-15,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Pennsylvania,PA,PA-15,15,PA15,R,2018
+340,PA-16,Lean Republican,5,Likely Republican,6,Lean Republican,5,5.333333333,Pennsylvania,PA,PA-16,16,PA16,R,2018
+341,PA-17,Likely Democratic,2,Lean Democratic,3,Likely Democratic,2,2.333333333,Pennsylvania,PA,PA-17,17,PA17,D,2018
+342,PA-18,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Pennsylvania,PA,PA-18,18,PA18,D,2018
+343,RI-01,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Rhode Island,RI,RI-01,1,RI01,D,2018
+344,RI-02,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Rhode Island,RI,RI-02,2,RI02,D,2018
+345,SC-01,Lean Republican,5,Likely Republican,6,Lean Republican,5,5.333333333,South Carolina,SC,SC-01,1,SC01,D,2018
+346,SC-02,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,South Carolina,SC,SC-02,2,SC02,R,2018
+347,SC-03,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,South Carolina,SC,SC-03,3,SC03,R,2018
+348,SC-04,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,South Carolina,SC,SC-04,4,SC04,R,2018
+349,SC-05,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,South Carolina,SC,SC-05,5,SC05,R,2018
+350,SC-06,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,South Carolina,SC,SC-06,6,SC06,D,2018
+351,SC-07,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,South Carolina,SC,SC-07,7,SC07,R,2018
+352,SD-01,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,South Dakota,SD,SD-AL,0,SD00,R,2018
+353,TN-01,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Tennessee,TN,TN-01,1,TN01,R,2018
+354,TN-02,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Tennessee,TN,TN-02,2,TN02,R,2018
+355,TN-03,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Tennessee,TN,TN-03,3,TN03,R,2018
+356,TN-04,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Tennessee,TN,TN-04,4,TN04,R,2018
+357,TN-05,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Tennessee,TN,TN-05,5,TN05,D,2018
+358,TN-06,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Tennessee,TN,TN-06,6,TN06,R,2018
+359,TN-07,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Tennessee,TN,TN-07,7,TN07,R,2018
+360,TN-08,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Tennessee,TN,TN-08,8,TN08,R,2018
+361,TN-09,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Tennessee,TN,TN-09,9,TN09,D,2018
+362,TX-01,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Texas,TX,TX-01,1,TX01,R,2018
+363,TX-02,Likely Republican,6,Solid Republican,7,Likely Republican,6,6.333333333,Texas,TX,TX-02,2,TX02,R,2018
+364,TX-03,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Texas,TX,TX-03,3,TX03,R,2018
+365,TX-04,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Texas,TX,TX-04,4,TX04,R,2018
+366,TX-05,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Texas,TX,TX-05,5,TX05,R,2018
+367,TX-06,Likely Republican,6,Solid Republican,7,Likely Republican,6,6.333333333,Texas,TX,TX-06,6,TX06,R,2018
+368,TX-07,Toss-up,4,Tilt Republican,4.5,Lean Republican,5,4.5,Texas,TX,TX-07,7,TX07,D,2018
+369,TX-08,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Texas,TX,TX-08,8,TX08,R,2018
+370,TX-09,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Texas,TX,TX-09,9,TX09,D,2018
+371,TX-10,Likely Republican,6,Solid Republican,7,Safe Republican,7,6.666666667,Texas,TX,TX-10,10,TX10,R,2018
+372,TX-11,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Texas,TX,TX-11,11,TX11,R,2018
+373,TX-12,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Texas,TX,TX-12,12,TX12,R,2018
+374,TX-13,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Texas,TX,TX-13,13,TX13,R,2018
+375,TX-14,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Texas,TX,TX-14,14,TX14,R,2018
+376,TX-15,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Texas,TX,TX-15,15,TX15,D,2018
+377,TX-16,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Texas,TX,TX-16,16,TX16,D,2018
+378,TX-17,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Texas,TX,TX-17,17,TX17,R,2018
+379,TX-18,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Texas,TX,TX-18,18,TX18,D,2018
+380,TX-19,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Texas,TX,TX-19,19,TX19,R,2018
+381,TX-20,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Texas,TX,TX-20,20,TX20,D,2018
+382,TX-21,Likely Republican,6,Likely Republican,6,Likely Republican,6,6,Texas,TX,TX-21,21,TX21,R,2018
+383,TX-22,Lean Republican,5,Solid Republican,7,Likely Republican,6,6,Texas,TX,TX-22,22,TX22,R,2018
+384,TX-23,Lean Republican,5,Lean Republican,5,Lean Republican,5,5,Texas,TX,TX-23,23,TX23,R,2018
+385,TX-24,Likely Republican,6,Solid Republican,7,Safe Republican,7,6.666666667,Texas,TX,TX-24,24,TX24,R,2018
+386,TX-25,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Texas,TX,TX-25,25,TX25,R,2018
+387,TX-26,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Texas,TX,TX-26,26,TX26,R,2018
+388,TX-27,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Texas,TX,TX-27,27,TX27,R,2018
+389,TX-28,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Texas,TX,TX-28,28,TX28,D,2018
+390,TX-29,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Texas,TX,TX-29,29,TX29,D,2018
+391,TX-30,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Texas,TX,TX-30,30,TX30,D,2018
+392,TX-31,Likely Republican,6,Likely Republican,6,Likely Republican,6,6,Texas,TX,TX-31,31,TX31,R,2018
+393,TX-32,Toss-up,4,Toss-up,4,Lean Democratic,3,3.666666667,Texas,TX,TX-32,32,TX32,D,2018
+394,TX-33,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Texas,TX,TX-33,33,TX33,D,2018
+395,TX-34,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Texas,TX,TX-34,34,TX34,D,2018
+396,TX-35,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Texas,TX,TX-35,35,TX35,D,2018
+397,TX-36,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Texas,TX,TX-36,36,TX36,R,2018
+398,UT-01,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Utah,UT,UT-01,1,UT01,R,2018
+399,UT-02,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Utah,UT,UT-02,2,UT02,R,2018
+400,UT-03,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Utah,UT,UT-03,3,UT03,R,2018
+401,UT-04,Toss-up,4,Toss-up,4,Lean Democratic,3,3.666666667,Utah,UT,UT-04,4,UT04,D,2018
+402,VA-01,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Virginia,VA,VA-01,1,VA01,R,2018
+403,VA-02,Toss-up,4,Tilt Republican,4.5,Lean Democratic,3,3.833333333,Virginia,VA,VA-02,2,VA02,D,2018
+404,VA-03,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Virginia,VA,VA-03,3,VA03,D,2018
+405,VA-04,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Virginia,VA,VA-04,4,VA04,D,2018
+406,VA-05,Lean Republican,5,Likely Republican,6,Lean Republican,5,5.333333333,Virginia,VA,VA-05,5,VA05,R,2018
+407,VA-06,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Virginia,VA,VA-06,6,VA06,R,2018
+408,VA-07,Toss-up,4,Toss-up,4,Lean Democratic,3,3.666666667,Virginia,VA,VA-07,7,VA07,D,2018
+409,VA-08,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Virginia,VA,VA-08,8,VA08,D,2018
+410,VA-09,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Virginia,VA,VA-09,9,VA09,R,2018
+411,VA-10,Lean Democratic,3,Tilt Democratic,3.5,Lean Democratic,3,3.166666667,Virginia,VA,VA-10,10,VA10,D,2018
+412,VA-11,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Virginia,VA,VA-11,11,VA11,D,2018
+413,VT-01,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Vermont,VT,VT-AL,0,VT00,D,2018
+414,WA-01,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Washington,WA,WA-01,1,WA01,D,2018
+415,WA-02,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Washington,WA,WA-02,2,WA02,D,2018
+416,WA-03,Lean Republican,5,Likely Republican,6,Lean Republican,5,5.333333333,Washington,WA,WA-03,3,WA03,R,2018
+417,WA-04,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Washington,WA,WA-04,4,WA04,R,2018
+418,WA-05,Lean Republican,5,Likely Republican,6,Lean Republican,5,5.333333333,Washington,WA,WA-05,5,WA05,R,2018
+419,WA-06,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Washington,WA,WA-06,6,WA06,D,2018
+420,WA-07,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Washington,WA,WA-07,7,WA07,D,2018
+421,WA-08,Lean Democratic,3,Toss-up,4,Lean Democratic,3,3.333333333,Washington,WA,WA-08,8,WA08,D,2018
+422,WA-09,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Washington,WA,WA-09,9,WA09,D,2018
+423,WA-10,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Washington,WA,WA-10,10,WA10,D,2018
+424,WI-01,Lean Republican,5,Lean Republican,5,Lean Republican,5,5,Wisconsin,WI,WI-01,1,WI01,R,2018
+425,WI-02,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Wisconsin,WI,WI-02,2,WI02,D,2018
+426,WI-03,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Wisconsin,WI,WI-03,3,WI03,D,2018
+427,WI-04,Solid Democratic,1,Solid Democratic,1,Safe Democratic,1,1,Wisconsin,WI,WI-04,4,WI04,D,2018
+428,WI-05,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Wisconsin,WI,WI-05,5,WI05,R,2018
+429,WI-06,Likely Republican,6,Solid Republican,7,Likely Republican,6,6.333333333,Wisconsin,WI,WI-06,6,WI06,R,2018
+430,WI-07,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Wisconsin,WI,WI-07,7,WI07,R,2018
+431,WI-08,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Wisconsin,WI,WI-08,8,WI08,R,2018
+432,WV-01,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,West Virginia,WV,WV-01,1,WV01,R,2018
+433,WV-02,Likely Republican,6,Solid Republican,7,Safe Republican,7,6.666666667,West Virginia,WV,WV-02,2,WV02,R,2018
+434,WV-03,Lean Republican,5,Lean Republican,5,Lean Republican,5,5,West Virginia,WV,WV-03,3,WV03,R,2018
+435,WY-01,Solid Republican,7,Solid Republican,7,Safe Republican,7,7,Wyoming,WY,WY-AL,0,WY00,R,2018

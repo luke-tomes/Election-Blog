@@ -6,7 +6,16 @@
     <description>Recent content on Luke Tomes</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 11 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://www.example.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 19 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://www.example.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Turnout Game</title>
+      <link>http://www.example.com/posts/turnout/</link>
+      <pubDate>Wed, 19 Oct 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.example.com/posts/turnout/</guid>
+      <description>Examining voting turnout is the theme for this week’s blog, and previous turnout data will be utilized in predicting elections. At first glance, turnout is not an obvious predicting variable when it comes to forecasting elections. After all, one might believe increased turnout in a district, for example, just means that there will be the same vote share, and a proportional increase in each party’s total vote count. However, it could be an important factor in toss-up districts.</description>
+    </item>
+    
     <item>
       <title>Does Media Advertising Matter?</title>
       <link>http://www.example.com/posts/media-advertising/</link>

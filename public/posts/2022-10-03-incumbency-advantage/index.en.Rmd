@@ -456,9 +456,9 @@ data_2022 <- avg_ratings %>%
   mutate(data = map(data, ~unnest(., cols = c())))
 ```
 
-```{r vote share models}
+```{r vote share models, warning=FALSE}
 # Building models
-vote_model <- attached_data %>% 
+vote_model_1003 <- attached_data %>% 
   mutate(model = map(data, ~lm(D_majorvote_pct ~
                                  avg_expert_rating +
                                  rdi_change_pct +
@@ -467,13 +467,13 @@ vote_model <- attached_data %>%
   select(-data)
 
 # Extracting model results
-vote_model_results <- vote_model %>% 
+vote_model_1003_results <- vote_model_1003 %>% 
   mutate(r_squared = map_dbl(model, ~summary(.x)$r.squared))
 
 # Predicting 2022 with a model
 pred_vote_2022 <- data_2022 %>%
   # inner join as there may not be historical models for some districts
-  inner_join(vote_model, by = c("state", "district"))%>% 
+  inner_join(vote_model_1003, by = c("state", "district"))%>% 
   mutate(pred = map_dbl(.x = model,
                         .y = data, 
                         ~predict(object = .x, 
@@ -496,7 +496,7 @@ Second, the R-squared numbers for my predictions by district are graphed below. 
 
 #### R-Squared Comparisons
 ```{r vote share graph rsquared}
-ggplot(data = vote_model_results,
+ggplot(data = vote_model_1003_results,
        mapping = aes(x = r_squared)) +
   geom_histogram()
 ```
