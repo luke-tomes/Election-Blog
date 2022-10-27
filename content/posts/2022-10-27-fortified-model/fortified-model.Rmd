@@ -12,6 +12,7 @@ series: []
 ---
 This week's blog post is more geared toward housekeeping and fortifying my model. My reasoning for this is because my forecast has tumbled downhill in the past three weeks. When I began to incorporate more district-specific variables into my district forecast, I ran into the issue of working with data limited in scope (like expert predictions, turnout data, and advertising numbers).
 
+
 The reality in which my model was operating contained few observations per district (oftentimes 2-3 observations), which is not ideal when searching for trends. The more observations, the better and more precise the observation can be. One limitation of this is that not all districts have had the same shape and voters since 1960 (where my data goes back to). However, districts do not change all too much, so I will still continue to use districts going back decades, because we are working with extremely limitated data. Also, much of this district-specific data was not collected for each district. Therefore, I was not only making imprecise predictions but also I was making predictions for a small subset of districts (not all districts, which is my goal).
 
 Therefore, going forward, I believe the best variables to employ are those that are collected far back into history and are available for almost all districts. Hopefully, this will allow me to make better predictions for each district in the country. 
@@ -79,7 +80,7 @@ rdi_election_data <- read_csv("rdi_election_data.csv")
 house_popvote_seats <- read_csv("house_popvote_seats.csv")
 ```
 
-```{r create incumbency variable and attach existing data}
+```{r create incumbency variable and attach existing data, include = FALSE}
 # create incumbency variables
 incumb_data <- house_party_vote_share_by_district_1948_2020 %>%
   filter(Office == "House") %>%
@@ -123,36 +124,6 @@ incumb_data_incumb_status <- incumb_data %>%
 #### Incumbency Variable
 
 [Professor Ryan Enos](https://www.ryandenos.com) has described to his Gov 1347 class at Harvard how incumbents, statistically, win way more than their challengers. It's no secret that elected officials tend to stay in Congress for a long time. Below, I look at just how often these incumbents win re-election, and the results in the plot and corresponding table with numbers are stark.
-
-
-```{r plot incumb data}
-# proportional bar graph?
-# histogram?
-
-# dark blue: #1E4A75
-# light blue: #65B5C0
-# yellow-ish orange: #F4B05C
-
-ggplot(data = incumb_data,
-       mapping = aes(x = incumbent_win,
-                     fill = true_winner_status)) +
-  geom_bar() +
-  scale_fill_manual(values = c("#65B5C0",
-                               "#F4B05C", 
-                               "#1E4A75"),
-                     name = "Actual Situation") +
-  labs(x = "Election Winner",
-       y = "Total Count",
-       title = "House Election Winner Situations from 1948 - 2020") +
-  ylim(0,12000)
-
-
-# How do I center this??
-as.htmlwidget(
-  formattable(incumb_data_winner_status,
-              align=c("l", "c", "r")),
-  width = "45%")
-```
 
 The biggest takeaway from historical data on incumbency is how challengers beat incumbents essentially 4.7% of the time. Incumbents, on the other hand, can decide their fate a little over 85% of the time, by either running and handily winning or by retiring due to old age or the knowledge that they might be defeated in the upcoming election. Thus, if an incumbent runs, it is probably a great sign that they see a clear path to winning. This is a variable I will seek to include into my model.
 
@@ -247,20 +218,38 @@ cor.test(natl_pres_approval_num$mean_pres_approval_num,
          natl_pres_approval_num$H_incumbent_party_majorvote_pct)
 ```
 
+```{r plot incumb data}
+# proportional bar graph?
+# histogram?
+
+# dark blue: #1E4A75
+# light blue: #65B5C0
+# yellow-ish orange: #F4B05C
+
+ggplot(data = incumb_data,
+       mapping = aes(x = incumbent_win,
+                     fill = true_winner_status)) +
+  geom_bar() +
+  scale_fill_manual(values = c("#65B5C0",
+                               "#F4B05C", 
+                               "#1E4A75"),
+                     name = "Actual Situation") +
+  labs(x = "Election Winner",
+       y = "Total Count",
+       title = "House Election Winner Situations from 1948 - 2020") +
+  ylim(0,12000)
+
+
+# How do I center this??
+as.htmlwidget(
+  formattable(incumb_data_winner_status,
+              align=c("l", "c", "r")),
+  width = "45%")
+```
+
 #### Presidential Approval Variable
 
 Presidential approval is another variable that is widely looked at as one that possesses predictive value. [Steve Kornacki](https://en.wikipedia.org/wiki/Steve_Kornacki) visited our Gov 1347 class and stated how this variable is one of his few that he believes to be highly important as he predicts the midterms. Since midterm elections often are framed as referendums and checks on the president and his party, I will look to see how the incumbent party in the House fares. By the looks of it, it could foster some predictive value. Therefore, I will experiment with this in my model too.
-
-
-```{r graph pres approval variables}
-ggplot(data = natl_pres_approval_num,
-       mapping = aes(x = mean_pres_approval_num,
-                     y = H_incumbent_party_majorvote_pct)) +
-  geom_point() +
-  geom_smooth(method = "lm") +
-  labs(x = "Mean Presidential Approval",
-       y = "Vote Share of Incumbent Party in the House")
-```
 
 ```{r join all pres approval datasets into one, include = FALSE}
 # gallup polling
@@ -301,6 +290,16 @@ ggplot(data = natl_pres_approval_num,
        y = "Vote Share of Incumbent Party in the House")
 ```
 
+```{r graph pres approval variables}
+ggplot(data = natl_pres_approval_num,
+       mapping = aes(x = mean_pres_approval_num,
+                     y = H_incumbent_party_majorvote_pct)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  labs(x = "Mean Presidential Approval",
+       y = "Vote Share of Incumbent Party in the House")
+```
+
 ```{r explore GDP?}
 
 ```
@@ -314,7 +313,7 @@ Now, I will begin building out my model as I forecast my district-by-district pr
 * Mean presidential approval number from August to November of an election year
 * Whether an incumbent is running for re-election or not
 
-```{r make national incumbency variable and add into natl dataset}
+```{r make national incumbency variable and add into natl dataset, include = FALSE}
 # add GDP into poll: ???
 
 # make national incumbency variable
@@ -474,7 +473,7 @@ Below I will look to employ a GLM model for my vote share to see if it changes b
 
 ### GLM Democratic National Vote Share Model
 
-```{r make glm model and predictions}
+```{r make glm model and predictions, include = FALSE}
 # edit dataset to get y-value between 0 and 1
 natl_model_dataset_generic_rdi_presapproval_incumb_glm <-
   natl_model_dataset_generic_rdi_presapproval_incumb %>%
@@ -553,7 +552,7 @@ While this is a step in the right direction, my predictions and predictive inter
 
 I have also included an R-squared histogram that shows vast improvement in this model over previous weeks'. This improvement is shown through the consistently high R-squared values, which is a good sign since last week each district boasted an R-squared of 1, which is dangerous in research and especially when predicting values dependent on multiple combinations of unknown variables like election modeling.
 
-```{r district by district data, and attach existing generic ballot and rdi data}
+```{r district by district data, and attach existing generic ballot and rdi data, include = FALSE}
 # prep dataset as left hand one
 house_districts_all_years <- incumb_data %>%
   select(year, state, district, incumbent_win, open_seat, true_winner_status, incumb_district)
@@ -597,7 +596,7 @@ nest_2022_districts <- house_cands %>%
          state != "Texas" | district != "38")
 ```
 
-```{r make 2022 prediction datasets}
+```{r make 2022 prediction datasets, include = FALSE}
 # create 2022 incumbent statistics
 house_incum_2022 <- house_cands %>%
   mutate(incumb_in_district = case_when(
