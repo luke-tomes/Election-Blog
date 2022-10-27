@@ -1,0 +1,673 @@
+---
+title: The Turnout Game
+author: Luke Tomes
+date: '2022-10-19'
+slug: turnout
+categories: []
+tags: []
+authors: []
+description: ''
+externalLink: ''
+series: []
+---
+
+Examining voting turnout is the theme for this week's blog, and previous turnout data will be utilized in predicting elections. At first glance, turnout is not an obvious predicting variable when it comes to forecasting elections. After all, one might believe increased turnout in a district, for example, just means that there will be the same vote share, and a proportional increase in each party's total vote count. However, it could be an important factor in toss-up districts. 
+
+Speaker of the House Nancy Pelosi seems to believe in the notion that Democrats benefit from higher voter turnout, stating in October 2022, ["The public is with the Democrats,"](https://abcnews.go.com/Politics/nancy-pelosi-midterm-elections-question-turning-vote/story?id=91147107) indicating her belief that more voters fall in line with her party. This is a phenomenon that I will explore in this blog. First I will examine how increased district turnout affects the Democratic vote share, then I will display it in tandem with incumbency effects. Lastly, I will analyze turnout in the context of the most recent midterm elections in 2018. All this analysis will feed into this week's updated election forecast, with using 2018 turnout levels as stand-in data for 2022 (until I gather better/more accurate and predictive turnout data for 2022).
+
+```{r setup, echo = FALSE, message = FALSE, include = FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = FALSE,
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.align = "center")
+```
+
+```{r libraries, include = FALSE}
+# Load Libraries
+library(tidyverse)
+library(usmap)
+library(sf)
+library(rmapshaper)
+library(car)
+library(moderndive)
+library(janitor)
+```
+
+```{r load data, include = FALSE}
+# load existing datasets for model
+model_dataset <- read_csv("model_dataset.csv")
+house_cands <- read_csv("house_cands.csv")
+
+# load datasets for extension
+house_polls_long <- read_csv("house_polls_long.csv")
+cvap_district_2012_2020 <- read_csv("cvap_district_2012-2020_clean.csv")
+state_and_districts <- read_csv("State and district names.csv")
+
+# data from last weeks
+house_party_vote_share_by_district_1948_2020 <- read_csv("house party vote share by district 1948-2020.csv")
+state_and_districts <- read_csv("State and district names.csv")
+all_expert_ratings_2018 <- read_csv("2018_ratings_share.csv")
+expert_rating <- read_csv("expert_rating.csv")
+```
+
+```{r dataset creation}
+# edit cvap dataset
+cvap_data <- cvap_district_2012_2020 %>%
+  select(cd, state, cvap, year) %>%
+  rename(district = cd) %>%
+  drop_na(cvap)
+
+# incumbency addition 
+# 1 = incumbent won
+# 0 = challenger won
+incumbent_data <- house_party_vote_share_by_district_1948_2020 %>%
+  filter(Office == "House") %>%
+  mutate(
+    incumbent_win = case_when(
+      WinnerParty == "R" & RepStatus == "Incumbent" ~ "Incumbent Winner",
+      WinnerParty == "R" & RepStatus == "Challenger" ~ "Challenger Winner",
+      WinnerParty == "D" & DemStatus == "Incumbent" ~ "Incumbent Winner",
+      WinnerParty == "D" & DemStatus == "Challenger" ~ "Challenger Winner"),
+    open_seat = case_when(
+      RepStatus == "Challenger" & DemStatus == "Challenger" ~ "yes",
+      TRUE ~ "no"),
+    true_winner_status = case_when(
+      incumbent_win == "Challenger Winner" & open_seat == "no" ~ "Incumbent Defeated",
+      incumbent_win == "Challenger Winner" & open_seat == "yes" ~ "Open Seat",
+      incumbent_win == "Incumbent Winner" & open_seat == "yes" ~ "Open Seat",
+      incumbent_win == "Incumbent Winner" & open_seat == "no" ~ "Incumbent Won"),
+    incumb_district = case_when(
+      true_winner_status %in% c("Incumbent Defeated", "Incumbent Won") ~ "1", # Incumbent Ran
+      true_winner_status == "Open Seat" ~ "0")) %>% # #incumbent didn't run
+  select(State, raceYear, district_num, incumbent_win, open_seat, true_winner_status, incumb_district) %>%
+  mutate(district_num = as.character(district_num)) %>%
+  rename(district = district_num,
+         year = raceYear,
+         state = State) %>%
+  drop_na(incumbent_win) 
+  
+
+# Find turnout and cvap levels with incumbency
+election_turnout <- house_party_vote_share_by_district_1948_2020 %>%
+  filter(Office == "House") %>%
+  select(State, 
+         raceYear, 
+         RepVotes, 
+         DemVotes, 
+         ThirdVotes, 
+         OtherVotes,
+         DemVotesMajorPercent,
+         RepVotesMajorPercent,
+         district_num, 
+         TotalVotesMajor) %>%
+  rowwise() %>%
+  mutate(total_votes = sum(c(RepVotes,
+                           DemVotes,
+                           ThirdVotes,
+                           OtherVotes),
+                           na.rm = TRUE),
+         district_num = as.character(district_num),
+         district_num = case_when(
+           district_num == "0" ~ "AL",
+           TRUE ~ district_num)) %>%
+  rename(district = district_num,
+         year = raceYear,
+         state = State) %>%
+  left_join(cvap_data, by = c("year", "state", "district")) %>%
+  mutate(turnout_pct = (total_votes / cvap)*100,
+         turnout_pct = as.numeric(turnout_pct)) %>%
+  left_join(incumbent_data, by = c("year", "state", "district"))
+```
+
+#### Is Speaker Pelosi Right
+
+After plotting how turnout data on the congressional district level, it is evident that increased turnout has minimal benefits for the Democratic candidate. Our plot reveals that the relationship between the variables is not strong, let alone even related to an extent. This leads me to believe the notion that increased turnout does not benefit the Democrats, at least to the extent that Speaker Pelosi stated (as it almost being a campaign stratgey in and of itself).
+
+
+```{r plot turnout data, warning = FALSE}
+election_turnout_comp <- election_turnout %>%
+  filter(year >= 2012,
+         DemVotesMajorPercent < 100,
+         DemVotesMajorPercent > 0) %>%
+  drop_na(true_winner_status)
+
+ggplot(data = election_turnout_comp,
+       mapping = aes(x = turnout_pct,
+                     y = DemVotesMajorPercent)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  geom_hline(yintercept = 50,
+             lty = 2,
+             color = "red") + 
+  labs(x = "Turnout Percentage",
+       y = "Democratic Two-Party Voteshare",
+       title = "Democratic Voteshare by Turnout per US Congressional District",
+       caption = "Data from 2012-2020")
+```
+
+#### The Incumbency Advantage Revisited
+
+After plotting the relationship between turnout and the Democratic two-party vote share on a congressional district (and hardly seeing any relationship), I decided to see how this looks on a more granular level, highlighting how turnout affects incumbents and challengers alike. This resulted from the notion that increased turnout may indeed benefit an incumbent's challenger, as evidenced by [Professor Ryan D. Enos](https://www.ryandenos.com) in Gov 1347 lecture. He displayed how 2018 congressional challengers who won boasted higher median voter turnout than an incumbent winner. 
+
+After visualizing this across congressional elections from 2012-2020, we see how each scenario is centered around the same turnout level of 54%, which refutes Professor Ryan D. Enos' point. He examined one specific cycle, however, which may include other factors not seen through this analysis: referendum on the incumbent president, "increased get out the vote" efforts, etc.
+
+What is most poignant in this visualization is just how rare an incumbent loses. This incumbency advantage is stark and inclines me to include this variable in this week's forecast.
+
+
+```{r incumbency turnout data, warning = FALSE}
+ggplot(data = filter(election_turnout_comp),
+       mapping = aes(x = turnout_pct)) +
+  geom_histogram() +
+  facet_wrap(~true_winner_status) + 
+  labs(x = "Turnout Percentage",
+       y = "Number of Districts",
+       title = "Incumbent Advantage by US Congressional District, 2012-2020")
+```
+
+```{r plot Dem- and Rep-specific turnout data, eval = FALSE}
+election_turnout_pct <- election_turnout %>%
+  mutate(dem_total_pct = (DemVotes / total_votes)*100,
+         rep_total_pct = (RepVotes / total_votes)*100) %>%
+  filter(DemVotesMajorPercent < 100,
+         DemVotesMajorPercent > 0,
+         RepVotesMajorPercent < 100,
+         RepVotesMajorPercent > 0)
+
+ggplot(data = election_turnout_comp,
+       mapping = aes(x = DemVotes,
+                     y = DemVotesMajorPercent)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  geom_hline(yintercept = 50,
+             lty = 2,
+             color = "red") +
+  ylim(0,100) +
+  xlim(0,300000)
+
+ggplot(data = election_turnout_comp,
+       mapping = aes(x = RepVotes,
+                     y = RepVotesMajorPercent)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  geom_hline(yintercept = 50,
+             lty = 2,
+             color = "red") +
+  ylim(0,100) +
+  xlim(0,300000)
+```
+
+#### Is Turnout Correlated with Close Elections?
+
+[In previous blogs](https://luke-tomes.github.io/election-blog/posts/2022-10-03-incumbency-advantage/), it became evident that many districts each cycle, in fact, are noncompetitive, meaning a candidate is nearly guaranteed to win the election by common knowledge. However, several remain extremely contested, and money [is flooded into these districts](https://luke-tomes.github.io/election-blog/posts/media-advertising/) to support "get out the vote" ground campaigning and media advertising over the airwaves.
+
+What I seek to examine is whether a district that is seen to be competitive ensues in higher turnout. After all, scholars Ryan D. Enos and Anthony Fowler find that turnout in states highly targeted by ground campaigning on average [increased by 7-8%](https://hollis.harvard.edu/primo-explore/fulldisplay?docid=TN_cdi_proquest_journals_2117059848&context=PC&vid=HVD2&search_scope=everything&tab=everything&lang=en_US) in the 2012 presidential election.
+
+The map below displays the seat share predicted by the "experts" in the 2018 cycle. These predictions hinge on a variety of factors, culminating into their overall district "rating" that provides a probability of the favored party's  chances at winning, [as detailed by Nate Silver of FiveThirtyEight](https://fivethirtyeight.com/methodology/how-fivethirtyeights-house-and-senate-models-work/). The categories "toss-up, lean, likely, and solid" go in order of increasing probability to win, respectively, with a toss-up signifying a race that is close to 50/50.
+
+
+```{r prep datasets for map}
+# edit election dataset 
+house_party_vote_share_by_district_1948_2020 <- house_party_vote_share_by_district_1948_2020 %>%
+  mutate(RepStatus = case_when(
+    DemVotesMajorPercent == 100.00 ~ "Challenger",
+    TRUE ~ RepStatus),
+    DemStatus = case_when(
+    RepVotesMajorPercent == 100.00 ~ "Challenger",
+    TRUE ~ DemStatus),
+    RepStatus = case_when(
+      RepCandidate == "Rothfus, Keith" & raceYear == 2018 ~ "Incumbent",
+      TRUE ~ RepStatus),
+    DemStatus = case_when(
+      DemCandidate == "Lamb, Conor" & raceYear == 2018 ~ "Challenger",
+      TRUE ~ DemStatus))
+    
+    
+# wrangle vote dataset for 2016 seat party affiliations
+seat_party_2016 <- house_party_vote_share_by_district_1948_2020 %>%
+  filter(raceYear == 2016) %>%
+  mutate(party_2016 = WinnerParty) %>%
+  select(party_2016, State, district_num)
+
+# wrangle vote dataset for 2018
+vote_data_wrangle <- house_party_vote_share_by_district_1948_2020 %>%
+  filter(raceYear == 2018) %>%
+  left_join(seat_party_2016, by = c("State" = "State", 
+                                    "district_num" = "district_num")) %>%
+  mutate(district_num = as.character(district_num)) %>%
+  select(State, raceYear, PluralityParty, RepVotesMajorPercent, DemVotesMajorPercent, state_abb, RepStatus, DemStatus, CD, district_num, district_id, WinnerParty, vote_margin, R_vote_margin, party_2016) %>%
+  rename(year = raceYear,
+         district = district_num)
+
+# Prep all-district 2018 expert ratings
+edit_all_expert_ratings_2018 <- all_expert_ratings_2018 %>%
+  mutate(State = as.character(State),
+         district_num = as.character(district_num)) %>%
+  mutate(district_num = case_when(
+           district_num == "AL" ~ "0",
+           TRUE ~ district_num)) %>%
+  select(-WinnerParty, -District, -CD, -state_abb, -district_id, -year) %>%
+  rename(State = State,
+         district = district_num)
+
+# combine datasets
+ratings_polls_2018 <- vote_data_wrangle %>% 
+  left_join(edit_all_expert_ratings_2018, by = c("State" = "State", "district" = "district")) %>%
+  mutate(RepStatus = case_when(
+    DemVotesMajorPercent == 100.00 ~ "Challenger",
+    TRUE ~ RepStatus),
+    DemStatus = case_when(
+    RepVotesMajorPercent == 100.00 ~ "Challenger",
+    TRUE ~ DemStatus),
+    D_vote_margin = DemVotesMajorPercent - RepVotesMajorPercent,
+    winner_status = case_when(
+      WinnerParty == "R" ~ RepStatus,
+      WinnerParty == "D" ~ DemStatus),
+    open_seat = case_when(
+      DemStatus == "Challenger" & RepStatus == "Challenger" ~ "Yes",
+      TRUE ~ "No"),
+    open_seat = case_when(
+      district_id == "MA07" ~ "No",
+      district_id == "NY14" ~ "No",
+      district_id == "NC09" ~ "No",
+      district_id == "SC01" ~ "No",
+      TRUE ~ open_seat),
+    incumbent_winner = case_when(
+           # 1 = incumbent won
+           # 0 = incumbent lost
+      winner_status == "Incumbent" ~ 1,
+      winner_status == "Challenger" ~ 0),
+    # take out ME-02 duplicate
+    take_out = case_when(
+      vote_margin == 0.008155614 ~ "yes",
+      TRUE ~ "no"),
+    incumbent_winner = as.character(incumbent_winner),
+    Hold_or_Gain = case_when(
+      WinnerParty == "R" & party_2016 == "R" ~ "Republican Hold",
+      WinnerParty == "R" & party_2016 == "D" ~ "Republican Gain",
+      WinnerParty == "D" & party_2016 == "D" ~ "Democratic Hold",
+      WinnerParty == "D" & party_2016 == "R" ~ "Democratic Gain",)) %>%
+  filter(take_out != "yes") %>%
+  select(-take_out) %>%
+  distinct(CD, .keep_all= TRUE) %>%
+  rename(DISTRICT = district) %>%
+  rename(STATENAME = State)
+
+# Show the seat share expert picks would result in
+# code for for expert predictions
+ratings_polls_2018_experts <- ratings_polls_2018 %>%
+  mutate(expert_rating = case_when(
+    avg <= 2 ~ "Solid Dem",
+    avg <= 2.75  ~ "Likely Dem",
+    avg <= 3.5 ~ "Lean Dem",
+    avg <= 4 ~ "Dem Toss-up",
+    avg == 4 ~ "Toss-up",
+    avg <= 4.5 ~ "GOP Toss-up",
+    avg <= 5.25 ~ "Lean GOP",
+    avg <= 6 ~ "Likely GOP",
+    avg <= 7 ~ "Solid GOP"))
+```
+
+```{r prep data for expert prediction map, include = FALSE, warning=FALSE}
+# PLOT EXPERT RATINGS
+
+# load geographic data
+get_congress_map <- function(cong=114) {
+  tmp_file <- tempfile()
+  tmp_dir  <- tempdir()
+  zp <- sprintf("http://cdmaps.polisci.ucla.edu/shp/districts%03i.zip",cong)
+  download.file(zp, tmp_file)
+  unzip(zipfile = tmp_file, exdir = tmp_dir)
+  fpath <- paste(tmp_dir, sprintf("districtShapes/districts%03i.shp",cong), sep = "/")
+  st_read(fpath)
+}
+
+# load 114th congress data
+cd114 <- get_congress_map(114)
+
+# checking which variable class to merge on
+class(ratings_polls_2018$DISTRICT)
+
+# checking which variable class to merge on
+class(cd114$DISTRICT)
+
+# need to match up these classes of variables so I can merge
+# change cd114 variable class to numeric
+ratings_polls_2018$DISTRICT <- as.character(ratings_polls_2018$DISTRICT)
+
+# verifying new variable class
+class(ratings_polls_2018$DISTRICT)  
+
+# join datasets based on DISTRICT
+district_map_experts <- cd114 %>%
+  left_join(ratings_polls_2018_experts,
+            by = c("DISTRICT",
+                   "STATENAME"))
+
+# To plot faster
+district_plot_experts <- rmapshaper::ms_simplify(district_map_experts, keep = 0.01)
+```
+
+```{r plot expert pick map}
+# plot 2018 expert picks
+ggplot() +
+  geom_sf(data = district_plot_experts,
+          aes(fill = expert_rating),
+          inherit.aes = FALSE,
+          alpha = 1) +
+  scale_fill_manual(values = c("#e6e7ff", # Dem Toss up
+                               "#fff1f0", # GOP Toss up
+                               "#c4d8ff", # Lean Dem
+                               "#ffcfcf", # Lean GOP
+                               "#6ea1ff", # Likely Dem
+                               "#ff4040", # Likely GOP
+                               "#0441ba", # Solid Dem
+                               "#c70000", # Solid GOP
+                               "White"), # Toss-up
+                   name = "Predictions") +
+  coord_sf(xlim = c(-125.27, -66.57),
+           ylim = c(23.75, 50.23),
+           expand = FALSE) +
+  labs(title = "Expert Seat Predictions by U.S. Congressional District, 2018",
+       caption = "Data Provided by Professor Ryan Enos of Harvard\nUniversity along with Jeffrey B. Lewis of UCLA, et al.") +
+  guides(fill = guide_legend(ncol = 1)) +
+  theme_void() +
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+```
+
+#### Examining Turnout in the Most Recent Midterm Elections
+
+Now, as we examine turnout across districts in the 2018 cycle, the map below displays results that are unconvincing of how much turnout is correlated with races predicted to be competitive. There is no indication that predicted closer races experienced higher voter turnout, especially when you look at noncompetitive (solid R/Solid D) districts in Oregon and Colorado boasting higher turnout levels and many toss-up races boasting lower turnout. 
+
+```{r prep data for 2018 turnout per district map}
+turnout_2018_edit <- state_and_districts %>%
+  select(-WinnerParty, -ID, -district_id, -CD, -state_abb) %>%
+  mutate(district_num = as.character(district_num)) %>%
+  left_join(election_turnout, by = c("State" = "state",
+                                     "district_num" = "district")) %>%
+  filter(year == 2018) %>%
+  drop_na(turnout_pct) %>%
+  rename(DISTRICT = district_num,
+         STATENAME = State) %>%
+  select(STATENAME, DISTRICT, turnout_pct) %>%
+  mutate(turnout_pct = as.numeric(turnout_pct))
+
+
+
+turnout_2018_complete <- ratings_polls_2018_experts %>%
+  left_join(turnout_2018_edit, by = c("STATENAME", "DISTRICT"))
+
+# join datasets based on DISTRICT
+district_map_turnout <- cd114 %>%
+  left_join(turnout_2018_complete,
+            by = c("DISTRICT",
+                   "STATENAME"))
+
+# To plot faster
+district_plot_turnout <- rmapshaper::ms_simplify(district_map_turnout, keep = 0.01)
+```
+
+```{r plot 2018 turnout by district}
+# plot 2018 seat share
+ggplot() +
+  geom_sf(data = district_plot_turnout,
+          aes(fill = turnout_pct),
+          inherit.aes = FALSE,
+          alpha = 1) +
+  scale_fill_gradient(high = "red",
+                      low = "white",
+                      name = "Turnout Level") +
+  coord_sf(xlim = c(-125.27, -66.57),
+           ylim = c(23.75, 50.23),
+           expand = FALSE) +
+  labs(title = "Turnout Level by U.S. Congressional District, 2018",
+       caption = "Based off available Current Voting Age Population data.\nGray Districts have no data available.") +
+  theme_void() +
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+```
+
+The plot below further compares how Democratic vote share correlates with voter turnout, according to different expert ratings. And potentially to Speaker Nancy Pelosi's surprise, increased turnout in the more competitive 2018 races actually hurt Democrats. 
+
+The map above and the plot below continue to sour my idea that turnout can become a reliable predictor variable in election forecasts. However, I believe it is worth examining in a model to see if the additional predictor variable improves my forecast (because my model has taken a turn for the worse in recent weeks).
+
+
+```{r graph for turnout by competitiveness}
+turnout_2018_summary_by_pred <- turnout_2018_complete %>%
+  drop_na(turnout_pct, expert_rating) %>%
+  filter(DemVotesMajorPercent < 100,
+         DemVotesMajorPercent > 0) %>%
+  mutate(expert_rating = case_when(
+    expert_rating %in% c("Solid GOP", "Solid Dem") ~ "Noncompetitive",
+    expert_rating %in% c("Likely GOP", "Likely Dem") ~ "Slightly Competitive",
+    expert_rating %in% c("Lean GOP", "Lean Dem") ~ "Considerably Competitive",
+    expert_rating %in% c("GOP Toss-up", "Dem Toss-up", "Toss-up") ~ "Toss-up"))
+
+
+ggplot(data = turnout_2018_summary_by_pred,
+       mapping = aes(x = turnout_pct,
+                     y = DemVotesMajorPercent,
+                     color = expert_rating)) +
+  scale_color_manual(values = c("blue",
+                                "black",
+                                "forest green",
+                                "red"),
+                     name = "Expert Rating") +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  geom_hline(yintercept = 50,
+             lty = 2,
+             color = "red") +
+  labs(x = "Voting Turnout Percentage",
+       y = "Democratic Two-Party Voteshare",
+       title = "2018 District Turnout by Expert Rating")
+```
+
+```{r prep data for model}
+model_data <- model_dataset %>%
+  filter(year >= 2012) %>%
+  left_join(election_turnout, by = c("year", "state", "district")) %>%
+  select(-D_seats, -DemVotesMajorPercent, -RepVotesMajorPercent) %>%
+  drop_na(turnout_pct, incumb_district) %>%
+  select(year, state, district, dem_votes_major_percent, rdi_change_pct, mean_dem_margin, turnout_pct, incumb_district, avg_expert_rating) %>%
+  group_by(state, district) %>%
+  # see what districts have variation
+  mutate(incumb_district = as.numeric(incumb_district),
+         incumb_variation = mean(incumb_district),
+         district_variation = case_when(
+           incumb_variation %in% c(0,1) ~ 1, # no incumb variation
+           TRUE ~ 0)) # has incumb variation
+
+# HAS Variation
+model_data_has_variation <- model_data %>%
+  filter(district_variation == 0) %>%
+  group_by(state, district) %>%
+  filter(n() > 1) %>% # Filtering out single data rows
+  group_nest() %>% 
+  mutate(data = map(data, ~unnest(., cols = c())))
+
+# NO variation
+model_data_no_variation <- model_data %>%
+  filter(district_variation == 1) %>%
+  group_by(state, district) %>%
+  filter(n() > 1) %>% # Filtering out single data rows
+  group_nest() %>% 
+  mutate(data = map(data, ~unnest(., cols = c())))
+
+# don't need -- just for exploration
+model_data_ungrouped <- model_dataset %>%
+  filter(year >= 2012) %>%
+  left_join(election_turnout, by = c("year", "state", "district")) %>%
+  select(-D_seats, -DemVotesMajorPercent, -RepVotesMajorPercent) %>%
+  drop_na(turnout_pct, incumb_district) %>%
+  select(year, state, district, dem_votes_major_percent, rdi_change_pct, mean_dem_margin, turnout_pct, incumb_district)
+
+# pred dataset: use 2018 numbers for 2022:
+house_incum_2022 <- house_cands %>%
+  mutate(incumb_in_district = case_when(
+    incumbent == 1 ~ 1)) %>%
+  filter(incumb_in_district == 1)
+# CHECK THIS
+
+# insert incumb variable in 2022 districts
+house_incumb_data_2022 <- state_and_districts %>%
+  mutate(district_num = as.character(district_num)) %>%
+  left_join(house_incum_2022, by = c("State" = "state", "district_num" = "district")) %>%
+  mutate(incumb_district = case_when(
+    incumb_in_district == 1 ~ 1,
+    TRUE ~ 0)) %>%
+  drop_na(incumb_district) %>%
+  select(State, district_num, incumb_district) %>%
+  rename(district = district_num,
+         state = State)
+
+# 2018 expert rankings- clean to join
+to_join_expert_2018 <- all_expert_ratings_2018 %>%
+  select(State, district_num, year) %>%
+  rename(state = State,
+         district = district_num) %>%
+  mutate(district = as.character(district))
+  
+# Selecting columns
+avg_ratings <- expert_rating %>% 
+  left_join(to_join_expert_2018, by = c("year", "state", "district")) %>%
+  mutate(district = as.character(district)) %>%
+  rename(avg_expert_rating = avg_rating) %>%
+  filter(year == 2022) %>%
+  select(state, district, avg_expert_rating)
+
+# make pred dataset
+data_model_2022 <- election_turnout %>%
+  select(year, state, district, district, turnout_pct) %>%
+  filter(year == 2018) %>%
+  left_join(house_incumb_data_2022, by = c("district", "state")) %>%
+  left_join(avg_ratings, by = c("district", "state")) %>%
+  mutate(mean_dem_margin = -0.9,
+         rdi_change_pct = 1.91,
+         year = 2022) %>%
+  na.omit %>%
+  filter(n() < 2) %>%
+  group_by(state, district) %>% 
+  group_nest() %>% 
+  mutate(data = map(data, ~unnest(., cols = c())))
+```
+
+```{r build out HAS variation model, warning = FALSE}
+# Building models
+# HAS INCUMB VARIATION - group by district by district
+vote_model_HAS_variation_1019 <- model_data_has_variation %>% 
+  mutate(model = map(data, ~lm(dem_votes_major_percent ~
+                                 rdi_change_pct +
+                                 avg_expert_rating +
+                                 mean_dem_margin +
+                                 turnout_pct +
+                                 incumb_district,
+                               data = .x))) %>% 
+  select(-data)
+
+# Extracting model results
+vote_model_results_HAS_variation_1019 <- vote_model_HAS_variation_1019 %>% 
+  mutate(r_squared = map_dbl(model, ~summary(.x)$r.squared))
+
+# Predicting 2022 with a model
+# CHECK THIS
+pred_vote_HAS_variation_2022 <- data_model_2022 %>%
+  inner_join(vote_model_HAS_variation_1019,
+             by = c("state", "district")) %>%
+  mutate(pred = map(.x = model,
+                        .y = data, 
+                        ~predict(object = .x, 
+                                 newdata = as.data.frame(.y)))) %>%
+  select(state, district, pred)
+```
+
+```{r build out NO variation model, warning = FALSE}
+# DOES NOT INCUMB VARIATION - group by district by district
+vote_model_vote_model_NO_variation_1019 <- model_data_no_variation %>% 
+  mutate(model = map(data, ~lm(dem_votes_major_percent ~
+                                 rdi_change_pct +
+                                 avg_expert_rating +
+                                 mean_dem_margin +
+                                 turnout_pct,
+                               data = .x))) %>% 
+  select(-data)
+
+# Extracting model results
+vote_model_results_NO_variation_1019 <- vote_model_vote_model_NO_variation_1019 %>% 
+  mutate(r_squared = map_dbl(model, ~summary(.x)$r.squared))
+
+# Predicting 2022 with a model
+# CHECK THIS
+pred_vote_NO_variation_2022 <- data_model_2022 %>%
+  inner_join(vote_model_vote_model_NO_variation_1019,
+             by = c("state", "district"))%>% 
+  mutate(pred = map_dbl(.x = model,
+                        .y = data, 
+                        ~predict(object = .x, 
+                                 newdata = as.data.frame(.y)))) %>%
+  select(state, district, pred)
+```
+
+#### Small Note on My Models Below
+
+Due to statistical limitations in a model, I am required to create two of them: One where the incumbency district is included with all other variables, and another model where it is not included. This is because my turnout data only goes back to 2012, forcing each district to have a max 5 observations (2012 - 2020). This is significant because some congressmen and congresswomen have stayed in office all throughout that time period, preventing any variation in the incumbency variable over that time period (and thus the model is not able to see how a change in incumbency affects the resulting Democratic vote share). Therefore, my model with the incumbency variable included contains districts that have experienced a change in their representative, and the other model without an incumbency variable contains districts where the elected representative has not left office.
+
+#### Democratic Vote Share Results by Congressional District **With** Incumbency Variable Included
+
+This model below contains districts that have experienced a change in who represents the district. Small note: The prediction table contains four predicted values per district, all being the same (limitation of setting up the model). This model include four variables: the real disposable change percentage from April-November of an election year, the Democrats' averaged generic ballot polling margin, turnout percentage, the average expert rating per district, and an incumbency variable. 
+
+Unfortunately, this model seems to not have improved from last week's, obtaining once again predictions above 100% (which are not possible). Also, the resulting R-squared values worry me, as almost all have values of 1. It is suspicious that my model is theoretically explaining 100% of the variance in the data. I believe this phenomenon to be a function of the fact that each district is working off at most 5 observations.
+
+
+```{r HAS Variation prediction}
+# HAS Variation/has incumbent variable
+print.data.frame(pred_vote_HAS_variation_2022)
+
+# HAS Variation/has incumbent variable
+ggplot(data = vote_model_results_HAS_variation_1019,
+       mapping = aes(x = r_squared)) +
+  geom_histogram()
+```
+
+#### Democratic Vote Share Results **Without** the Incumbency Variable Included
+
+Below, my model remains the same, except the incumbency variable has been excluded. What we see is an improvement on the predicted percentages, with none arriving below 0% or above 100%. However, the r-squared graph worries me, as now ALL districts have an r-squared of 1. While a higher R-squared is always desired, a value of 1 often should raise eyebrows in suspicion. Since all boast an R-squared value of 1, I am very pessimistic of this model and its effectiveness.
+
+
+```{r NO Variation prediction}
+# NO Variation/no incumbent variable
+print.data.frame(pred_vote_NO_variation_2022)
+
+# NO Variation/no incumbent variable
+ggplot(data = vote_model_results_NO_variation_1019,
+       mapping = aes(x = r_squared)) +
+  geom_histogram(bins = 30)
+```
+
+#### Limitations of My Model
+
+When it comes to turnout, I experienced trouble in finding where it shows promise in predicting elections. Nonetheless, I progressed to including it into my model along with my incumbency variable so I could see how it changes from last week. And, maybe unsurprisingly, my models seemed to get worse. While the incumbency variable seems to check out as a predictor variable, the turnout variable does not seem to provide much value at all.
+
+What could maybe explain the phenomenon that turnout does not matter when it comes to elections is that most campaigns actually counteract their opponents' ground game since many campaigns have evolved to an advanced state, effectively eliminating turnout as an advantage for one side. In fact, scholars Joshua L. Kalla and David E. Broockman have detailed that [persuasive effects rarely, if at all, emerge from ground campaigning,](https://hollis.harvard.edu/primo-explore/fulldisplay?docid=TN_cdi_proquest_journals_1990829523&context=PC&vid=HVD2&search_scope=everything&tab=everything&lang=en_US) arguing that persuasion resulting from ground campaigning appears only in circumstances of compounding effects from early on in a race and campaigns investing heavily in an extremely unpopular position taken by their candidate. Thus, it does not seem that an advantage can be easily gained by ground campaigning, and maybe it is a zero-sum effort.
+
+So after the past three weeks of decreasing confidence in my model, when I added average expert rating, incumbency, and turnout variables (all shown in my models), I believe it is time to return to more fundamental variables (like real disposable income change, national generic ballot margins, and possibly incumbency too). This decision of mine rests simply on the reality that I am working with data limited in scope. This reality means my models are sometimes working off only 2-3 elections/observations per district, which is far from ideal. Thus, going forward, I believe I am going to include only variables that include data from long ago, allowing for more observations, and data that is possibly more related to the national environment, so as to not depend upon unreliable district data (which could fluctuate as the quality varies district-to-district).
+
+
+##### Notes:
+
+*This blog is part of a series of articles meant to progressively understand how election data can be used to predict future outcomes. I will add to this site on a weekly basis under the direction of [Professor Ryan D. Enos](https://www.ryandenos.com). In the run-up to the midterm elections on November 8, 2022, I will draw on all I have learned regarding what best forecasts election results, and I will predict the outcome of the NE-02 U.S. Congressional Election.*
+
+[My project repository can be viewed here.](https://github.com/luke-tomes/election-blog)
+
+##### Sources:
+
+[Bureau of Economic Analysis, RDI Change](https://www.bea.gov/news/2022/personal-income-and-outlays-july-2022)

@@ -1,0 +1,712 @@
+---
+title: Fortifying My Model
+author: Luke Tomes
+date: '2022-10-26'
+slug: fortified-model
+categories: []
+tags: []
+authors: []
+description: ''
+externalLink: ''
+series: []
+---
+This week's blog post is more geared toward housekeeping and fortifying my model. My reasoning for this is because my forecast has tumbled downhill in the past three weeks. When I began to incorporate more district-specific variables into my district forecast, I ran into the issue of working with data limited in scope (like expert predictions, turnout data, and advertising numbers).
+
+The reality in which my model was operating contained few observations per district (oftentimes 2-3 observations), which is not ideal when searching for trends. The more observations, the better and more precise the observation can be. One limitation of this is that not all districts have had the same shape and voters since 1960 (where my data goes back to). However, districts do not change all too much, so I will still continue to use districts going back decades, because we are working with extremely limitated data. Also, much of this district-specific data was not collected for each district. Therefore, I was not only making imprecise predictions but also I was making predictions for a small subset of districts (not all districts, which is my goal).
+
+Therefore, going forward, I believe the best variables to employ are those that are collected far back into history and are available for almost all districts. Hopefully, this will allow me to make better predictions for each district in the country. 
+
+#### Shocks in an Election
+
+This week I explored data related to shocks in election cycles. A shock in an election cycle is an event that is seen as groundbreaking and unexpected, with the potential of solely changing the outcome of the election. Examples would include natural disasters, political scandals, etc. Another commmon term for a shock is "October Surprise," which, as the name suggests, is an election-altering event that happens in October, right before the election.
+
+Scholars Achen and Bartels [stated with supporting data](https://hollis.harvard.edu/primo-explore/fulldisplay?docid=TN_cdi_askewsholts_vlebooks_9781400888740&context=PC&vid=HVD2&search_scope=everything&tab=everything&lang=en_US) that voters tend to irrationaly take out their anger and place blame on incumbent elected officials at the ballot box after a shock has occurred, whether or not the incumbent truly bears responsibility for the event or response. They used an example of a beach town's incumbent officials difficulty getting re-elected after shark attacks --- something officials virtually have no control over.
+
+However, shocks may not be as important as one may believe. Schoalr Andrew Healy instead [claims](https://hollis.harvard.edu/primo-explore/fulldisplay?docid=TN_cdi_crossref_primary_10_1561_100_00009057&context=PC&vid=HVD2&search_scope=everything&tab=everything&lang=en_US) that voters tend to punish incumbents for an ineffective response or having no response at all, not directly for the happening of the event. I believe this to be the correct interpretation of how shocks affect elections, and Marco Mendoza Aviña goes even further, [describing how COVID-19 did not cpst Trump the 2020 election.](https://hollis.harvard.edu/primo-explore/fulldisplay?docid=TN_cdi_doaj_primary_oai_doaj_org_article_f43f65041eb14d4f839740deb9063b43&vid=HVD2&search_scope=everything&tab=everything&lang=en_US&context=PC)
+
+Therefore, I will bypass using shocks as a variable for elections. It is not entirely clear how big of an effect they have over voters, and if there is an effect, how long it lasts. I believe my time is better served by fortifying my model with variables that I know work well through previous research and experimentation.
+
+#### Pooled Models
+
+A pooled model is a good idea for when you have districts with less data available than others. This is a concept that employs a strategy of "borrowing" data from districts with similar variables. In retrospect, employing a pooled model for my previous weeks would be interesting, since almost 350 districts were left without observations and thus predictions.
+
+However, I do not believe a pooled model to be the most efficient forecast for my model. My first reasoning is that, even if I were to be able to borrow data from similar districts based off demographic data, for example, I would still be basing predictions off 2-3 observations on average. This is not an efficient way to find trends and narrow down confidence intervals. My second reason for this is that I have found my national-level variables to be better predictors than the district specific ones. Thus, borrowing data is unnecessary, as national-level data is available to be applied to all districts. 
+
+So without the need to employ a pooled model, I will begin fortifying my model with national-level variables to forecast the national and district-level elections.
+
+```{r setup, echo = FALSE, message = FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = FALSE,
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.align = "center")
+```
+
+```{r libraries, include = FALSE}
+# Load Libraries
+library(tidyverse)
+library(usmap)
+library(sf)
+library(rmapshaper)
+library(car)
+library(moderndive)
+library(janitor)
+library(lubridate)
+library(formattable)
+library(stargazer)
+library(vtable)
+library(sjPlot)
+library(sjmisc)
+library(sjlabelled)
+library(jtools)
+library(huxtable)
+```
+
+```{r load data, include = FALSE}
+# load existing datasets for model
+natl_generic_and_rdi <- read_csv("natl_generic_and_rdi.csv")
+
+# load datasets for extension
+natl_pres_approval <- read_csv("natl_pres_approval.csv")
+house_party_vote_share_by_district_1948_2020 <- read_csv("house party vote share by district 1948-2020.csv")
+state_and_districts <- read_csv("State and district names.csv")
+house_cands <- read_csv("house_cands.csv")
+party_power <- read_csv("party_power.csv")
+
+# uncut datasets
+original_pres_approval_gallup_1941_2022 <- read_csv("original_pres_approval_gallup_1941-2022.csv")
+rdi_election_data <- read_csv("rdi_election_data.csv")
+house_popvote_seats <- read_csv("house_popvote_seats.csv")
+```
+
+```{r create incumbency variable and attach existing data}
+# create incumbency variables
+incumb_data <- house_party_vote_share_by_district_1948_2020 %>%
+  filter(Office == "House") %>%
+  drop_na(WinnerParty, DemStatus, RepStatus) %>%
+  mutate(
+    incumbent_win = case_when(
+      WinnerParty == "R" & RepStatus == "Incumbent" ~ "Incumbent Winner",
+      WinnerParty == "R" & RepStatus == "Challenger" ~ "Challenger Winner",
+      WinnerParty == "D" & DemStatus == "Incumbent" ~ "Incumbent Winner",
+      WinnerParty == "D" & DemStatus == "Challenger" ~ "Challenger Winner"),
+    open_seat = case_when(
+      RepStatus == "Challenger" & DemStatus == "Challenger" ~ "yes",
+      TRUE ~ "no"),
+    true_winner_status = case_when(
+      incumbent_win == "Challenger Winner" & open_seat == "no" ~ "Incumbent Defeated",
+      incumbent_win == "Challenger Winner" & open_seat == "yes" ~ "Open Seat",
+      incumbent_win == "Incumbent Winner" & open_seat == "no" ~ "Incumbent Won"),
+    incumb_district = case_when(
+      true_winner_status %in% c("Incumbent Defeated", "Incumbent Won") ~ "Incumbent Running", # Incumbent Ran
+      true_winner_status == "Open Seat" ~ "No Incumbent")) %>%
+  select(State, raceYear, district_num, incumbent_win, open_seat, true_winner_status, incumb_district) %>%
+  mutate(district_num = as.numeric(district_num)) %>%
+  rename(district = district_num,
+         state = State,
+         year = raceYear)
+
+# create separate sum datasets to plot
+incumb_data_incumb_win <- incumb_data %>%
+  count(incumbent_win)
+
+incumb_data_winner_status <- incumb_data %>%
+  count(true_winner_status) %>%
+  mutate(Percentage = (n / sum(n)) * 100) %>%
+  rename("Election Situation" = true_winner_status,
+         "Total Count" = n)
+
+incumb_data_incumb_status <- incumb_data %>%
+  count(incumb_district)
+```
+
+#### Incumbency Variable
+
+[Professor Ryan Enos](https://www.ryandenos.com) has described to his Gov 1347 class at Harvard how incumbents, statistically, win way more than their challengers. It's no secret that elected officials tend to stay in Congress for a long time. Below, I look at just how often these incumbents win re-election, and the results in the plot and corresponding table with numbers are stark.
+
+
+```{r plot incumb data}
+# proportional bar graph?
+# histogram?
+
+# dark blue: #1E4A75
+# light blue: #65B5C0
+# yellow-ish orange: #F4B05C
+
+ggplot(data = incumb_data,
+       mapping = aes(x = incumbent_win,
+                     fill = true_winner_status)) +
+  geom_bar() +
+  scale_fill_manual(values = c("#65B5C0",
+                               "#F4B05C", 
+                               "#1E4A75"),
+                     name = "Actual Situation") +
+  labs(x = "Election Winner",
+       y = "Total Count",
+       title = "House Election Winner Situations from 1948 - 2020") +
+  ylim(0,12000)
+
+
+# How do I center this??
+as.htmlwidget(
+  formattable(incumb_data_winner_status,
+              align=c("l", "c", "r")),
+  width = "45%")
+```
+
+The biggest takeaway from historical data on incumbency is how challengers beat incumbents essentially 4.7% of the time. Incumbents, on the other hand, can decide their fate a little over 85% of the time, by either running and handily winning or by retiring due to old age or the knowledge that they might be defeated in the upcoming election. Thus, if an incumbent runs, it is probably a great sign that they see a clear path to winning. This is a variable I will seek to include into my model.
+
+```{r explore presidential approval averages, include = FALSE}
+# gallup polling
+# approval averages
+# AUG-NOV
+
+# try filter for Dem house and Dem president
+
+natl_pres_approval_mean <- original_pres_approval_gallup_1941_2022 %>%
+  mutate(year = substr(poll_enddate, 1, 4),
+         month = substr(poll_enddate, 6, 7),
+         day = substr(poll_enddate, 9, 10),
+         year = as.numeric(year),
+         month = as.numeric(month),
+         day = as.numeric(day),
+         pres_polling_margin = approve - disapprove) %>%
+  select(-poll_startdate, -poll_enddate) %>%
+  filter(year %in% c(2020, 2018, 2016, 2014, 2012, 2010, 2008, 2006, 2004, 2002, 2000, 1998, 1996, 1994, 1992, 1990, 1988, 1986, 1984, 1982, 1980, 1978, 1976, 1974, 1972, 1970, 1968, 1966, 1964, 1962, 1960, 1958, 1956, 1954, 1952, 1950, 1948, 1946, 1944, 1942, 1940),
+         month %in% c(11,10,9,8)) %>%
+  group_by(year) %>%
+  summarize(mean_pres_polling_margin = mean(pres_polling_margin)) %>%
+  mutate(mean_pres_polling_margin = as.numeric(mean_pres_polling_margin)) %>%
+  left_join(house_popvote_seats, by = "year") %>%
+  left_join(party_power, by = "year") 
+
+cor.test(natl_pres_approval_mean$mean_pres_polling_margin,
+    natl_pres_approval_mean$H_incumbent_party_majorvote_pct)
+
+ggplot(data = natl_pres_approval_mean,
+       mapping = aes(x = mean_pres_polling_margin,
+                     y = H_incumbent_party_majorvote_pct)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+```{r explore presidential approval changes, include = FALSE}
+# gallup polling
+# approval changes
+natl_pres_approval_change <- original_pres_approval_gallup_1941_2022 %>%
+  mutate(year = substr(poll_enddate, 1, 4),
+         month = substr(poll_enddate, 6, 7),
+         day = substr(poll_enddate, 9, 10),
+         year = as.numeric(year),
+         month = as.numeric(month),
+         day = as.numeric(day),
+         pres_polling_margin = approve - disapprove) %>%
+  select(-poll_startdate, -poll_enddate) %>%
+  filter(year %in% c(2020, 2018, 2016, 2014, 2012, 2010, 2008, 2006, 2004, 2002, 2000, 1998, 1996, 1994, 1992, 1990, 1988, 1986, 1984, 1982, 1980, 1978, 1976, 1974, 1972, 1970, 1968, 1966, 1964, 1962, 1960, 1958, 1956, 1954, 1952, 1950, 1948, 1946, 1944, 1942, 1940),
+         month %in% c(11, 8)) %>%
+  group_by(year, month) %>% 
+  summarize(mean_polling_margin = mean(pres_polling_margin)) %>%
+  drop_na(mean_polling_margin) %>%
+  mutate(pres_approval_margin_change = (mean_polling_margin - lag(mean_polling_margin)),
+         pres_approval_margin_change_pct = pres_approval_margin_change / lag(abs(mean_polling_margin)) * 100) %>%
+  filter(month == 11) %>%
+  left_join(house_popvote_seats, by = "year") %>%
+  left_join(party_power, by = "year")
+
+# this seems to be highly correlated when Dem House incumbent
+cor.test(natl_pres_approval_change$pres_approval_margin_change_pct,
+         natl_pres_approval_change$H_incumbent_party_majorvote_pct)
+
+ggplot(data = natl_pres_approval_change,
+       mapping = aes(x = mean_polling_margin,
+                     y = H_incumbent_party_majorvote_pct)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+```{r explore presidential approval numbers, include = FALSE}
+# gallup polling
+# approval numbers
+natl_pres_approval_num <- original_pres_approval_gallup_1941_2022 %>%
+  mutate(year = substr(poll_enddate, 1, 4),
+         month = substr(poll_enddate, 6, 7),
+         day = substr(poll_enddate, 9, 10),
+         year = as.numeric(year),
+         month = as.numeric(month),
+         day = as.numeric(day),
+         pres_polling_margin = approve - disapprove) %>%
+  select(-poll_startdate, -poll_enddate) %>%
+  filter(year %in% c(2020, 2018, 2016, 2014, 2012, 2010, 2008, 2006, 2004, 2002, 2000, 1998, 1996, 1994, 1992, 1990, 1988, 1986, 1984, 1982, 1980, 1978, 1976, 1974, 1972, 1970, 1968, 1966, 1964, 1962, 1960, 1958, 1956, 1954, 1952, 1950, 1948, 1946, 1944, 1942, 1940),
+         month %in% c(11,10,9,8)) %>%
+  group_by(year) %>%
+  summarize(mean_pres_approval_num = mean(approve)) %>%
+  left_join(house_popvote_seats, by = "year") %>%
+  left_join(party_power, by = "year")
+
+cor.test(natl_pres_approval_num$mean_pres_approval_num,
+         natl_pres_approval_num$H_incumbent_party_majorvote_pct)
+```
+
+#### Presidential Approval Variable
+
+Presidential approval is another variable that is widely looked at as one that possesses predictive value. [Steve Kornacki](https://en.wikipedia.org/wiki/Steve_Kornacki) visited our Gov 1347 class and stated how this variable is one of his few that he believes to be highly important as he predicts the midterms. Since midterm elections often are framed as referendums and checks on the president and his party, I will look to see how the incumbent party in the House fares. By the looks of it, it could foster some predictive value. Therefore, I will experiment with this in my model too.
+
+
+```{r graph pres approval variables}
+ggplot(data = natl_pres_approval_num,
+       mapping = aes(x = mean_pres_approval_num,
+                     y = H_incumbent_party_majorvote_pct)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  labs(x = "Mean Presidential Approval",
+       y = "Vote Share of Incumbent Party in the House")
+```
+
+```{r join all pres approval datasets into one, include = FALSE}
+# gallup polling
+
+# cut down pres approval datasets first
+natl_pres_approval_mean_join <- natl_pres_approval_mean %>%
+  select(year, mean_pres_polling_margin)
+
+natl_pres_approval_change_join <- natl_pres_approval_change %>%
+  select(year, pres_approval_margin_change, pres_approval_margin_change_pct)
+
+natl_pres_approval_num_join <- natl_pres_approval_num %>%
+  select(year, mean_pres_approval_num)
+
+
+# join all pres approval datasets into one
+pres_approval_dataset <- natl_pres_approval_num_join %>%
+  left_join(natl_pres_approval_mean_join, by = "year") %>%
+  left_join(natl_pres_approval_change_join, by = "year")
+write_csv(pres_approval_dataset, "pres_approval_dataset.csv")
+
+# add pres approval to big model dataset
+natl_model_dataset_generic_rdi_presapproval <- pres_approval_dataset %>%
+  left_join(natl_generic_and_rdi, by = "year")
+
+# if Need filtering down:
+ # filter(pres_party_in_power_at_election == "D",
+        # house_party_in_power_at_election == "D")
+```
+
+```{r graph pres approval variables with D house and D pres, eval = FALSE}
+ggplot(data = natl_pres_approval_num,
+       mapping = aes(x = mean_pres_approval_num,
+                     y = H_incumbent_party_majorvote_pct)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  labs(x = "Mean Presidential Approval",
+       y = "Vote Share of Incumbent Party in the House")
+```
+
+```{r explore GDP?}
+
+```
+
+## National Model
+
+Now, I will begin building out my model as I forecast my district-by-district prediction. The variables I will look to experiment with are (and form some kind of combination):
+
+* Percent change in Real Disposable Income (RDI) Change from April to November of an election year
+* The aggregate democratic margin in the generic congressional ballot polls up to 50 days before an election
+* Mean presidential approval number from August to November of an election year
+* Whether an incumbent is running for re-election or not
+
+```{r make national incumbency variable and add into natl dataset}
+# add GDP into poll: ???
+
+# make national incumbency variable
+yearly_incumb_data <- incumb_data %>%
+  group_by(year) %>%
+  count(incumb_district) %>%
+  group_by(year) %>%
+  mutate(incumb_running_prop = (n / sum(n)) *100) %>%
+  rename(incumb_running_count = n) %>%
+  filter(incumb_district == "Incumbent Running")
+
+# add into natl dataset
+natl_model_dataset_generic_rdi_presapproval_incumb <- natl_model_dataset_generic_rdi_presapproval %>%
+  left_join(yearly_incumb_data, by = "year")
+write_csv(natl_model_dataset_generic_rdi_presapproval_incumb,
+          "natl_model_dataset_generic_rdi_presapproval_incumb.csv")
+
+# drop na in the variables
+natl_model_dataset_generic_rdi_presapproval_incumb <-
+  natl_model_dataset_generic_rdi_presapproval_incumb %>%
+  drop_na(natl_majorvote_pct_dem,
+          rdi_change_pct,
+          natl_genericpoll_mean_dem_margin,
+          incumb_running_count,
+          mean_pres_approval_num)
+
+# Prediction dataset
+pred_2022_natl_dataset <- data.frame(year = 2022,
+                                 natl_genericpoll_mean_dem_margin = -3,
+                                 rdi_change_pct = 1.91,
+                                 mean_pres_approval_num = 42,
+                                 mean_pres_polling_margin = -14)
+```
+
+```{r build linear national voteshare models, include = FALSE}
+# build the models
+mod_rdi <- lm(natl_majorvote_pct_dem ~ 
+                rdi_change_pct,
+              data = natl_model_dataset_generic_rdi_presapproval_incumb)
+tab_model(mod_rdi)
+
+mod_generic <- lm(natl_majorvote_pct_dem ~
+                    natl_genericpoll_mean_dem_margin,
+              data = natl_model_dataset_generic_rdi_presapproval_incumb)
+tab_model(mod_generic)
+
+mod_rdi_generic <- lm(natl_majorvote_pct_dem ~ 
+                        rdi_change_pct +
+                        natl_genericpoll_mean_dem_margin,
+              data = natl_model_dataset_generic_rdi_presapproval_incumb)
+tab_model(mod_rdi_generic)
+
+mod_rdi_generic_incumb <- lm(natl_majorvote_pct_dem ~ 
+                             rdi_change_pct +
+                             natl_genericpoll_mean_dem_margin +
+                             incumb_running_count,
+                           data = natl_model_dataset_generic_rdi_presapproval_incumb)
+tab_model(mod_rdi_generic_incumb)
+
+mod_rdi_generic_presapproval <- lm(natl_majorvote_pct_dem ~ 
+                                   rdi_change_pct +
+                                   natl_genericpoll_mean_dem_margin + 
+                                   mean_pres_approval_num,
+              data = natl_model_dataset_generic_rdi_presapproval_incumb)
+tab_model(mod_rdi_generic_presapproval)
+
+mod_rdi_generic_presapproval_incumb <- lm(natl_majorvote_pct_dem ~ 
+                                          rdi_change_pct +
+                                          natl_genericpoll_mean_dem_margin + 
+                                          incumb_running_count +
+                                          mean_pres_approval_num,
+              data = natl_model_dataset_generic_rdi_presapproval_incumb)
+tab_model(mod_rdi_generic_presapproval_incumb)
+
+
+
+# best models
+top_vote_model <- lm(natl_majorvote_pct_dem ~ 
+                  rdi_change_pct +
+                  natl_genericpoll_mean_dem_margin,
+                data = natl_model_dataset_generic_rdi_presapproval_incumb)
+tab_model(top_vote_model)
+
+top_seat_model <- lm(seats_won_dem ~ 
+                  rdi_change_pct +
+                  natl_genericpoll_mean_dem_margin,
+                data = natl_model_dataset_generic_rdi_presapproval_incumb)
+tab_model(top_seat_model)
+```
+
+```{r make linear model and predictions, include = FALSE}
+# linear model
+export_summs(mod_rdi,
+             mod_rdi_generic,
+             mod_rdi_generic_incumb,
+             mod_rdi_generic_presapproval_incumb,
+             scale = TRUE)
+
+tab_model(top_vote_model)
+
+export_summs(top_vote_model, scale = TRUE)
+
+predict(top_vote_model,
+        pred_2022_natl_dataset,
+        interval = "prediction",
+        level = 0.95)
+
+
+
+tab_model(top_seat_model)
+
+export_summs(top_seat_model, scale = TRUE)
+
+predict(top_seat_model,
+        pred_2022_natl_dataset,
+        interval = "prediction",
+        level = 0.95)
+```
+
+```{r what models I will consider}
+export_summs(mod_rdi,
+             mod_rdi_generic,
+             mod_rdi_generic_incumb,
+             mod_rdi_generic_presapproval_incumb,
+             scale = TRUE)
+```
+
+The biggest takeaway from these model outputs is just how predictive the national generic ballot democratic polling margin is. With a p-value consistently < 0.001, I am convinced the variable in its format must be included. When I look to other variables, I am left with a troubling reality where none of the others seem to bolster my forecast. In the background, I tested combining each variables with the national generic ballot democratic polling margin variable, and pairing the RDI percent change variable with it provides a model with the smallest predictive intervals and an adjusted r-squared still right at the level of the other pairings. Below, I will show my predictions using these two variables in my models.
+
+### Linear Model Seat Share Prediction
+
+```{r seat share model result details and predictions}
+tab_model(top_seat_model)
+
+predict(top_seat_model,
+        pred_2022_natl_dataset,
+        interval = "prediction",
+        level = 0.95)
+```
+
+My model predicts the Democrats to win 200 seats, which is not far off [FiveThirtyEight's prediction](https://projects.fivethirtyeight.com/2022-election-forecast/house/?cid=rrpromo). However my intervals are too wide to give me sufficient confidence in my prediction. The high adjusted r-squared does make me feel better though, because it is rather good at explaining the variability in the data.
+
+### Linear Model Vote Share Prediction
+
+Moving onto predicting the linear model vote share, my forecast predicts Democrats to win 48.2% of the vote share, with a lower bound of 44.6% and an upper bound of 51.8%. This interval is also too wide for my liking, because it includes Democrats winning the national popular vote and losing it. The high adjusted r-squared does make me feel better though, because it is rather good at explaining the variability in the data.
+
+```{r vote share model result details and predictions}
+tab_model(top_vote_model)
+
+predict(top_vote_model,
+        pred_2022_natl_dataset,
+        interval = "prediction",
+        level = 0.95)
+```
+
+Below I will look to employ a GLM model for my vote share to see if it changes by any amount, so I can control for the reality that voting percentages can only be bound by 0 and 100.
+
+### GLM Democratic National Vote Share Model
+
+```{r make glm model and predictions}
+# edit dataset to get y-value between 0 and 1
+natl_model_dataset_generic_rdi_presapproval_incumb_glm <-
+  natl_model_dataset_generic_rdi_presapproval_incumb %>%
+  mutate(natl_majorvote_pct_dem = natl_majorvote_pct_dem / 100,
+         seats_won_dem = seats_won_dem / 1000)
+
+# glm model
+glm_model_vote_national_level <- glm(natl_majorvote_pct_dem ~
+                            rdi_change_pct +
+                            natl_genericpoll_mean_dem_margin,
+                          data = natl_model_dataset_generic_rdi_presapproval_incumb_glm, 
+                          family = binomial)
+
+glm_model_seat_national_level <- glm(seats_won_dem ~
+                            rdi_change_pct +
+                            natl_genericpoll_mean_dem_margin,
+                          data = natl_model_dataset_generic_rdi_presapproval_incumb_glm, 
+                          family = binomial)
+```
+
+```{r glm national model code results, include = FALSE}
+# R-squared
+# voteshare
+natl_vote_glm_r_squared <- 1 - summary(glm_model_vote_national_level)$deviance / summary(glm_model_vote_national_level)$null.deviance
+
+# seat share
+natl_seat_glm_r_squared <- 1 - summary(glm_model_seat_national_level)$deviance / summary(glm_model_seat_national_level)$null.deviance
+
+
+# Predicting 2022 voteshare with model
+pred_2022_vote_national_glm <- predict(object = glm_model_vote_national_level, 
+                                  newdata = as.data.frame(pred_2022_natl_dataset), 
+                                  se.fit = TRUE, 
+                                  type = "response")
+lower_bound_vote_natl_glm <- pred_2022_vote_national_glm$fit - (2 * pred_2022_vote_national_glm$se.fit)
+fitted_vote_natl_glm <- pred_2022_vote_national_glm$fit
+upper_bound_vote_natl_glm <- pred_2022_vote_national_glm$fit + (2 * pred_2022_vote_national_glm$se.fit)
+
+# Predicting 2022 seat share with model
+pred_2022_seat_national_glm <- predict(object = glm_model_seat_national_level,
+                                       newdata = as.data.frame(pred_2022_natl_dataset),
+                                       se.fit = TRUE,
+                                       type = "response")
+lower_bound__seat_natl_glm <- pred_2022_seat_national_glm$fit - (2 * pred_2022_seat_national_glm$se.fit)
+fitted_seat_natl_glm <- pred_2022_seat_national_glm$fit
+upper_bound__seat_natl_glm <- pred_2022_seat_national_glm$fit + (2 * pred_2022_seat_national_glm$se.fit)
+
+# Democratic Seat Share (DON'T INCLUDE??):
+# Lower-bound = 158
+
+# Fitted Result = 202
+
+# Upper-bound = 453
+
+# R-Squared = 0.801
+```
+
+RESULTS:
+
+Lower-bound = 15.8%
+
+Fitted Result = 48.2%
+
+Upper-bound = 80.6%
+
+R-Squared = 0.739
+
+Here we see the same predicted democratic vote share of 48.2% and another high R-squared. However, the intervals have widened even further, which makes this model unrealistic. I predict I need better predictive variables in addition to the national generic ballot democratic polling margin, so I can narrow my forecast predictions. Now, I will move on to transitioning into a district-by-district vote share prediction.
+
+
+## District by District Predictions
+
+Here I have built a GLM-based district-by-district model that also includes incumbency variables on top of the national generic ballot democratic polling margin and RDI change percent variables. It has eliminated the phenomenon where I predicted vote shares below 0% and above 100% (which I experienced in previous weeks). 
+
+While this is a step in the right direction, my predictions and predictive intervals highlight some more problems: my intervals are way too wide and predicted democratic vote shares all seem to hover around 47% (+/- a few percentage points). With only 4 districts boasting a democratic vote share above 50%, this model is unrealistic (while becoming better at the same time). A house majority of 431-4 for Republicans is nowhere close to what will or ever has happened for a party. Thus, I need to narrow down my intervals, so I can arrive at more accurate predictions. This may require me to actually utilize district-specific variables and somehow extrapolate the data to any missing districts and years so that I can continue having a large number of observations per district for a more precise interval and predicted value.
+
+I have also included an R-squared histogram that shows vast improvement in this model over previous weeks'. This improvement is shown through the consistently high R-squared values, which is a good sign since last week each district boasted an R-squared of 1, which is dangerous in research and especially when predicting values dependent on multiple combinations of unknown variables like election modeling.
+
+```{r district by district data, and attach existing generic ballot and rdi data}
+# prep dataset as left hand one
+house_districts_all_years <- incumb_data %>%
+  select(year, state, district, incumbent_win, open_seat, true_winner_status, incumb_district)
+
+# attach existing data 
+joined_model_dataset_by_district <- house_districts_all_years %>%
+  left_join(natl_model_dataset_generic_rdi_presapproval, by = "year")
+write_csv(joined_model_dataset_by_district,
+          "joined_model_dataset_by_district.csv")
+
+# nest district by district
+nest_model_data_all_districts <- joined_model_dataset_by_district %>%
+  mutate(district = as.character(district),
+         natl_majorvote_pct_dem = natl_majorvote_pct_dem / 100) %>%
+  drop_na(natl_majorvote_pct_dem,
+          rdi_change_pct,
+          natl_genericpoll_mean_dem_margin,
+          incumb_district,
+          open_seat,
+          mean_pres_approval_num) %>% # DROP NA IN ALL RELEVANT VARIABLES
+  group_by(state, district) %>%
+  filter(n() > 1) %>% # Filtering out single data rows
+  group_nest() %>% 
+  mutate(data = map(data, ~unnest(., cols = c())))
+
+# attach data to current districts house 2022
+nest_2022_districts <- house_cands %>%
+  group_by(state, district) %>%
+  count(state, district) %>%
+  mutate(district = case_when(
+    district == "AL" ~ "0",
+    TRUE ~ district),
+    district = as.character(district)) %>%
+  select(-n) %>% 
+  left_join(nest_model_data_all_districts, by = c("state", "district")) %>%
+  filter(state != "Colorado" | district != "8",
+         state != "Florida" | district != "28",
+         state != "North Carolina" | district != "14",
+         state != "Oregon" | district != "6",
+         state != "Texas" | district != "37",
+         state != "Texas" | district != "38")
+```
+
+```{r make 2022 prediction datasets}
+# create 2022 incumbent statistics
+house_incum_2022 <- house_cands %>%
+  mutate(incumb_in_district = case_when(
+    incumbent == 1 ~ "Incumbent Running",
+    TRUE ~ "No Incumbent")) %>%
+  filter(incumb_in_district == "Incumbent Running") %>%
+  mutate(district = case_when(
+    district == "AL" ~ "0",
+    TRUE ~ district)) %>%
+  select(state, district, incumb_in_district)
+# CHECK THIS
+
+# attach to current districts
+pred_2022_data_districts <- nest_2022_districts %>%
+  select(-data) %>%
+  left_join(house_incum_2022, by = c("state", "district")) %>%
+  mutate(incumb_district = case_when(
+    incumb_in_district == "Incumbent Running" ~ "Incumbent Running",
+    TRUE ~ "No Incumbent")) %>%
+  mutate(year = 2022,
+         natl_genericpoll_mean_dem_margin = -3,
+         rdi_change_pct = 1.91,
+         mean_pres_approval_num = 42,
+         mean_pres_polling_margin = -14) %>%
+  filter(n() < 2) %>%
+  group_by(state, district) %>% 
+  group_nest() %>% 
+  mutate(data = map(data, ~unnest(., cols = c())))
+
+# add GDP into poll: ???
+```
+
+### Democratic Vote Share
+```{r build district by district models}
+model_district_level <- nest_2022_districts %>% 
+  # remove where incumbent variable hasn't changed
+  filter(state != "California" | district != "32",
+         state != "California" | district != "46",
+         state != "California" | district != "52",
+         state != "Florida" | district != "20",
+         state != "Florida" | district != "26",
+         state != "Louisiana" | district != "2",
+         state != "Massachusetts" | district != "2",
+         state != "New York" | district != "10",
+         state != "Ohio" | district != "9",
+         state != "Pennsylvania" | district != "3",
+         state != "Texas" | district != "32",
+         state != "Texas" | district != "35") %>%
+  mutate(model = map(data, 
+                     ~glm(natl_majorvote_pct_dem ~
+                            rdi_change_pct +
+                            natl_genericpoll_mean_dem_margin +
+                            incumb_district,
+                          data = .x, 
+                          family = binomial))) %>%
+  select(-data)
+
+
+# Extra model results
+model_district_level_results <- model_district_level %>% 
+  mutate(mcf_r_squared = map_dbl(model, ~with(summary(.x), 1 - deviance/null.deviance)))
+
+
+# Predicting 2022 with model
+pred_2022_district_glm <- pred_2022_data_districts %>%
+  # inner join as there may not be historical models for some districts
+  inner_join(model_district_level, by = c("state", "district")) %>% 
+  mutate(preds = map(.x = model,
+                     .y = data,
+                     ~predict(object = .x,
+                              newdata = as.data.frame(.y),
+                              se.fit = TRUE,
+                              type = "response")),
+         lower = map_dbl(.x = preds,
+                         ~.x$fit - (2 * .x$se.fit)),
+         fitted = map_dbl(.x = preds,
+                          ~.x$fit),
+         upper = map_dbl(.x = preds,
+                         ~.x$fit + (2 * .x$se.fit))) %>%
+  select(state,
+         district,
+         lower,
+         fitted,
+         upper)
+
+as.htmlwidget(
+  formattable(pred_2022_district_glm,
+              align=c("l", "c", "c", "c", "r")),
+  width = "50%")
+```
+
+### R-Squared Values by District
+```{r r-squared histogram glm district model}
+ggplot(data = model_district_level_results,
+       mapping = aes(x = mcf_r_squared)) +
+  geom_histogram(color = "white",
+                 fill = "#1E4A75",
+                 bins = 30) + 
+  labs(x = "R-Squared Value",
+       y = "Total Districts",
+       title = "R-Squared Values in Each GLM District Prediction")
+```
+
+##### Notes:
+
+*This blog is part of a series of articles meant to progressively understand how election data can be used to predict future outcomes. I will add to this site on a weekly basis under the direction of [Professor Ryan D. Enos](https://www.ryandenos.com). In the run-up to the midterm elections on November 8, 2022, I will draw on all I have learned regarding what best forecasts election results, and I will predict the outcome of the NE-02 U.S. Congressional Election.*
+
+[My project repository can be viewed here.](https://github.com/luke-tomes/election-blog)
+
+##### Sources:
+
+[Bureau of Economic Analysis, RDI Change](https://www.bea.gov/news/2022/personal-income-and-outlays-july-2022)
