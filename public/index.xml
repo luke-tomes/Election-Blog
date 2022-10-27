@@ -8,11 +8,11 @@
     <language>en</language>
     <lastBuildDate>Wed, 26 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://www.example.com/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>A Fortified Model</title>
-      <link>http://www.example.com/posts/2022-10-27-fortified-model/fortified-model/</link>
+      <title>Fortifying My Model</title>
+      <link>http://www.example.com/posts/fortified-model/</link>
       <pubDate>Wed, 26 Oct 2022 00:00:00 +0000</pubDate>
       
-      <guid>http://www.example.com/posts/2022-10-27-fortified-model/fortified-model/</guid>
+      <guid>http://www.example.com/posts/fortified-model/</guid>
       <description>This week’s blog post is more geared toward housekeeping and fortifying my model. My reasoning for this is because my forecast has tumbled downhill in the past three weeks. When I began to incorporate more district-specific variables into my district forecast, I ran into the issue of working with data limited in scope (like expert predictions, turnout data, and advertising numbers).
 The reality in which my model was operating contained few observations per district (oftentimes 2-3 observations), which is not ideal when searching for trends.</description>
     </item>

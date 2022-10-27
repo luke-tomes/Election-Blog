@@ -1,5 +1,5 @@
 ---
-title: A Fortified Model
+title: Fortifying My Model
 author: Luke Tomes
 date: '2022-10-26'
 slug: fortified-model
@@ -10,6 +10,7 @@ description: ''
 externalLink: ''
 series: []
 ---
+
 This week's blog post is more geared toward housekeeping and fortifying my model. My reasoning for this is because my forecast has tumbled downhill in the past three weeks. When I began to incorporate more district-specific variables into my district forecast, I ran into the issue of working with data limited in scope (like expert predictions, turnout data, and advertising numbers).
 
 
