@@ -1,0 +1,947 @@
+---
+title: "Fall 2022 Midterm Elections Forecast"
+author: Luke Tomes
+date: '2022-11-07'
+slug: election_forecast
+categories: []
+tags: []
+authors: []
+description: ''
+externalLink: ''
+series: []
+---
+
+In this blog, I have produced my final prediction for the upcoming Fall 2022 Midterm Elections. After exploring potential variables that can influence my predictions for how Democrats will fare and refining those variables, I have finalized my current models for the national-level prediction and the district-level predictions. First, I will explain how my models work, and I will justify why I included the variables that have been inputted. Next, I will interpret how my models perform and put them through a test to validate their effectiveness. Lastly, I will plot and display my predictions and their predicted ranges.
+
+```{r setup, echo = FALSE, message = FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = FALSE,
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.align = "center")
+```
+
+```{r libraries, include = FALSE}
+# Load Libraries
+library(tidyverse)
+library(usmap)
+library(sf)
+library(rmapshaper)
+library(car)
+library(moderndive)
+library(janitor)
+library(lubridate)
+library(formattable)
+library(stargazer)
+library(vtable)
+library(sjPlot)
+library(sjmisc)
+library(sjlabelled)
+library(jtools)
+library(huxtable)
+```
+
+```{r load data, include = FALSE}
+# load existing datasets for model
+district_all_dataset_10_19 <- read_csv("district_all_dataset_10-19")
+pred_2022_district_dataset_10_19 <- read_csv("pred_2022_district_dataset_10-19")
+
+natl_model_dataset_10_26 <- read_csv("natl_model_dataset_10-26")
+pred_2022_natl_dataset_10_26 <- read_csv("pred_2022_natl_dataset_10-26")
+
+# load more datasets
+state_and_district_names <- read_csv("State and district names.csv")
+
+demographic_2009_2020 <- read_csv("demographic_2009_2020.csv")
+demographics_2022 <- read_csv("demographics_by_2022_cd.csv")
+
+party_power <- read_csv("party_power.csv")
+
+house_party_vote_share_by_district_1948_2020 <- read_csv("house party vote share by district 1948-2020.csv")
+house_nationwide_vote_by_party_1948_2020 <- read_csv("house nationwide vote by party 1948-2020.csv")
+house_popvote_seats <- read_csv("house_popvote_seats.csv")
+
+# expert ratings
+expert_ratings_2018 <- read_csv("2018 expert ratings.csv")
+expert_ratings_2020 <- read_csv("2020 expert ratings.csv")
+expert_ratings_2022 <- read_csv("2022 expert ratings.csv")
+expert_ratings_2022_yao <- read_csv("yao_expert_rating_2022-10-27.csv")
+
+expert_2018_avg <- read_csv("expert_2018.csv")
+expert_2020_avg <- read_csv("expert_2020.csv")
+expert_2022_avg <- read_csv("expert_2022.csv")
+
+# uncut datasets
+cook_ratings_total <- read.csv("cook.csv")
+inside_elections_ratings_total <- read.csv("inside_elections.csv")
+GenericPolls1942_2020 <- read.csv("GenericPolls1942_2020.csv")
+avg_ratings <- read_csv("avg_ratings.csv")
+```
+
+```{r prep actual election data and incumbency variable}
+# edit party power dataset
+party_power <- party_power %>%
+  rename(year = Year)
+
+# create incumbency variable too
+district_election_data <- house_party_vote_share_by_district_1948_2020 %>%
+  drop_na(WinnerParty, DemStatus, RepStatus) %>%
+  mutate(
+    incumbent_win = case_when(
+      WinnerParty == "R" & RepStatus == "Incumbent" ~ "Incumbent Winner",
+      WinnerParty == "R" & RepStatus == "Challenger" ~ "Challenger Winner",
+      WinnerParty == "D" & DemStatus == "Incumbent" ~ "Incumbent Winner",
+      WinnerParty == "D" & DemStatus == "Challenger" ~ "Challenger Winner"),
+    open_seat = case_when(
+      RepStatus == "Challenger" & DemStatus == "Challenger" ~ "yes",
+      TRUE ~ "no"),
+    true_winner_status = case_when(
+      incumbent_win == "Challenger Winner" & open_seat == "no" ~ "Incumbent Defeated",
+      incumbent_win == "Challenger Winner" & open_seat == "yes" ~ "Open Seat",
+      incumbent_win == "Incumbent Winner" & open_seat == "no" ~ "Incumbent Won"),
+    incumb_district = case_when(
+      true_winner_status %in% c("Incumbent Defeated", "Incumbent Won") ~ "Incumbent Running", # Incumbent Ran
+      true_winner_status == "Open Seat" ~ "No Incumbent")) %>%
+  select(State, raceYear, district_num, DemVotesMajorPercent, incumb_district) %>%
+  mutate(district_num = as.numeric(district_num)) %>%
+  rename(state = State,
+         district = district_num,
+         year = raceYear)
+
+
+
+# create natl incumbent variable
+annual_natl_election_data <- district_election_data %>%
+  mutate(incumb_district = case_when(
+    incumb_district == "Incumbent Running" ~ 1,
+    incumb_district == "No Incumbent" ~ 1)) %>%
+  group_by(year) %>%
+  summarize(total_incumbents = sum(incumb_district))
+
+# join to natl dataset
+national_election_data <- house_nationwide_vote_by_party_1948_2020 %>%
+  select(year, DemVotesMajorPercentAll) %>%
+  left_join(annual_natl_election_data, by = "year") %>%
+  left_join(party_power, by = "year") %>%
+  select(-house_winner_party, -pres_winner_party)
+```
+
+```{r add midterms variable}
+midterms <- house_nationwide_vote_by_party_1948_2020 %>%
+  mutate(midterm = case_when(
+    year %in% c(2018, 2014, 2010, 2006, 2002, 1998, 1994, 1990, 1986, 1982, 1978, 1974, 1970, 1966, 1962, 1958, 1954, 1950) ~ "midterm",
+    TRUE ~ "pres")) %>%
+  select(year, midterm)
+
+# join to district
+district_election_data <- district_election_data %>%
+  left_join(midterms, by = "year") 
+
+# join to natl dataset
+national_election_data <- national_election_data %>%
+  left_join(midterms, by = "year")
+```
+
+```{r set up new polling variable}
+polling_margin <- GenericPolls1942_2020 %>%
+  mutate(dem_natl_gb_margin = dem - rep) %>%
+  filter(days_until_election > 0,
+         days_until_election < 50) %>%
+  group_by(year) %>%
+  summarize(mean_dem = mean(dem),
+            mean_rep = mean(rep),
+            mean_dem_natl_gb_margin = mean(dem_natl_gb_margin),
+            mean_days_until_election = mean(days_until_election)) %>%
+  select(year, mean_dem_natl_gb_margin)
+
+
+# join to district dataset
+district_election_data <- district_election_data %>%
+  left_join(party_power, by = "year") %>%
+  select(-house_winner_party, -pres_winner_party) %>%
+  left_join(polling_margin, by = "year")
+
+# join to natl dataset
+national_election_data <- national_election_data %>%
+  left_join(polling_margin, by = "year")
+```
+
+```{r create expert ratings variable, eval = FALSE, include = FALSE}
+# edit cook dataset
+cook_ratings <- cook_ratings_total %>%
+  select(year, state, district, description, code) %>%
+  rename(cook_code = code,
+         cook_descrip = description)
+
+# edit inside elections dataset
+inside_elections_ratings <- inside_elections_ratings_total %>%
+  select(year, state, district, description, code) %>%
+  rename(inside_code = code,
+         inside_descrip = description)
+
+# edit 2018 dataset
+expert_2018 <- expert_ratings_2018 %>%
+  mutate(
+    cook_code = case_when(
+      `Cook Political Report` == "Solid Republican" ~ -4,
+      `Cook Political Report` == "Likely Republican" ~ -3,
+      `Cook Political Report` == "Lean Republican" ~ -2,
+      `Cook Political Report` == "Toss-up" ~ 0,
+      `Cook Political Report` == "Lean Democratic" ~ 2,
+      `Cook Political Report` == "Likely Democratic" ~ 3,
+      `Cook Political Report` == "Solid Democratic" ~ 4),
+    inside_code = case_when(
+      `Inside Elections` == "Solid Republican" ~ -4,
+      `Inside Elections` == "Likely Republican" ~ -3,
+      `Inside Elections` == "Lean Republican" ~ -2,
+      `Inside Elections` == "Tilt Republican" ~ -1,
+      `Inside Elections` == "Toss-up" ~ 0,
+      `Inside Elections` == "Tilt Democratic" ~ 1,
+      `Inside Elections` == "Lean Democratic" ~ 2,
+      `Inside Elections` == "Likely Democratic" ~ 3,
+      `Inside Elections` == "Solid Democratic" ~ 4),
+    crystal_code = case_when(
+      `Sabato's Crystal Ball` == "Safe Republican" ~ -4,
+      `Sabato's Crystal Ball` == "Likely Republican" ~ -3,
+      `Sabato's Crystal Ball` == "Lean Republican" ~ -2,
+      `Sabato's Crystal Ball` == "Lean Democratic" ~ 2,
+      `Sabato's Crystal Ball` == "Likely Democratic" ~ 3,
+      `Sabato's Crystal Ball` == "Safe Democratic" ~ 4))
+write_csv(expert_2018, "expert_2018.csv")
+
+# edit 2020 dataset
+expert_2020 <- expert_ratings_2020 %>%
+  mutate(
+    cook_code = case_when(
+      `Cook Political Report` == "Solid Republican" ~ -4,
+      `Cook Political Report` == "Likely Republican" ~ -3,
+      `Cook Political Report` == "Lean Republican" ~ -2,
+      `Cook Political Report` == "Toss-up" ~ 0,
+      `Cook Political Report` == "Lean Democratic" ~ 2,
+      `Cook Political Report` == "Likely Democratic" ~ 3,
+      `Cook Political Report` == "Solid Democratic" ~ 4),
+    inside_code = case_when(
+      `Inside Elections` == "Solid Republican" ~ -4,
+      `Inside Elections` == "Likely Republican" ~ -3,
+      `Inside Elections` == "Lean Republican" ~ -2,
+      `Inside Elections` == "Tilt Republican" ~ -1,
+      `Inside Elections` == "Toss-up" ~ 0,
+      `Inside Elections` == "Tilt Democratic" ~ 1,
+      `Inside Elections` == "Lean Democratic" ~ 2,
+      `Inside Elections` == "Likely Democratic" ~ 3,
+      `Inside Elections` == "Solid Democratic" ~ 4),
+    crystal_code = case_when(
+      `Sabato's Crystal Ball` == "Safe Republican" ~ -4,
+      `Sabato's Crystal Ball` == "Likely Republican" ~ -3,
+      `Sabato's Crystal Ball` == "Lean Republican" ~ -2,
+      `Sabato's Crystal Ball` == "Lean Democratic" ~ 2,
+      `Sabato's Crystal Ball` == "Likely Democratic" ~ 3,
+      `Sabato's Crystal Ball` == "Safe Democratic" ~ 4))
+write_csv(expert_2020, "expert_2020.csv")
+
+# edit 2022 dataset
+expert_2022 <- expert_ratings_2022 %>%
+  mutate(
+    cook_code = case_when(
+      `Cook Political Report` == "Solid Republican" ~ -4,
+      `Cook Political Report` == "Likely Republican" ~ -3,
+      `Cook Political Report` == "Lean Republican" ~ -2,
+      `Cook Political Report` == "Toss-up" ~ 0,
+      `Cook Political Report` == "Lean Democratic" ~ 2,
+      `Cook Political Report` == "Likely Democratic" ~ 3,
+      `Cook Political Report` == "Solid Democratic" ~ 4),
+    inside_code = case_when(
+      `Inside Elections` == "Solid Republican" ~ -4,
+      `Inside Elections` == "Likely Republican" ~ -3,
+      `Inside Elections` == "Lean Republican" ~ -2,
+      `Inside Elections` == "Tilt Republican" ~ -1,
+      `Inside Elections` == "Toss-up" ~ 0,
+      `Inside Elections` == "Tilt Democratic" ~ 1,
+      `Inside Elections` == "Lean Democratic" ~ 2,
+      `Inside Elections` == "Likely Democratic" ~ 3,
+      `Inside Elections` == "Solid Democratic" ~ 4),
+    crystal_code = case_when(
+      `Sabato's Crystal Ball` == "Safe Republican" ~ -4,
+      `Sabato's Crystal Ball` == "Likely Republican" ~ -3,
+      `Sabato's Crystal Ball` == "Lean Republican" ~ -2,
+      `Sabato's Crystal Ball` == "Toss-up" ~ 0,
+      `Sabato's Crystal Ball` == "Lean Democratic" ~ 2,
+      `Sabato's Crystal Ball` == "Likely Democratic" ~ 3,
+      `Sabato's Crystal Ball` == "Safe Democratic" ~ 4))
+write_csv(expert_2022, "expert_2022.csv")
+
+# add in each ratings with CD name dataset before merging
+# 2018
+expert_2018_names <- expert_2018_avg %>%
+  select(ConD, avg_ratings_2018, year) %>%
+  left_join(state_and_district_names, by = c("ConD" = "CD")) %>%
+  select(-ConD, -state, -ID) %>%
+  rename(state = state_abb)
+
+# 2020
+expert_2020_names <- expert_2020_avg %>%
+  select(ConD, avg_ratings_2020, year) %>%
+  left_join(state_and_district_names, by = c("ConD" = "CD")) %>%
+  select(-ConD, -state, -ID) %>%
+  rename(state = state_abb)
+
+# 2022
+expert_2022_names <- expert_2022_avg %>%
+  select(ConD, avg_ratings_2022, year) %>%
+  left_join(state_and_district_names, by = c("ConD" = "CD")) %>%
+  select(-ConD, -state, -ID) %>%
+  rename(state = state_abb)
+
+# join both datasets
+avg_ratings <- cook_ratings %>%
+  full_join(inside_elections_ratings, by = c("year", "state", "district")) %>%
+  select(-cook_descrip, -inside_descrip) %>%
+  left_join(expert_2018_names, by = c("year", "state", "district")) %>%
+  left_join(expert_2020_names, by = c("year", "state", "district")) %>%
+  left_join(expert_2022_names, by = c("year", "state", "district")) %>%
+  rename(state_abb = state)
+write_csv(avg_ratings, "avg_ratings.csv") 
+```
+
+```{r edit avg expert rating dataset}
+# add state variable to ratings dataset and prep for join
+avg_ratings <- avg_ratings %>%
+  left_join(state_and_district_names, by = c("state_abb", "district")) %>%
+  select(-CD, -ID, -state_abb) %>%
+  select(year, district, state, total_avg_rating)
+
+# join to district dataset
+district_election_data <- district_election_data %>%
+  left_join(avg_ratings, by = c("year", "state", "district"))
+
+# make it into national dataset with avg per year
+avg_ratings_natl <- avg_ratings %>%
+  group_by(year) %>%
+  summarize(mean_avg_rating = mean(total_avg_rating))
+
+# join to natl dataset
+national_election_data <- national_election_data %>%
+  left_join(avg_ratings_natl, by = "year")
+```
+
+## My Predictive Variables
+
+Below, I am going to list my predictive variables and the reasons for which I am using them. In each model that I will examine subsequently, not all of these variables will be used, and I will discuss those reasons when I arrive at that model.
+
+#### Incumbency
+
+I have two variations for this variable: 
+
+-   On a national-level model, I will use the total number of incumbents running for re-election for the House of Representatives.
+-   On a district level model, I will denote whether or not the incumbent is running for re-election in the specific district.
+
+This variable can be a crucial predictor, as I have examined in a [previous blog post](https://luke-tomes.github.io/election-blog/posts/fortified-model/) and as [Professor Ryan D. Enos](https://www.ryandenos.com/) has explored in Gov 1347 Lecture, because incumbents who decide to run for re-election only lose about 5% of the time. This has proven to be a great predictor of victory for an incumbent.
+
+#### Party Control of the House of Representatives
+
+With political experts floating the [notion](https://www.politico.com/news/2022/04/09/angry-voters-biden-inflation-midterms-00024218) that undesirable governing outcomes (like high inflation) motivate voters to eject the party in power, I included a variable that indicates what happens to the vote share or seat share when the Democrats hold the House in an election.
+
+#### Party Control of the White House
+
+In the same vein, I have included a variable that affects vote share or seat share when a Democrat holds the keys to 1600 Pennsylvania Avenue. After all, research shows that many voters tend to [punish the incumbent president's party](https://fivethirtyeight.com/features/why-the-presidents-party-almost-always-has-a-bad-midterm/) when they feel he has not performed the job well.
+
+#### Whether or Not There is a Presidential Election
+
+Here I control for whether the congressional elections are accompanied by a presidential election. I have explored in a [previous blog post](https://luke-tomes.github.io/election-blog/posts/economic-indicators/) that if it is a midterm cycle (no accompanying presidential election), vote share and seat shares can be drastically affected.
+
+#### Previous Vote Share/Seat Share
+
+Here is a key variable that incorporates into my model what the last election's vote share or seat share was for the Democratic Party. Unsurprisingly, this can influence the predicted vote share or seat share is for the current election, since there often is not much fluctation in how a country or district votes.
+
+#### Mean Democratic Party National Generic Ballot Margin
+
+Here is an interesting variable that accounts for two factors I explored in my [polling blogpost:](https://luke-tomes.github.io/election-blog/posts/polling-forecasts/)
+
+-   Voters [hold a recency bias](https://hollis.harvard.edu/primo-explore/fulldisplay?docid=TN_cdi_gale_infotracacademiconefile_A14564056&context=PC&vid=HVD2&search_scope=everything&tab=everything&lang=en_US)
+-   Aggregate polls perform better than standalone polls that contain [potential bias toward one side](https://hollis.harvard.edu/primo-explore/fulldisplay?docid=TN_cdi_crossref_primary_10_1038_075450a0&context=PC&vid=HVD2&search_scope=everything&tab=everything&lang=en_US)
+
+Therefore, I have created a variable that contains an aggregate mean of all generic ballot (Democrats vs Republicans on a nationwide level) polls conducted within 50 days of an election. Assuming the polls are accurate and predictive, this variable factors that people vote on their recent feelings (also giving enough time to account for people voting early) and that polling aggregates converge on the actual result as you get closer to an election. Thus, I employed [RealClearPolitics' Current Aggregated Generic Congressional Ballot](https://www.realclearpolitics.com/epolls/other/2022-generic-congressional-vote-7361.html), where Democrats are down 2.5 points to the Republicans.
+
+#### Expert Ratings (Only for District Model)
+
+Lastly, I have included an aggregate mean (for the same reasons above: eliminate bias and wisdom of the crowd) of the expert ratings from various professional outlets: [FiveThirtyEight](https://projects.fivethirtyeight.com/2022-election-forecast/house/?cid=rrpromo), [Cook Political Report](https://www.cookpolitical.com/ratings/house-race-ratings), and [Inside Elections.](https://insideelections.com/ratings/house). As we will see, these ratings on whether a district is noncompetitive or a toss-up between the different parties are potent predictors. However, some of these ratings are also based off variable I have used above and off fundamental indicators (like the economy), so maybe it is cheating. However, I believe it makes my model more robust, which is the goal. Always have to use your resources, am I right?
+
+## National Predictions
+
+The first models that this blog post will examine are forecasting on a national scale. Here I will be using previously explored variables that serve as predictors for the Democratic Party's vote share and seat share in the coming election. When predicting vote share specifically, I am using a simple unbounded linear regression model, as opposed to a GLM model that keeps the prediction between 0 and 1 (resembling 0% and 100%). In the past, I have used a GLM model, mainly because I was receiving predictions below 0% and above 100% with my linear model. However, my model has improved greatly since then, outputting predictions in-line with previous data and current forecasts by [professional outlets, like FiveThirtyEight.](https://projects.fivethirtyeight.com/2022-election-forecast/house/?cid=rrpromo)
+
+```{r edit national dataset into ones and zeros}
+national_election_data_for_vote_model <- national_election_data %>%
+  mutate(
+    democratic_house = case_when(
+      house_party_in_power_at_election == "R" ~ 0,
+      house_party_in_power_at_election == "D" ~ 1),
+    democratic_president = case_when(
+      pres_party_in_power_at_election == "R" ~ 0,
+      pres_party_in_power_at_election == "D" ~ 1),
+    midterm_election = case_when(
+      midterm == "pres" ~ 0,
+      midterm == "midterm" ~ 1)) %>%
+  mutate(previous_voteshare = lag(DemVotesMajorPercentAll, order_by = year))
+```
+
+### National Democratic Party Vote Share Model
+
+```{r build national voteshare model}
+national_vote_model <- lm(DemVotesMajorPercentAll ~
+                       democratic_president +
+                       midterm_election +
+                         previous_voteshare +
+                       mean_dem_natl_gb_margin,
+                     data = national_election_data_for_vote_model)
+
+tab_model(national_vote_model)
+```
+
+In this model where I predict the Democratic party's national vote share, the equations follows:
+
+
+Dem Votes Major Percent = -1.9(democratic president) - 0.46(midterm election) – 0.01(previous voteshare) + 0.31(mean dem natl gb margin) + 51.19
+
+
+After leaving out some of my other variables that proved to lessen this model's strength through small predictive capability, it is worth noting how only two variables displayed significance: When the president is a Democrat, the Democratic vote share drops by almost 2 percent and the Democratic vote share increases by 0.31 percent when the Democratic margin on the national generic ballot aggregate increases by 1 percent (which shows how polling tends to overestimate support for the Democrats). The other two variables did not prove significant, as shown by their confidence intervals: Democratic vote share can increase or decrease when it's a midterm election, and the previous vote share in the last election truly holds no predictive power. 
+
+#### National Democratic Vote Share Prediction
+
+Overall, the Democrats seem to have a very unfavorable environment this cycle, because President Joe Biden is a Democrat and their generic ballot polling margin is 2.5 points below the Republican's. Below, I show my prediction for the Democratic party vote share on a national level:
+
+```{r national vote share prediction}
+# build prediction dataframe
+natl_pred_2022 <- data_frame(year = 2022,
+                             total_incumbents = 386,
+                             democratic_house = 1,
+                             democratic_president = 1,
+                             midterm_election = 1,
+                             previous_voteshare = 51.50,
+                             previous_seatshare = 222,
+                             mean_dem_natl_gb_margin = -2.5)
+
+# Make dataframe of predictions
+natl_pred_2022_vote_df <- data.frame(dem_voteshare = c(47.35, 52.65),
+                                party = c("Democratic Party", "Republican Party"))
+
+
+# plot prediction
+options(repr.plot.width = 7.5, repr.plot.height = 4)
+ggplot(data = natl_pred_2022_vote_df,
+       mapping = aes(x = party,
+                     y = dem_voteshare,
+                     fill = party)) +
+  geom_col(color = "white") +
+  scale_fill_manual(values = c("#18A3D3",#Dems
+                               "#C81717")) + #GOP
+  ylim(0,100) +
+  labs(x = "Political Party",
+       y = "Predicted Vote Share",
+       title = "2022 National Predicted Vote Share by Party") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  guides(fill = "none") +
+  geom_hline(yintercept = 50, lty = 2)
+
+# predict vote share
+predict(national_vote_model,
+        natl_pred_2022,
+        interval = "prediction",
+        level = 0.95)
+```
+
+Overall, we see that my best guess is the Republicans will win with a slight cushion over the Democrats who will receive 47.35% of the vote. However, my interval is somewhat wide, containing an upper bound greater than 50%, meaning that I am 95% confident that the Democrats could still eek out a win.  
+
+
+#### National Democratic Party Vote Share Model Test
+
+Here I validate this national vote share model, by comparing what my model would have predicted for each observation included in the model and what that cycle's actual Democratic party vote share was. In the graph below and the model's high adjusted R-squared (0.793), it is evident this model is highly predictive given the data provided.
+
+Only a few cases where it went wrong are displayed in quadrants II and IV. This is the case for 1950, 1968, 2002, and 2012. However, even this miscalls are not far off the blue 45-degree line, which aligns a prediction with its result. If a cycle falls exactly on this line, as many do, the model predicted the result accurately. 
+
+Overall, I am very confident in this model because of its predictive power. However, my wide predictive interval leaves me some unrest.
+
+```{r national voteshare in sample/out of sample prediction + graphs}
+# eliminate uncontested races
+national_election_data_for_vote_test <- national_election_data_for_vote_model %>%
+  filter(DemVotesMajorPercentAll != 0,
+         DemVotesMajorPercentAll != 100)
+
+# in sample prediction
+ggplot(aes(x = predict(national_vote_model,
+                       national_election_data_for_vote_test),
+           y = DemVotesMajorPercentAll,
+           label = year), 
+       data = national_election_data_for_vote_test) +
+  xlim(45,60) +
+  ylim(45,60) +
+  geom_text(alpha = 0.70,
+             size = 3) +
+  geom_abline(intercept = 0, slope = 1, color = "blue") +
+  geom_vline(xintercept = 50, lty = 2, color = "black") +
+  geom_hline(yintercept = 50, lty = 2, color = "black") +
+  labs(title = "National Congressional Model") +
+  xlab(label = "Predicted Democratic Party District Vote Share") +
+  ylab(label = "Actual Democratic Party District Vote Share") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+### National Democratic Party Seat Share Model
+
+The real power in governing is when you hold a seat majority, which allows you to set the agenda and pass laws. Getting a majority of the national vote share means little if the party does not get a majority of the seats. This can happen when one party runs up the numbers in some districts, such as winning some districts by 75%+. However, winning a district by 51% effectively no different than by 75%; the party winner only receives one seat. Below, I will now use a linear model to predict the number of seats won by the Democratic Party.
+
+```{r build national seatshare model dont keep in}
+# edit down
+house_popvote_seats_edit <- house_popvote_seats %>%
+  select(year, D_seats) %>%
+  rename(democratic_seats_won = D_seats)
+
+# attach to current dataset
+national_election_data_for_vote_model <- national_election_data_for_vote_model %>%
+  left_join(house_popvote_seats_edit, by = "year")
+```
+
+```{r build national seatshare model}
+national_election_data_for_seat_model <- national_election_data_for_vote_model %>%
+  mutate(previous_seatshare = lag(democratic_seats_won, order_by = year))
+
+national_seat_model <- lm(democratic_seats_won ~
+                       total_incumbents +
+                       democratic_house +
+                       democratic_president +
+                       midterm_election +
+                         previous_seatshare +
+                       mean_dem_natl_gb_margin,
+                     data = national_election_data_for_seat_model)
+
+tab_model(national_seat_model)
+```
+
+In this model where I predict the Democratic party's national seat share, the equations follows:
+
+
+Democratic Seats Won = -0.08(total incumbents) + 13.86(democratic house) - 10.37(democratic president) - 1.20(midterm election) + 0.15(previous voteshare) + 2.58(mean dem natl gb margin) + 207.79
+
+
+Again, it is worth noting how the same two variables displayed significance: When the president is a Democrat, the Democratic vote share drops by about 10 percent and the Democratic vote share increases by 2.58 percent when the Democratic margin on the national generic ballot aggregate increases by 1 percent (which shows how polling tends to underestimate the Democrats' resulting seat wins). The other variables did not prove significant, as shown by their confidence intervals: Democratic vote share can increase or decrease when the total number of incumbents running for re-election increases by one, when the Democrats hold the House, when it's a midterm election, and the previous vote share increases by 1 percent. However, my high adjusted R squared gives me comfort (and some suspicion of overfitting my model to the data).
+
+
+#### National Democratic Seat Share Prediction
+
+Below is my prediction for the Democrats' resulting seat share in the House after the midterm elections, and it does not look great for them, due to their unfavorable environment.
+
+```{r national seat share prediction}
+
+# Make dataframe of predictions
+natl_pred_2022_seat_df <- data.frame(dem_seatshare = c(204, 231),
+                                party = c("Democratic Party", "Republican Party"))
+
+
+# plot prediction
+options(repr.plot.width = 7.5, repr.plot.height = 4)
+ggplot(data = natl_pred_2022_seat_df,
+       mapping = aes(x = party,
+                     y = dem_seatshare,
+                     fill = party)) +
+  geom_col(color = "white") +
+  scale_fill_manual(values = c("#18A3D3",#Dems
+                               "#C81717")) + #GOP
+  labs(x = "Political Party",
+       y = "Predicted Seat Share",
+       title = "2022 National Predicted Seat Share by Party") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  guides(fill = "none") +
+  ylim(0,240) +
+  geom_hline(yintercept = 218, lty = 2)
+
+# predict seat share
+predict(national_seat_model,
+        natl_pred_2022,
+        interval = "prediction",
+        level = 0.95)
+```
+
+Once again, I predict the Democrats fall back into the minority with 204 seats, allowing the Republicans to win it back with a total 231 seats. My confidence interval is not ideal, as it shows the Democrats potentially winning as little as 176 seats and as much as 232 seats (which means they would gain seats... and is unlikely). 
+
+#### National Democratic Party Seat Share Model Test
+
+Here, I run the same validation test as I did above for the vote share model: I predict each observation/election cycle with my model as is.
+
+```{r national seatshare in sample/out of sample prediction + graphs}
+# in sample prediction
+ggplot(aes(x = predict(national_seat_model,
+                       national_election_data_for_seat_model),
+           y = democratic_seats_won,
+           label = year), 
+       data = national_election_data_for_seat_model) +
+  geom_text(alpha = 0.70,
+             size = 3) +
+  geom_abline(intercept = 0, slope = 1, color = "blue") +
+  geom_vline(xintercept = 218, lty = 2, color = "black") +
+  geom_hline(yintercept = 218, lty = 2, color = "black") +
+  labs(title = "National Congressional Model") +
+  xlab(label = "Predicted Democratic Party District Vote Share") +
+  ylab(label = "Actual Democratic Party District Vote Share") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+What leaves me feeling satisfied by this model is its sheer accuracy. In every cycle, my model accurately predicts who wins a majority of seats in the House of Representatives. Despite the number of seats won fluctating, the actual winner is predicted with 100% accuracy.
+
+## Congressional District Predictions
+
+Next, I will move on to my district-level forecasts. In this model, I am predicted the vote share of the Democratic candidate in their particular district. What is difficult about this model is how variable data can be district-to-district. I explored this phenomenon in a [previous blog post](https://luke-tomes.github.io/election-blog/posts/polling-forecasts/), and the crux is that many districts simply are not competitive. Lacking competition often ensures a lack of investment in and attention to the district, since the predicted winner is often known. Therefore, I will continue to use my current variables and input a powerful one: expert ratings.
+
+
+```{r edit district dataset into ones and zeros}
+district_election_data_for_model <- district_election_data %>%
+  mutate(
+    incumb_district = case_when(
+      incumb_district == "No Incumbent" ~ 0,
+      incumb_district == "Incumbent Running" ~ 1),
+    democratic_house = case_when(
+      house_party_in_power_at_election == "R" ~ 0,
+      house_party_in_power_at_election == "D" ~ 1),
+    democratic_president= case_when(
+      pres_party_in_power_at_election == "R" ~ 0,
+      pres_party_in_power_at_election == "D" ~ 1),
+    midterm_election = case_when(
+      midterm == "pres" ~ 0,
+      midterm == "midterm" ~ 1))
+```
+
+```{r create lag Vote Share}
+district_election_data_lag <- district_election_data_for_model %>%
+  mutate(DemVotesMajorPercent = as.numeric(DemVotesMajorPercent)) %>%
+  group_by(state, district) %>%
+  mutate(previous_voteshare = lag(DemVotesMajorPercent, order = year))
+```
+
+### District Voteshare Prediction Model
+
+I have build another linear model to predict the vote share of the Democratic candidate in their particular district.
+
+```{r  build district model}
+district_model <- lm(DemVotesMajorPercent ~
+                       incumb_district +
+                       democratic_house +
+                       democratic_president +
+                       midterm_election +
+                       previous_voteshare +
+                       total_avg_rating,
+                     data = district_election_data_lag)
+
+tab_model(district_model)
+```
+
+The equations follows:
+
+Democratic Candidate Vote Share = -0.24(incumb district) - 4.67(democratic house) - 3.30(democratic president) - 2.31(midterm election) + 0.53(previous voteshare) + 2.09(mean dem natl gb margin) + 28.76
+
+
+Finally, I have arrived at a model with a whole host of variables with potent predictive power. The only variable lacking predictive power is whether an incumbent is running for re-election, which could increase or decrease the vote share of the Democratic candidate.
+
+However, my model incorporates five variables with high significance:
+
+* When the president is a Democrat, the Democratic candidate's vote share drops by about 3.30 percent
+
+* When the election is during a midterm cycle, the Democratic candidate's vote share drops by about 2.31 percent. 
+
+* For every 1% increase in the previous vote share, the Democratic candidate's vote share increases by about 0.53 percent, showing how previous performance is not as indicative of future performance.
+
+* When the mean aggregate expert rating increases by 1 (which means a higher win probability for the Democrats), the Democratic candidate's vote share increases by about 2.09 percent. This is significant since moving from a toss-up district to one that leans Democratic means the candidate will receive about 2 more percentage points.
+
+* When the House is held by Democrats, the Democratic candidate's vote share drops by 4.67 percent. This is the largest coefficient, showing how when there is a Democratic house, a Democratic president, a midterm cycle, a given previous vote share and expert rating, Democratic candidates suffer greatly. Possibly, this shows how voters truly do punish the party in power, especially during a President's midterm cycle.
+
+```{r NE-01 prediction, include = FALSE}
+# build NE-01 prediction dataframe
+NE01_pred_2022 <- data_frame(year = 2022,
+                             incumb_district = 1,
+                             democratic_house = 1,
+                             democratic_president = 1,
+                             midterm_election = 1,
+                             mean_dem_natl_gb_margin = -2.5,
+                             previous_voteshare = 38.76,
+                             total_avg_rating = -4)
+
+# predict NE-01 vote share
+predict(district_model,
+        NE01_pred_2022,
+        interval = "prediction",
+        level = 0.95)
+```
+
+```{r NE-02 prediction, include = FALSE}
+# build NE-02 prediction dataframe
+NE02_pred_2022 <- data_frame(year = 2022,
+                             incumb_district = 1,
+                             democratic_house = 1,
+                             democratic_president = 1,
+                             midterm_election = 1,
+                             mean_dem_natl_gb_margin = -2.5,
+                             previous_voteshare = 47.65,
+                             total_avg_rating = -0.5555556)
+
+# predict vote share
+predict(district_model,
+        NE02_pred_2022,
+        interval = "prediction",
+        level = 0.95)
+```
+
+```{r NE-03 prediction, include = FALSE}
+# build NE-03 prediction dataframe
+NE03_pred_2022 <- data_frame(year = 2022,
+                             incumb_district = 1,
+                             democratic_house = 1,
+                             democratic_president = 1,
+                             midterm_election = 1,
+                             mean_dem_natl_gb_margin = -2.5,
+                             previous_voteshare = 18.38,
+                             total_avg_rating = -4)
+
+# predict NE-03 vote share
+predict(district_model,
+        NE03_pred_2022,
+        interval = "prediction",
+        level = 0.95)
+```
+
+```{r NE-01 Prediction Map, echo = FALSE, message = FALSE, include = FALSE}
+# create a dataset
+STATENAME <- "Nebraska"
+DISTRICT <- c(rep(1, 2), rep(2, 2), rep(3, 2))
+CD <- c(rep("NE-01" , 2), rep("NE-02" , 2), rep("NE-03" , 2))
+party <- rep(c("Democratic Party", "Republican Party") , 3)
+vote_share <- c(rep(c(30.61, 100 - 30.61)),
+                rep(c(42.56, 100 - 42.56)),
+                rep(c(19.72, 100 -19.72)))
+district_pred_2022_vote_df <- data.frame(STATENAME, DISTRICT, CD, party, vote_share) %>%
+  mutate(STATENAME = as.character(STATENAME),
+         DISTRICT = as.numeric(DISTRICT))
+
+# load geographic data
+get_congress_map <- function(cong=114) {
+  tmp_file <- tempfile()
+  tmp_dir  <- tempdir()
+  zp <- sprintf("http://cdmaps.polisci.ucla.edu/shp/districts%03i.zip",cong)
+  download.file(zp, tmp_file)
+  unzip(zipfile = tmp_file, exdir = tmp_dir)
+  fpath <- paste(tmp_dir, sprintf("districtShapes/districts%03i.shp",cong), sep = "/")
+  st_read(fpath)}
+
+# load 114th congress data
+cd114_ne <- get_congress_map(114)
+
+# checking which variable class to merge on
+class(district_pred_2022_vote_df$DISTRICT)
+
+# checking which variable class to merge on
+class(cd114_ne$DISTRICT)
+
+# need to match up these classes of variables so I can merge
+# change cd114 variable class to numeric
+cd114_ne$DISTRICT <- as.numeric(cd114_ne$DISTRICT)
+
+# verifying new variable class
+class(cd114_ne$DISTRICT)
+
+# join datasets based on DISTRICT
+district_pred_2022_vote_new_data <- cd114_ne %>%
+  left_join(district_pred_2022_vote_df,
+            by = c("DISTRICT", "STATENAME")) %>%
+  filter(party == "Republican Party")
+
+# To plot faster
+districtvote_plot_ne <- rmapshaper::ms_simplify(district_pred_2022_vote_new_data, keep = 0.01)
+```
+
+#### Nebraska Democratic Voteshare by District
+
+This blog is focused around the three congressional districts in Nebraska, where two are not regarded as competitive, NE-01 and NE-03, and the other, NE-02, still hangs in the balance, with no outcome certainly likely.
+
+With the extremely unfavorable environment in which Democrats find themselves, my predictions do not fare well for them. Below are my predictions: 
+
+
+```{r NE-01 Prediction plot}
+# plot prediction
+options(repr.plot.width = 7.5, repr.plot.height = 4)
+ggplot(data = district_pred_2022_vote_df,
+       mapping = aes(x = CD,
+                     y = vote_share,
+                     fill = party)) +
+  geom_bar(position="dodge",
+           stat="identity",
+           color = "white") +
+  scale_fill_manual(values = c("#18A3D3",#Dems
+                               "#C81717")) + #GOP
+  labs(x = "District in Nebraska",
+       y = "Predicted Vote Share",
+       title = "2022 Predicted District-Level Vote Share by Party") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  guides(fill = "none") +
+  ylim(0,100) +
+  geom_hline(yintercept = 50, lty = 2)
+```
+
+#### NE-01 Democratic Voteshare Prediction
+
+```{r NE-01 prediction show}
+# build NE-01 prediction dataframe
+NE01_pred_2022 <- data_frame(year = 2022,
+                             incumb_district = 1,
+                             democratic_house = 1,
+                             democratic_president = 1,
+                             midterm_election = 1,
+                             mean_dem_natl_gb_margin = -2.5,
+                             previous_voteshare = 38.76,
+                             total_avg_rating = -4)
+
+# predict NE-01 vote share
+predict(district_model,
+        NE01_pred_2022,
+        interval = "prediction",
+        level = 0.95)
+```
+
+#### NE-02 Democratic Voteshare Prediction
+
+```{r NE-02 prediction show}
+# build NE-02 prediction dataframe
+NE02_pred_2022 <- data_frame(year = 2022,
+                             incumb_district = 1,
+                             democratic_house = 1,
+                             democratic_president = 1,
+                             midterm_election = 1,
+                             mean_dem_natl_gb_margin = -2.5,
+                             previous_voteshare = 47.65,
+                             total_avg_rating = -0.5555556)
+
+# predict vote share
+predict(district_model,
+        NE02_pred_2022,
+        interval = "prediction",
+        level = 0.95)
+```
+
+#### NE-03 Democratic Voteshare Prediction
+
+```{r NE-03 prediction show}
+# build NE-03 prediction dataframe
+NE03_pred_2022 <- data_frame(year = 2022,
+                             incumb_district = 1,
+                             democratic_house = 1,
+                             democratic_president = 1,
+                             midterm_election = 1,
+                             mean_dem_natl_gb_margin = -2.5,
+                             previous_voteshare = 18.38,
+                             total_avg_rating = -4)
+
+# predict NE-03 vote share
+predict(district_model,
+        NE03_pred_2022,
+        interval = "prediction",
+        level = 0.95)
+```
+
+My model's predictions for Nebraska's districts cast a gloomy outlook for Democrats, and these Democratic vote shares fall just under those forecasted by [FiveThirtyEight.](https://projects.fivethirtyeight.com/2022-election-forecast/house/?cid=rrpromo). I can say with 95% confidence the Republicans will win the first and third districts, but there is still a chance the Democratic candidate in NE-02 ends up victorious.
+
+#### District Model Test
+
+Once again, I will validate this model by seeing how predictive it is with regard to the thousands of districts that inform it.
+
+```{r district in sample/out of sample prediction + graphs}
+# eliminate uncontested races
+district_election_data_for_test <- district_election_data_lag %>%
+  filter(DemVotesMajorPercent != 100,
+         DemVotesMajorPercent != 0) %>%
+  drop_na(incumb_district,
+          democratic_house,
+          democratic_president,
+          midterm_election,
+          mean_dem_natl_gb_margin,
+          total_avg_rating,
+          previous_voteshare)
+
+# in sample prediction
+ggplot(aes(x = predict(district_model,
+                       district_election_data_for_test),
+           y = DemVotesMajorPercent), 
+       data = district_election_data_for_test) +
+  xlim(0,100) +
+  ylim(0,100) +
+  geom_point(alpha = 0.6,
+             size = 1.25) +
+  geom_abline(intercept = 0, slope = 1, color = "#18A3D3") +
+  geom_vline(xintercept = 50, lty = 2, color = "black") +
+  geom_hline(yintercept = 50, lty = 2, color = "black") +
+  labs(title = "Congressional District Model") +
+  xlab(label = "Predicted Democratic Party District Vote Share") +
+  ylab(label = "Actual Democratic Party District Vote Share") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+In the plot above, one can see that my model is highly predictive, rarely miscalling a winner. When predicting each district as if its result was unknown, we can see my model often not only gets the winner correct, but it also closely follows the blue line, which shows an accurate prediction (points above show an underestimation, and points below show an overestimation). With this robustness and high adjusted R-squared of 0.887, I am confident this model is highly predictive.
+
+## Limitations
+
+In each blog post, I have included a section on the limitations of my models, always commenting on how some variables may not be as great of predictors as one might think. However, in this section, I will take a brief and more "big picture" view.
+
+In these models, I chose to include more national-level variables because they were more widely available and reliable than shaky data district-to-district. This allowed for me to include many more observations in my models, national and district, than I would have been able to. However, it limits the extent to which I can differentiate each district's predictions, since national variables are the same for each district in a given cycle. Nonetheless, I believe my aggregate expert ratings and previous vote share are powerful.
+
+Also, my model's uncertainty in their predictions should cause some worry. Especially for the national Democratic seat share model, my prediction intervals are too wide. However, this may simply be something one has to expect in a model with only 35 observations. America is a young and unique country, and thus there are only so many elections from which to draw data. Thus, forecasting does its best to learn about voters with the data it has. 
+
+## Final Nebraska Congressional District Map
+
+To conclude this prediction blog, I will end with [how I started this website:](https://luke-tomes.github.io/election-blog/posts/house-elections-data/) a map of my predictions for each of Nebraska's three congressional districts. Surely enough, my predictions follow the trend of Republicans holding their ground.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+ggplot() +
+  geom_sf(data = districtvote_plot_ne,
+          aes(fill = vote_share),
+          inherit.aes = FALSE,alpha = 0.9) +
+  geom_sf_text(data = districtvote_plot_ne,
+               aes(label = DISTRICT), 
+               colour = "white",
+               size = 2.25,
+               check_overlap = TRUE)  +
+  scale_fill_gradient(low = "Purple",
+                      high = "#C81717",
+                      name = 'Predicted GOP Vote Share Percentage') +
+  labs(title = "Predicted GOP Vote Share by Congressional Districts in Nebraska",
+       caption = "Data Provided by Professor Ryan Enos of Harvard\nUniversity along with Jeffrey B. Lewis of UCLA, et al.",
+       subtitle = "A vote share larger in magnitude indicates a more decisive victory for the Republican Party.\n") +
+  theme_void() +
+  theme(legend.position = "bottom",
+        axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(plot.subtitle = element_text(hjust = 0.5))
+```
+
+```{r class predictions, eval = FALSE, include = FALSE}
+# build NE-03 prediction dataframe
+AK01_pred_2022 <- data_frame(year = 2022,
+                             incumb_district = 1,
+                             democratic_house = 1,
+                             democratic_president = 1,
+                             midterm_election = 1,
+                             mean_dem_natl_gb_margin = -2.5,
+                             previous_voteshare = 45.42,
+                             total_avg_rating = 1.888889)
+
+# predict NE-03 vote share
+predict(district_model,
+        AK01_pred_2022,
+        interval = "prediction",
+        level = 0.95)
+```
+
+##### Notes:
+
+*This blog is the last of a series of articles meant to progressively understand how election data can be used to predict future outcomes. I have added to this site on a weekly basis under the direction of [Professor Ryan D. Enos](https://www.ryandenos.com). Tomorrow, on November 8, 2022, the midterm elections will be held. In this post, I haved used all I have learned regarding what best forecasts election results to predict the outcome of the NE-02 U.S. Congressional Election.*
+
+[My project repository can be viewed here.](https://github.com/luke-tomes/election-blog)

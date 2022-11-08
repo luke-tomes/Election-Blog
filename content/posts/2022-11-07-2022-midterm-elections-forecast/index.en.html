@@ -1,0 +1,553 @@
+---
+title: "Fall 2022 Midterm Elections Forecast"
+author: Luke Tomes
+date: '2022-11-07'
+slug: election_forecast
+categories: []
+tags: []
+authors: []
+description: ''
+externalLink: ''
+series: []
+---
+
+
+
+<p>In this blog, I have produced my final prediction for the upcoming Fall 2022 Midterm Elections. After exploring potential variables that can influence my predictions for how Democrats will fare and refining those variables, I have finalized my current models for the national-level prediction and the district-level predictions. First, I will explain how my models work, and I will justify why I included the variables that have been inputted. Next, I will interpret how my models perform and put them through a test to validate their effectiveness. Lastly, I will plot and display my predictions and their predicted ranges.</p>
+<div id="my-predictive-variables" class="section level2">
+<h2>My Predictive Variables</h2>
+<p>Below, I am going to list my predictive variables and the reasons for which I am using them. In each model that I will examine subsequently, not all of these variables will be used, and I will discuss those reasons when I arrive at that model.</p>
+<div id="incumbency" class="section level4">
+<h4>Incumbency</h4>
+<p>I have two variations for this variable:</p>
+<ul>
+<li>On a national-level model, I will use the total number of incumbents running for re-election for the House of Representatives.</li>
+<li>On a district level model, I will denote whether or not the incumbent is running for re-election in the specific district.</li>
+</ul>
+<p>This variable can be a crucial predictor, as I have examined in a <a href="https://luke-tomes.github.io/election-blog/posts/fortified-model/">previous blog post</a> and as <a href="https://www.ryandenos.com/">Professor Ryan D. Enos</a> has explored in Gov 1347 Lecture, because incumbents who decide to run for re-election only lose about 5% of the time. This has proven to be a great predictor of victory for an incumbent.</p>
+</div>
+<div id="party-control-of-the-house-of-representatives" class="section level4">
+<h4>Party Control of the House of Representatives</h4>
+<p>With political experts floating the <a href="https://www.politico.com/news/2022/04/09/angry-voters-biden-inflation-midterms-00024218">notion</a> that undesirable governing outcomes (like high inflation) motivate voters to eject the party in power, I included a variable that indicates what happens to the vote share or seat share when the Democrats hold the House in an election.</p>
+</div>
+<div id="party-control-of-the-white-house" class="section level4">
+<h4>Party Control of the White House</h4>
+<p>In the same vein, I have included a variable that affects vote share or seat share when a Democrat holds the keys to 1600 Pennsylvania Avenue. After all, research shows that many voters tend to <a href="https://fivethirtyeight.com/features/why-the-presidents-party-almost-always-has-a-bad-midterm/">punish the incumbent president’s party</a> when they feel he has not performed the job well.</p>
+</div>
+<div id="whether-or-not-there-is-a-presidential-election" class="section level4">
+<h4>Whether or Not There is a Presidential Election</h4>
+<p>Here I control for whether the congressional elections are accompanied by a presidential election. I have explored in a <a href="https://luke-tomes.github.io/election-blog/posts/economic-indicators/">previous blog post</a> that if it is a midterm cycle (no accompanying presidential election), vote share and seat shares can be drastically affected.</p>
+</div>
+<div id="previous-vote-shareseat-share" class="section level4">
+<h4>Previous Vote Share/Seat Share</h4>
+<p>Here is a key variable that incorporates into my model what the last election’s vote share or seat share was for the Democratic Party. Unsurprisingly, this can influence the predicted vote share or seat share is for the current election, since there often is not much fluctation in how a country or district votes.</p>
+</div>
+<div id="mean-democratic-party-national-generic-ballot-margin" class="section level4">
+<h4>Mean Democratic Party National Generic Ballot Margin</h4>
+<p>Here is an interesting variable that accounts for two factors I explored in my <a href="https://luke-tomes.github.io/election-blog/posts/polling-forecasts/">polling blogpost:</a></p>
+<ul>
+<li>Voters <a href="https://hollis.harvard.edu/primo-explore/fulldisplay?docid=TN_cdi_gale_infotracacademiconefile_A14564056&amp;context=PC&amp;vid=HVD2&amp;search_scope=everything&amp;tab=everything&amp;lang=en_US">hold a recency bias</a></li>
+<li>Aggregate polls perform better than standalone polls that contain <a href="https://hollis.harvard.edu/primo-explore/fulldisplay?docid=TN_cdi_crossref_primary_10_1038_075450a0&amp;context=PC&amp;vid=HVD2&amp;search_scope=everything&amp;tab=everything&amp;lang=en_US">potential bias toward one side</a></li>
+</ul>
+<p>Therefore, I have created a variable that contains an aggregate mean of all generic ballot (Democrats vs Republicans on a nationwide level) polls conducted within 50 days of an election. Assuming the polls are accurate and predictive, this variable factors that people vote on their recent feelings (also giving enough time to account for people voting early) and that polling aggregates converge on the actual result as you get closer to an election. Thus, I employed <a href="https://www.realclearpolitics.com/epolls/other/2022-generic-congressional-vote-7361.html">RealClearPolitics’ Current Aggregated Generic Congressional Ballot</a>, where Democrats are down 2.5 points to the Republicans.</p>
+</div>
+<div id="expert-ratings-only-for-district-model" class="section level4">
+<h4>Expert Ratings (Only for District Model)</h4>
+<p>Lastly, I have included an aggregate mean (for the same reasons above: eliminate bias and wisdom of the crowd) of the expert ratings from various professional outlets: <a href="https://projects.fivethirtyeight.com/2022-election-forecast/house/?cid=rrpromo">FiveThirtyEight</a>, <a href="https://www.cookpolitical.com/ratings/house-race-ratings">Cook Political Report</a>, and <a href="https://insideelections.com/ratings/house">Inside Elections.</a>. As we will see, these ratings on whether a district is noncompetitive or a toss-up between the different parties are potent predictors. However, some of these ratings are also based off variable I have used above and off fundamental indicators (like the economy), so maybe it is cheating. However, I believe it makes my model more robust, which is the goal. Always have to use your resources, am I right?</p>
+</div>
+</div>
+<div id="national-predictions" class="section level2">
+<h2>National Predictions</h2>
+<p>The first models that this blog post will examine are forecasting on a national scale. Here I will be using previously explored variables that serve as predictors for the Democratic Party’s vote share and seat share in the coming election. When predicting vote share specifically, I am using a simple unbounded linear regression model, as opposed to a GLM model that keeps the prediction between 0 and 1 (resembling 0% and 100%). In the past, I have used a GLM model, mainly because I was receiving predictions below 0% and above 100% with my linear model. However, my model has improved greatly since then, outputting predictions in-line with previous data and current forecasts by <a href="https://projects.fivethirtyeight.com/2022-election-forecast/house/?cid=rrpromo">professional outlets, like FiveThirtyEight.</a></p>
+<div id="national-democratic-party-vote-share-model" class="section level3">
+<h3>National Democratic Party Vote Share Model</h3>
+<table style="border-collapse:collapse; border:none;">
+<tr>
+<th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; ">
+ 
+</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+Dem Votes Major Percent<br>All
+</th>
+</tr>
+<tr>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; ">
+Predictors
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+Estimates
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+CI
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+p
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+(Intercept)
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+51.19
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+42.24 – 60.13
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+democratic president
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.90
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.93 – -0.87
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>0.001</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+midterm election
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.46
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.45 – 0.52
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.346
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+previous voteshare
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.01
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.19 – 0.16
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.875
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+mean dem natl gb margin
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.31
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.24 – 0.39
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
+Observations
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
+35
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+R<sup>2</sup> / R<sup>2</sup> adjusted
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.817 / 0.793
+</td>
+</tr>
+</table>
+<p>In this model where I predict the Democratic party’s national vote share, the equations follows:</p>
+<p>Dem Votes Major Percent = -1.9(democratic president) - 0.46(midterm election) – 0.01(previous voteshare) + 0.31(mean dem natl gb margin) + 51.19</p>
+<p>After leaving out some of my other variables that proved to lessen this model’s strength through small predictive capability, it is worth noting how only two variables displayed significance: When the president is a Democrat, the Democratic vote share drops by almost 2 percent and the Democratic vote share increases by 0.31 percent when the Democratic margin on the national generic ballot aggregate increases by 1 percent (which shows how polling tends to overestimate support for the Democrats). The other two variables did not prove significant, as shown by their confidence intervals: Democratic vote share can increase or decrease when it’s a midterm election, and the previous vote share in the last election truly holds no predictive power.</p>
+<div id="national-democratic-vote-share-prediction" class="section level4">
+<h4>National Democratic Vote Share Prediction</h4>
+<p>Overall, the Democrats seem to have a very unfavorable environment this cycle, because President Joe Biden is a Democrat and their generic ballot polling margin is 2.5 points below the Republican’s. Below, I show my prediction for the Democratic party vote share on a national level:</p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/national%20vote%20share%20prediction-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>##        fit      lwr      upr
+## 1 47.34632 44.24339 50.44925</code></pre>
+<p>Overall, we see that my best guess is the Republicans will win with a slight cushion over the Democrats who will receive 47.35% of the vote. However, my interval is somewhat wide, containing an upper bound greater than 50%, meaning that I am 95% confident that the Democrats could still eek out a win.</p>
+</div>
+<div id="national-democratic-party-vote-share-model-test" class="section level4">
+<h4>National Democratic Party Vote Share Model Test</h4>
+<p>Here I validate this national vote share model, by comparing what my model would have predicted for each observation included in the model and what that cycle’s actual Democratic party vote share was. In the graph below and the model’s high adjusted R-squared (0.793), it is evident this model is highly predictive given the data provided.</p>
+<p>Only a few cases where it went wrong are displayed in quadrants II and IV. This is the case for 1950, 1968, 2002, and 2012. However, even this miscalls are not far off the blue 45-degree line, which aligns a prediction with its result. If a cycle falls exactly on this line, as many do, the model predicted the result accurately.</p>
+<p>Overall, I am very confident in this model because of its predictive power. However, my wide predictive interval leaves me some unrest.</p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/national%20voteshare%20in%20sample/out%20of%20sample%20prediction%20+%20graphs-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="national-democratic-party-seat-share-model" class="section level3">
+<h3>National Democratic Party Seat Share Model</h3>
+<p>The real power in governing is when you hold a seat majority, which allows you to set the agenda and pass laws. Getting a majority of the national vote share means little if the party does not get a majority of the seats. This can happen when one party runs up the numbers in some districts, such as winning some districts by 75%+. However, winning a district by 51% effectively no different than by 75%; the party winner only receives one seat. Below, I will now use a linear model to predict the number of seats won by the Democratic Party.</p>
+<table style="border-collapse:collapse; border:none;">
+<tr>
+<th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; ">
+ 
+</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+democratic seats won
+</th>
+</tr>
+<tr>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; ">
+Predictors
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+Estimates
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+CI
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+p
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+(Intercept)
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+207.79
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+107.38 – 308.20
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+total incumbents
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.08
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.30 – 0.13
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.424
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+democratic house
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+13.86
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-3.50 – 31.21
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.113
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+democratic president
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-10.37
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-19.17 – -1.58
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>0.022</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+midterm election
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.20
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-9.81 – 7.41
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.777
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+previous seatshare
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.15
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.12 – 0.42
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.255
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+mean dem natl gb margin
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+2.58
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.97 – 3.19
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
+Observations
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
+35
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+R<sup>2</sup> / R<sup>2</sup> adjusted
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.884 / 0.859
+</td>
+</tr>
+</table>
+<p>In this model where I predict the Democratic party’s national seat share, the equations follows:</p>
+<p>Democratic Seats Won = -0.08(total incumbents) + 13.86(democratic house) - 10.37(democratic president) - 1.20(midterm election) + 0.15(previous voteshare) + 2.58(mean dem natl gb margin) + 207.79</p>
+<p>Again, it is worth noting how the same two variables displayed significance: When the president is a Democrat, the Democratic vote share drops by about 10 percent and the Democratic vote share increases by 2.58 percent when the Democratic margin on the national generic ballot aggregate increases by 1 percent (which shows how polling tends to underestimate the Democrats’ resulting seat wins). The other variables did not prove significant, as shown by their confidence intervals: Democratic vote share can increase or decrease when the total number of incumbents running for re-election increases by one, when the Democrats hold the House, when it’s a midterm election, and the previous vote share increases by 1 percent. However, my high adjusted R squared gives me comfort (and some suspicion of overfitting my model to the data).</p>
+<div id="national-democratic-seat-share-prediction" class="section level4">
+<h4>National Democratic Seat Share Prediction</h4>
+<p>Below is my prediction for the Democrats’ resulting seat share in the House after the midterm elections, and it does not look great for them, due to their unfavorable environment.</p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/national%20seat%20share%20prediction-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>##        fit      lwr      upr
+## 1 204.3809 176.5787 232.1831</code></pre>
+<p>Once again, I predict the Democrats fall back into the minority with 204 seats, allowing the Republicans to win it back with a total 231 seats. My confidence interval is not ideal, as it shows the Democrats potentially winning as little as 176 seats and as much as 232 seats (which means they would gain seats… and is unlikely).</p>
+</div>
+<div id="national-democratic-party-seat-share-model-test" class="section level4">
+<h4>National Democratic Party Seat Share Model Test</h4>
+<p>Here, I run the same validation test as I did above for the vote share model: I predict each observation/election cycle with my model as is.</p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/national%20seatshare%20in%20sample/out%20of%20sample%20prediction%20+%20graphs-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>What leaves me feeling satisfied by this model is its sheer accuracy. In every cycle, my model accurately predicts who wins a majority of seats in the House of Representatives. Despite the number of seats won fluctating, the actual winner is predicted with 100% accuracy.</p>
+</div>
+</div>
+</div>
+<div id="congressional-district-predictions" class="section level2">
+<h2>Congressional District Predictions</h2>
+<p>Next, I will move on to my district-level forecasts. In this model, I am predicted the vote share of the Democratic candidate in their particular district. What is difficult about this model is how variable data can be district-to-district. I explored this phenomenon in a <a href="https://luke-tomes.github.io/election-blog/posts/polling-forecasts/">previous blog post</a>, and the crux is that many districts simply are not competitive. Lacking competition often ensures a lack of investment in and attention to the district, since the predicted winner is often known. Therefore, I will continue to use my current variables and input a powerful one: expert ratings.</p>
+<div id="district-voteshare-prediction-model" class="section level3">
+<h3>District Voteshare Prediction Model</h3>
+<p>I have build another linear model to predict the vote share of the Democratic candidate in their particular district.</p>
+<table style="border-collapse:collapse; border:none;">
+<tr>
+<th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; ">
+ 
+</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+Dem Votes Major Percent
+</th>
+</tr>
+<tr>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; ">
+Predictors
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+Estimates
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+CI
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+p
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+(Intercept)
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+28.76
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+27.43 – 30.10
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+incumb district
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.24
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.92 – 0.44
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.491
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+democratic house
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-4.67
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-5.17 – -4.16
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+democratic president
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-3.30
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-3.79 – -2.80
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+midterm election
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.31
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.77 – -1.85
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+previous voteshare
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.53
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.51 – 0.56
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+total avg rating
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+2.09
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.98 – 2.20
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
+Observations
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
+2615
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+R<sup>2</sup> / R<sup>2</sup> adjusted
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.887 / 0.887
+</td>
+</tr>
+</table>
+<p>The equations follows:</p>
+<p>Democratic Candidate Vote Share = -0.24(incumb district) - 4.67(democratic house) - 3.30(democratic president) - 2.31(midterm election) + 0.53(previous voteshare) + 2.09(mean dem natl gb margin) + 28.76</p>
+<p>Finally, I have arrived at a model with a whole host of variables with potent predictive power. The only variable lacking predictive power is whether an incumbent is running for re-election, which could increase or decrease the vote share of the Democratic candidate.</p>
+<p>However, my model incorporates five variables with high significance:</p>
+<ul>
+<li><p>When the president is a Democrat, the Democratic candidate’s vote share drops by about 3.30 percent</p></li>
+<li><p>When the election is during a midterm cycle, the Democratic candidate’s vote share drops by about 2.31 percent.</p></li>
+<li><p>For every 1% increase in the previous vote share, the Democratic candidate’s vote share increases by about 0.53 percent, showing how previous performance is not as indicative of future performance.</p></li>
+<li><p>When the mean aggregate expert rating increases by 1 (which means a higher win probability for the Democrats), the Democratic candidate’s vote share increases by about 2.09 percent. This is significant since moving from a toss-up district to one that leans Democratic means the candidate will receive about 2 more percentage points.</p></li>
+<li><p>When the House is held by Democrats, the Democratic candidate’s vote share drops by 4.67 percent. This is the largest coefficient, showing how when there is a Democratic house, a Democratic president, a midterm cycle, a given previous vote share and expert rating, Democratic candidates suffer greatly. Possibly, this shows how voters truly do punish the party in power, especially during a President’s midterm cycle.</p></li>
+</ul>
+<div id="nebraska-democratic-voteshare-by-district" class="section level4">
+<h4>Nebraska Democratic Voteshare by District</h4>
+<p>This blog is focused around the three congressional districts in Nebraska, where two are not regarded as competitive, NE-01 and NE-03, and the other, NE-02, still hangs in the balance, with no outcome certainly likely.</p>
+<p>With the extremely unfavorable environment in which Democrats find themselves, my predictions do not fare well for them. Below are my predictions:</p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/NE-01%20Prediction%20plot-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="ne-01-democratic-voteshare-prediction" class="section level4">
+<h4>NE-01 Democratic Voteshare Prediction</h4>
+<pre><code>##        fit      lwr     upr
+## 1 30.61119 19.30388 41.9185</code></pre>
+</div>
+<div id="ne-02-democratic-voteshare-prediction" class="section level4">
+<h4>NE-02 Democratic Voteshare Prediction</h4>
+<pre><code>##        fit      lwr      upr
+## 1 42.55625 31.25043 53.86207</code></pre>
+</div>
+<div id="ne-03-democratic-voteshare-prediction" class="section level4">
+<h4>NE-03 Democratic Voteshare Prediction</h4>
+<pre><code>##       fit      lwr      upr
+## 1 19.7213 8.400636 31.04196</code></pre>
+<p>My model’s predictions for Nebraska’s districts cast a gloomy outlook for Democrats, and these Democratic vote shares fall just under those forecasted by <a href="https://projects.fivethirtyeight.com/2022-election-forecast/house/?cid=rrpromo">FiveThirtyEight.</a>. I can say with 95% confidence the Republicans will win the first and third districts, but there is still a chance the Democratic candidate in NE-02 ends up victorious.</p>
+</div>
+<div id="district-model-test" class="section level4">
+<h4>District Model Test</h4>
+<p>Once again, I will validate this model by seeing how predictive it is with regard to the thousands of districts that inform it.</p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/district%20in%20sample/out%20of%20sample%20prediction%20+%20graphs-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>In the plot above, one can see that my model is highly predictive, rarely miscalling a winner. When predicting each district as if its result was unknown, we can see my model often not only gets the winner correct, but it also closely follows the blue line, which shows an accurate prediction (points above show an underestimation, and points below show an overestimation). With this robustness and high adjusted R-squared of 0.887, I am confident this model is highly predictive.</p>
+</div>
+</div>
+</div>
+<div id="limitations" class="section level2">
+<h2>Limitations</h2>
+<p>In each blog post, I have included a section on the limitations of my models, always commenting on how some variables may not be as great of predictors as one might think. However, in this section, I will take a brief and more “big picture” view.</p>
+<p>In these models, I chose to include more national-level variables because they were more widely available and reliable than shaky data district-to-district. This allowed for me to include many more observations in my models, national and district, than I would have been able to. However, it limits the extent to which I can differentiate each district’s predictions, since national variables are the same for each district in a given cycle. Nonetheless, I believe my aggregate expert ratings and previous vote share are powerful.</p>
+<p>Also, my model’s uncertainty in their predictions should cause some worry. Especially for the national Democratic seat share model, my prediction intervals are too wide. However, this may simply be something one has to expect in a model with only 35 observations. America is a young and unique country, and thus there are only so many elections from which to draw data. Thus, forecasting does its best to learn about voters with the data it has.</p>
+</div>
+<div id="final-nebraska-congressional-district-map" class="section level2">
+<h2>Final Nebraska Congressional District Map</h2>
+<p>To conclude this prediction blog, I will end with <a href="https://luke-tomes.github.io/election-blog/posts/house-elections-data/">how I started this website:</a> a map of my predictions for each of Nebraska’s three congressional districts. Surely enough, my predictions follow the trend of Republicans holding their ground.</p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div id="notes" class="section level5">
+<h5>Notes:</h5>
+<p><em>This blog is the last of a series of articles meant to progressively understand how election data can be used to predict future outcomes. I have added to this site on a weekly basis under the direction of <a href="https://www.ryandenos.com">Professor Ryan D. Enos</a>. Tomorrow, on November 8, 2022, the midterm elections will be held. In this post, I haved used all I have learned regarding what best forecasts election results to predict the outcome of the NE-02 U.S. Congressional Election.</em></p>
+<p><a href="https://github.com/luke-tomes/election-blog">My project repository can be viewed here.</a></p>
+</div>
+</div>

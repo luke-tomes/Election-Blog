@@ -1,0 +1,436 @@
+state,state_abb,CD,district,ID
+Alaska,AK,AK-01,0,1
+Alabama,AL,AL-01,1,2
+Alabama,AL,AL-02,2,3
+Alabama,AL,AL-03,3,4
+Alabama,AL,AL-04,4,5
+Alabama,AL,AL-05,5,6
+Alabama,AL,AL-06,6,7
+Alabama,AL,AL-07,7,8
+Arkansas,AR,AR-01,1,9
+Arkansas,AR,AR-02,2,10
+Arkansas,AR,AR-03,3,11
+Arkansas,AR,AR-04,4,12
+Arizona,AZ,AZ-01,1,13
+Arizona,AZ,AZ-02,2,14
+Arizona,AZ,AZ-03,3,15
+Arizona,AZ,AZ-04,4,16
+Arizona,AZ,AZ-05,5,17
+Arizona,AZ,AZ-06,6,18
+Arizona,AZ,AZ-07,7,19
+Arizona,AZ,AZ-08,8,20
+Arizona,AZ,AZ-09,9,21
+California,CA,CA-01,1,22
+California,CA,CA-02,2,23
+California,CA,CA-03,3,24
+California,CA,CA-04,4,25
+California,CA,CA-05,5,26
+California,CA,CA-06,6,27
+California,CA,CA-07,7,28
+California,CA,CA-08,8,29
+California,CA,CA-09,9,30
+California,CA,CA-10,10,31
+California,CA,CA-11,11,32
+California,CA,CA-12,12,33
+California,CA,CA-13,13,34
+California,CA,CA-14,14,35
+California,CA,CA-15,15,36
+California,CA,CA-16,16,37
+California,CA,CA-17,17,38
+California,CA,CA-18,18,39
+California,CA,CA-19,19,40
+California,CA,CA-20,20,41
+California,CA,CA-21,21,42
+California,CA,CA-22,22,43
+California,CA,CA-23,23,44
+California,CA,CA-24,24,45
+California,CA,CA-25,25,46
+California,CA,CA-26,26,47
+California,CA,CA-27,27,48
+California,CA,CA-28,28,49
+California,CA,CA-29,29,50
+California,CA,CA-30,30,51
+California,CA,CA-31,31,52
+California,CA,CA-32,32,53
+California,CA,CA-33,33,54
+California,CA,CA-34,34,55
+California,CA,CA-35,35,56
+California,CA,CA-36,36,57
+California,CA,CA-37,37,58
+California,CA,CA-38,38,59
+California,CA,CA-39,39,60
+California,CA,CA-40,40,61
+California,CA,CA-41,41,62
+California,CA,CA-42,42,63
+California,CA,CA-43,43,64
+California,CA,CA-44,44,65
+California,CA,CA-45,45,66
+California,CA,CA-46,46,67
+California,CA,CA-47,47,68
+California,CA,CA-48,48,69
+California,CA,CA-49,49,70
+California,CA,CA-50,50,71
+California,CA,CA-51,51,72
+California,CA,CA-52,52,73
+California,CA,CA-53,53,74
+Colorado,CO,CO-01,1,75
+Colorado,CO,CO-02,2,76
+Colorado,CO,CO-03,3,77
+Colorado,CO,CO-04,4,78
+Colorado,CO,CO-05,5,79
+Colorado,CO,CO-06,6,80
+Colorado,CO,CO-07,7,81
+Connecticut,CT,CT-01,1,82
+Connecticut,CT,CT-02,2,83
+Connecticut,CT,CT-03,3,84
+Connecticut,CT,CT-04,4,85
+Connecticut,CT,CT-05,5,86
+Delaware,DE,DE-01,0,87
+Florida,FL,FL-01,1,88
+Florida,FL,FL-02,2,89
+Florida,FL,FL-03,3,90
+Florida,FL,FL-04,4,91
+Florida,FL,FL-05,5,92
+Florida,FL,FL-06,6,93
+Florida,FL,FL-07,7,94
+Florida,FL,FL-08,8,95
+Florida,FL,FL-09,9,96
+Florida,FL,FL-10,10,97
+Florida,FL,FL-11,11,98
+Florida,FL,FL-12,12,99
+Florida,FL,FL-13,13,100
+Florida,FL,FL-14,14,101
+Florida,FL,FL-15,15,102
+Florida,FL,FL-16,16,103
+Florida,FL,FL-17,17,104
+Florida,FL,FL-18,18,105
+Florida,FL,FL-19,19,106
+Florida,FL,FL-20,20,107
+Florida,FL,FL-21,21,108
+Florida,FL,FL-22,22,109
+Florida,FL,FL-23,23,110
+Florida,FL,FL-24,24,111
+Florida,FL,FL-25,25,112
+Florida,FL,FL-26,26,113
+Florida,FL,FL-27,27,114
+Florida,FL,FL-28,28,115
+Georgia,GA,GA-01,1,116
+Georgia,GA,GA-02,2,117
+Georgia,GA,GA-03,3,118
+Georgia,GA,GA-04,4,119
+Georgia,GA,GA-05,5,120
+Georgia,GA,GA-06,6,121
+Georgia,GA,GA-07,7,122
+Georgia,GA,GA-08,8,123
+Georgia,GA,GA-09,9,124
+Georgia,GA,GA-10,10,125
+Georgia,GA,GA-11,11,126
+Georgia,GA,GA-12,12,127
+Georgia,GA,GA-13,13,128
+Georgia,GA,GA-14,14,129
+Hawaii,HI,HI-01,1,130
+Hawaii,HI,HI-02,2,131
+Iowa,IA,IA-01,1,132
+Iowa,IA,IA-02,2,133
+Iowa,IA,IA-03,3,134
+Iowa,IA,IA-04,4,135
+Idaho,ID,ID-01,1,136
+Idaho,ID,ID-02,2,137
+Illinois,IL,IL-01,1,138
+Illinois,IL,IL-02,2,139
+Illinois,IL,IL-03,3,140
+Illinois,IL,IL-04,4,141
+Illinois,IL,IL-05,5,142
+Illinois,IL,IL-06,6,143
+Illinois,IL,IL-07,7,144
+Illinois,IL,IL-08,8,145
+Illinois,IL,IL-09,9,146
+Illinois,IL,IL-10,10,147
+Illinois,IL,IL-11,11,148
+Illinois,IL,IL-12,12,149
+Illinois,IL,IL-13,13,150
+Illinois,IL,IL-14,14,151
+Illinois,IL,IL-15,15,152
+Illinois,IL,IL-16,16,153
+Illinois,IL,IL-17,17,154
+Indiana,IN,IN-01,1,155
+Indiana,IN,IN-02,2,156
+Indiana,IN,IN-03,3,157
+Indiana,IN,IN-04,4,158
+Indiana,IN,IN-05,5,159
+Indiana,IN,IN-06,6,160
+Indiana,IN,IN-07,7,161
+Indiana,IN,IN-08,8,162
+Indiana,IN,IN-09,9,163
+Kansas,KS,KS-01,1,164
+Kansas,KS,KS-02,2,165
+Kansas,KS,KS-03,3,166
+Kansas,KS,KS-04,4,167
+Kentucky,KY,KY-01,1,168
+Kentucky,KY,KY-02,2,169
+Kentucky,KY,KY-03,3,170
+Kentucky,KY,KY-04,4,171
+Kentucky,KY,KY-05,5,172
+Kentucky,KY,KY-06,6,173
+Louisiana,LA,LA-01,1,174
+Louisiana,LA,LA-02,2,175
+Louisiana,LA,LA-03,3,176
+Louisiana,LA,LA-04,4,177
+Louisiana,LA,LA-05,5,178
+Louisiana,LA,LA-06,6,179
+Massachusetts,MA,MA-01,1,180
+Massachusetts,MA,MA-02,2,181
+Massachusetts,MA,MA-03,3,182
+Massachusetts,MA,MA-04,4,183
+Massachusetts,MA,MA-05,5,184
+Massachusetts,MA,MA-06,6,185
+Massachusetts,MA,MA-07,7,186
+Massachusetts,MA,MA-08,8,187
+Massachusetts,MA,MA-09,9,188
+Maryland,MD,MD-01,1,189
+Maryland,MD,MD-02,2,190
+Maryland,MD,MD-03,3,191
+Maryland,MD,MD-04,4,192
+Maryland,MD,MD-05,5,193
+Maryland,MD,MD-06,6,194
+Maryland,MD,MD-07,7,195
+Maryland,MD,MD-08,8,196
+Maine,ME,ME-01,1,197
+Maine,ME,ME-02,2,198
+Michigan,MI,MI-01,1,199
+Michigan,MI,MI-02,2,200
+Michigan,MI,MI-03,3,201
+Michigan,MI,MI-04,4,202
+Michigan,MI,MI-05,5,203
+Michigan,MI,MI-06,6,204
+Michigan,MI,MI-07,7,205
+Michigan,MI,MI-08,8,206
+Michigan,MI,MI-09,9,207
+Michigan,MI,MI-10,10,208
+Michigan,MI,MI-11,11,209
+Michigan,MI,MI-12,12,210
+Michigan,MI,MI-13,13,211
+Minnesota,MN,MN-01,1,212
+Minnesota,MN,MN-02,2,213
+Minnesota,MN,MN-03,3,214
+Minnesota,MN,MN-04,4,215
+Minnesota,MN,MN-05,5,216
+Minnesota,MN,MN-06,6,217
+Minnesota,MN,MN-07,7,218
+Minnesota,MN,MN-08,8,219
+Missouri,MO,MO-01,1,220
+Missouri,MO,MO-02,2,221
+Missouri,MO,MO-03,3,222
+Missouri,MO,MO-04,4,223
+Missouri,MO,MO-05,5,224
+Missouri,MO,MO-06,6,225
+Missouri,MO,MO-07,7,226
+Missouri,MO,MO-08,8,227
+Mississippi,MS,MS-01,1,228
+Mississippi,MS,MS-02,2,229
+Mississippi,MS,MS-03,3,230
+Mississippi,MS,MS-04,4,231
+Montana,MT,MT-01,1,232
+Montana,MT,MT-02,2,233
+North Carolina,NC,NC-01,1,234
+North Carolina,NC,NC-02,2,235
+North Carolina,NC,NC-03,3,236
+North Carolina,NC,NC-04,4,237
+North Carolina,NC,NC-05,5,238
+North Carolina,NC,NC-06,6,239
+North Carolina,NC,NC-07,7,240
+North Carolina,NC,NC-08,8,241
+North Carolina,NC,NC-09,9,242
+North Carolina,NC,NC-10,10,243
+North Carolina,NC,NC-11,11,244
+North Carolina,NC,NC-12,12,245
+North Carolina,NC,NC-13,13,246
+North Carolina,NC,NC-14,14,247
+North Dakota,ND,ND-01,0,248
+Nebraska,NE,NE-01,1,249
+Nebraska,NE,NE-02,2,250
+Nebraska,NE,NE-03,3,251
+New Hampshire,NH,NH-01,1,252
+New Hampshire,NH,NH-02,2,253
+New Jersey,NJ,NJ-01,1,254
+New Jersey,NJ,NJ-02,2,255
+New Jersey,NJ,NJ-03,3,256
+New Jersey,NJ,NJ-04,4,257
+New Jersey,NJ,NJ-05,5,258
+New Jersey,NJ,NJ-06,6,259
+New Jersey,NJ,NJ-07,7,260
+New Jersey,NJ,NJ-08,8,261
+New Jersey,NJ,NJ-09,9,262
+New Jersey,NJ,NJ-10,10,263
+New Jersey,NJ,NJ-11,11,264
+New Jersey,NJ,NJ-12,12,265
+New Mexico,NM,NM-01,1,266
+New Mexico,NM,NM-02,2,267
+New Mexico,NM,NM-03,3,268
+Nevada,NV,NV-01,1,269
+Nevada,NV,NV-02,2,270
+Nevada,NV,NV-03,3,271
+Nevada,NV,NV-04,4,272
+New York,NY,NY-01,1,273
+New York,NY,NY-02,2,274
+New York,NY,NY-03,3,275
+New York,NY,NY-04,4,276
+New York,NY,NY-05,5,277
+New York,NY,NY-06,6,278
+New York,NY,NY-07,7,279
+New York,NY,NY-08,8,280
+New York,NY,NY-09,9,281
+New York,NY,NY-10,10,282
+New York,NY,NY-11,11,283
+New York,NY,NY-12,12,284
+New York,NY,NY-13,13,285
+New York,NY,NY-14,14,286
+New York,NY,NY-15,15,287
+New York,NY,NY-16,16,288
+New York,NY,NY-17,17,289
+New York,NY,NY-18,18,290
+New York,NY,NY-19,19,291
+New York,NY,NY-20,20,292
+New York,NY,NY-21,21,293
+New York,NY,NY-22,22,294
+New York,NY,NY-23,23,295
+New York,NY,NY-24,24,296
+New York,NY,NY-25,25,297
+New York,NY,NY-26,26,298
+Ohio,OH,OH-01,1,299
+Ohio,OH,OH-02,2,300
+Ohio,OH,OH-03,3,301
+Ohio,OH,OH-04,4,302
+Ohio,OH,OH-05,5,303
+Ohio,OH,OH-06,6,304
+Ohio,OH,OH-07,7,305
+Ohio,OH,OH-08,8,306
+Ohio,OH,OH-09,9,307
+Ohio,OH,OH-10,10,308
+Ohio,OH,OH-11,11,309
+Ohio,OH,OH-12,12,310
+Ohio,OH,OH-13,13,311
+Ohio,OH,OH-14,14,312
+Ohio,OH,OH-15,15,313
+Oklahoma,OK,OK-01,1,314
+Oklahoma,OK,OK-02,2,315
+Oklahoma,OK,OK-03,3,316
+Oklahoma,OK,OK-04,4,317
+Oklahoma,OK,OK-05,5,318
+Oregon,OR,OR-01,1,319
+Oregon,OR,OR-02,2,320
+Oregon,OR,OR-03,3,321
+Oregon,OR,OR-04,4,322
+Oregon,OR,OR-05,5,323
+Oregon,OR,OR-06,6,324
+Pennsylvania,PA,PA-01,1,325
+Pennsylvania,PA,PA-02,2,326
+Pennsylvania,PA,PA-03,3,327
+Pennsylvania,PA,PA-04,4,328
+Pennsylvania,PA,PA-05,5,329
+Pennsylvania,PA,PA-06,6,330
+Pennsylvania,PA,PA-07,7,331
+Pennsylvania,PA,PA-08,8,332
+Pennsylvania,PA,PA-09,9,333
+Pennsylvania,PA,PA-10,10,334
+Pennsylvania,PA,PA-11,11,335
+Pennsylvania,PA,PA-12,12,336
+Pennsylvania,PA,PA-13,13,337
+Pennsylvania,PA,PA-14,14,338
+Pennsylvania,PA,PA-15,15,339
+Pennsylvania,PA,PA-16,16,340
+Pennsylvania,PA,PA-17,17,341
+Rhode Island,RI,RI-01,1,342
+Rhode Island,RI,RI-02,2,343
+South Carolina,SC,SC-01,1,344
+South Carolina,SC,SC-02,2,345
+South Carolina,SC,SC-03,3,346
+South Carolina,SC,SC-04,4,347
+South Carolina,SC,SC-05,5,348
+South Carolina,SC,SC-06,6,349
+South Carolina,SC,SC-07,7,350
+South Dakota,SD,SD-01,0,351
+Tennessee,TN,TN-01,1,352
+Tennessee,TN,TN-02,2,353
+Tennessee,TN,TN-03,3,354
+Tennessee,TN,TN-04,4,355
+Tennessee,TN,TN-05,5,356
+Tennessee,TN,TN-06,6,357
+Tennessee,TN,TN-07,7,358
+Tennessee,TN,TN-08,8,359
+Tennessee,TN,TN-09,9,360
+Texas,TX,TX-01,1,361
+Texas,TX,TX-02,2,362
+Texas,TX,TX-03,3,363
+Texas,TX,TX-04,4,364
+Texas,TX,TX-05,5,365
+Texas,TX,TX-06,6,366
+Texas,TX,TX-07,7,367
+Texas,TX,TX-08,8,368
+Texas,TX,TX-09,9,369
+Texas,TX,TX-10,10,370
+Texas,TX,TX-11,11,371
+Texas,TX,TX-12,12,372
+Texas,TX,TX-13,13,373
+Texas,TX,TX-14,14,374
+Texas,TX,TX-15,15,375
+Texas,TX,TX-16,16,376
+Texas,TX,TX-17,17,377
+Texas,TX,TX-18,18,378
+Texas,TX,TX-19,19,379
+Texas,TX,TX-20,20,380
+Texas,TX,TX-21,21,381
+Texas,TX,TX-22,22,382
+Texas,TX,TX-23,23,383
+Texas,TX,TX-24,24,384
+Texas,TX,TX-25,25,385
+Texas,TX,TX-26,26,386
+Texas,TX,TX-27,27,387
+Texas,TX,TX-28,28,388
+Texas,TX,TX-29,29,389
+Texas,TX,TX-30,30,390
+Texas,TX,TX-31,31,391
+Texas,TX,TX-32,32,392
+Texas,TX,TX-33,33,393
+Texas,TX,TX-34,34,394
+Texas,TX,TX-35,35,395
+Texas,TX,TX-36,36,396
+Texas,TX,TX-37,37,397
+Texas,TX,TX-38,38,398
+Utah,UT,UT-01,1,399
+Utah,UT,UT-02,2,400
+Utah,UT,UT-03,3,401
+Utah,UT,UT-04,4,402
+Virginia,VA,VA-01,1,403
+Virginia,VA,VA-02,2,404
+Virginia,VA,VA-03,3,405
+Virginia,VA,VA-04,4,406
+Virginia,VA,VA-05,5,407
+Virginia,VA,VA-06,6,408
+Virginia,VA,VA-07,7,409
+Virginia,VA,VA-08,8,410
+Virginia,VA,VA-09,9,411
+Virginia,VA,VA-10,10,412
+Virginia,VA,VA-11,11,413
+Vermont,VT,VT-01,0,414
+Washington,WA,WA-01,1,415
+Washington,WA,WA-02,2,416
+Washington,WA,WA-03,3,417
+Washington,WA,WA-04,4,418
+Washington,WA,WA-05,5,419
+Washington,WA,WA-06,6,420
+Washington,WA,WA-07,7,421
+Washington,WA,WA-08,8,422
+Washington,WA,WA-09,9,423
+Washington,WA,WA-10,10,424
+Wisconsin,WI,WI-01,1,425
+Wisconsin,WI,WI-02,2,426
+Wisconsin,WI,WI-03,3,427
+Wisconsin,WI,WI-04,4,428
+Wisconsin,WI,WI-05,5,429
+Wisconsin,WI,WI-06,6,430
+Wisconsin,WI,WI-07,7,431
+Wisconsin,WI,WI-08,8,432
+West Virginia,WV,WV-01,1,433
+West Virginia,WV,WV-02,2,434
+Wyoming,WY,WY-01,0,435

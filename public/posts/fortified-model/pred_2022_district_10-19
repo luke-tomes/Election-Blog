@@ -1,0 +1,430 @@
+state,district,incumb_in_district,incumb_district,year,natl_genericpoll_mean_dem_margin,rdi_change_pct,mean_pres_approval_num,mean_pres_polling_margin
+Alabama,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Alabama,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Alabama,3,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Alabama,4,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Alabama,5,NA,No Incumbent,2022,-3,1.91,42,-14
+Alabama,6,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Alabama,7,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Alaska,0,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Arizona,1,NA,No Incumbent,2022,-3,1.91,42,-14
+Arizona,2,NA,No Incumbent,2022,-3,1.91,42,-14
+Arizona,3,NA,No Incumbent,2022,-3,1.91,42,-14
+Arizona,4,NA,No Incumbent,2022,-3,1.91,42,-14
+Arizona,5,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Arizona,6,NA,No Incumbent,2022,-3,1.91,42,-14
+Arizona,7,NA,No Incumbent,2022,-3,1.91,42,-14
+Arizona,8,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Arizona,9,NA,No Incumbent,2022,-3,1.91,42,-14
+Arkansas,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Arkansas,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Arkansas,3,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Arkansas,4,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+California,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+California,10,NA,No Incumbent,2022,-3,1.91,42,-14
+California,11,NA,No Incumbent,2022,-3,1.91,42,-14
+California,12,NA,No Incumbent,2022,-3,1.91,42,-14
+California,13,NA,No Incumbent,2022,-3,1.91,42,-14
+California,14,NA,No Incumbent,2022,-3,1.91,42,-14
+California,15,NA,No Incumbent,2022,-3,1.91,42,-14
+California,16,NA,No Incumbent,2022,-3,1.91,42,-14
+California,17,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+California,18,NA,No Incumbent,2022,-3,1.91,42,-14
+California,19,NA,No Incumbent,2022,-3,1.91,42,-14
+California,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+California,20,NA,No Incumbent,2022,-3,1.91,42,-14
+California,21,NA,No Incumbent,2022,-3,1.91,42,-14
+California,22,NA,No Incumbent,2022,-3,1.91,42,-14
+California,23,NA,No Incumbent,2022,-3,1.91,42,-14
+California,24,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+California,25,NA,No Incumbent,2022,-3,1.91,42,-14
+California,26,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+California,27,NA,No Incumbent,2022,-3,1.91,42,-14
+California,28,NA,No Incumbent,2022,-3,1.91,42,-14
+California,29,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+California,3,NA,No Incumbent,2022,-3,1.91,42,-14
+California,30,NA,No Incumbent,2022,-3,1.91,42,-14
+California,31,NA,No Incumbent,2022,-3,1.91,42,-14
+California,32,NA,No Incumbent,2022,-3,1.91,42,-14
+California,33,NA,No Incumbent,2022,-3,1.91,42,-14
+California,34,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+California,35,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+California,36,NA,No Incumbent,2022,-3,1.91,42,-14
+California,37,NA,No Incumbent,2022,-3,1.91,42,-14
+California,38,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+California,39,NA,No Incumbent,2022,-3,1.91,42,-14
+California,4,NA,No Incumbent,2022,-3,1.91,42,-14
+California,40,NA,No Incumbent,2022,-3,1.91,42,-14
+California,41,NA,No Incumbent,2022,-3,1.91,42,-14
+California,42,NA,No Incumbent,2022,-3,1.91,42,-14
+California,43,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+California,44,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+California,45,NA,No Incumbent,2022,-3,1.91,42,-14
+California,46,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+California,47,NA,No Incumbent,2022,-3,1.91,42,-14
+California,48,NA,No Incumbent,2022,-3,1.91,42,-14
+California,49,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+California,5,NA,No Incumbent,2022,-3,1.91,42,-14
+California,50,NA,No Incumbent,2022,-3,1.91,42,-14
+California,51,NA,No Incumbent,2022,-3,1.91,42,-14
+California,52,NA,No Incumbent,2022,-3,1.91,42,-14
+California,6,NA,No Incumbent,2022,-3,1.91,42,-14
+California,7,NA,No Incumbent,2022,-3,1.91,42,-14
+California,8,NA,No Incumbent,2022,-3,1.91,42,-14
+California,9,NA,No Incumbent,2022,-3,1.91,42,-14
+Colorado,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Colorado,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Colorado,3,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Colorado,4,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Colorado,5,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Colorado,6,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Colorado,7,NA,No Incumbent,2022,-3,1.91,42,-14
+Connecticut,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Connecticut,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Connecticut,3,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Connecticut,4,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Connecticut,5,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Delaware,0,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Florida,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Florida,10,NA,No Incumbent,2022,-3,1.91,42,-14
+Florida,11,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Florida,12,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Florida,13,NA,No Incumbent,2022,-3,1.91,42,-14
+Florida,14,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Florida,15,NA,No Incumbent,2022,-3,1.91,42,-14
+Florida,16,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Florida,17,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Florida,18,NA,No Incumbent,2022,-3,1.91,42,-14
+Florida,19,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Florida,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Florida,20,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Florida,21,NA,No Incumbent,2022,-3,1.91,42,-14
+Florida,22,NA,No Incumbent,2022,-3,1.91,42,-14
+Florida,23,NA,No Incumbent,2022,-3,1.91,42,-14
+Florida,24,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Florida,25,NA,No Incumbent,2022,-3,1.91,42,-14
+Florida,26,NA,No Incumbent,2022,-3,1.91,42,-14
+Florida,27,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Florida,3,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Florida,4,NA,No Incumbent,2022,-3,1.91,42,-14
+Florida,5,NA,No Incumbent,2022,-3,1.91,42,-14
+Florida,6,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Florida,7,NA,No Incumbent,2022,-3,1.91,42,-14
+Florida,8,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Florida,9,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Georgia,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Georgia,10,NA,No Incumbent,2022,-3,1.91,42,-14
+Georgia,11,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Georgia,12,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Georgia,13,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Georgia,14,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Georgia,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Georgia,3,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Georgia,4,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Georgia,5,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Georgia,6,NA,No Incumbent,2022,-3,1.91,42,-14
+Georgia,7,NA,No Incumbent,2022,-3,1.91,42,-14
+Georgia,8,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Georgia,9,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Hawaii,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Hawaii,2,NA,No Incumbent,2022,-3,1.91,42,-14
+Idaho,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Idaho,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Illinois,1,NA,No Incumbent,2022,-3,1.91,42,-14
+Illinois,10,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Illinois,11,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Illinois,12,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Illinois,13,NA,No Incumbent,2022,-3,1.91,42,-14
+Illinois,14,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Illinois,15,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Illinois,16,NA,No Incumbent,2022,-3,1.91,42,-14
+Illinois,17,NA,No Incumbent,2022,-3,1.91,42,-14
+Illinois,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Illinois,3,NA,No Incumbent,2022,-3,1.91,42,-14
+Illinois,4,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Illinois,5,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Illinois,6,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Illinois,7,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Illinois,8,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Illinois,9,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Indiana,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Indiana,2,NA,No Incumbent,2022,-3,1.91,42,-14
+Indiana,3,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Indiana,4,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Indiana,5,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Indiana,6,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Indiana,7,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Indiana,8,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Indiana,9,NA,No Incumbent,2022,-3,1.91,42,-14
+Iowa,1,NA,No Incumbent,2022,-3,1.91,42,-14
+Iowa,2,NA,No Incumbent,2022,-3,1.91,42,-14
+Iowa,3,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Iowa,4,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Kansas,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Kansas,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Kansas,3,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Kansas,4,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Kentucky,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Kentucky,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Kentucky,3,NA,No Incumbent,2022,-3,1.91,42,-14
+Kentucky,4,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Kentucky,5,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Kentucky,6,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Louisiana,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Louisiana,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Louisiana,3,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Louisiana,4,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Louisiana,5,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Louisiana,6,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Maine,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Maine,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Maryland,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Maryland,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Maryland,3,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Maryland,4,NA,No Incumbent,2022,-3,1.91,42,-14
+Maryland,5,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Maryland,6,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Maryland,7,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Maryland,8,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Massachusetts,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Massachusetts,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Massachusetts,3,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Massachusetts,4,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Massachusetts,5,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Massachusetts,6,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Massachusetts,7,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Massachusetts,8,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Massachusetts,9,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Michigan,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Michigan,10,NA,No Incumbent,2022,-3,1.91,42,-14
+Michigan,11,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Michigan,12,NA,No Incumbent,2022,-3,1.91,42,-14
+Michigan,13,NA,No Incumbent,2022,-3,1.91,42,-14
+Michigan,2,NA,No Incumbent,2022,-3,1.91,42,-14
+Michigan,3,NA,No Incumbent,2022,-3,1.91,42,-14
+Michigan,4,NA,No Incumbent,2022,-3,1.91,42,-14
+Michigan,5,NA,No Incumbent,2022,-3,1.91,42,-14
+Michigan,6,NA,No Incumbent,2022,-3,1.91,42,-14
+Michigan,7,NA,No Incumbent,2022,-3,1.91,42,-14
+Michigan,8,NA,No Incumbent,2022,-3,1.91,42,-14
+Michigan,9,NA,No Incumbent,2022,-3,1.91,42,-14
+Minnesota,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Minnesota,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Minnesota,3,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Minnesota,4,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Minnesota,5,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Minnesota,6,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Minnesota,7,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Minnesota,8,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Mississippi,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Mississippi,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Mississippi,3,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Mississippi,4,NA,No Incumbent,2022,-3,1.91,42,-14
+Missouri,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Missouri,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Missouri,3,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Missouri,4,NA,No Incumbent,2022,-3,1.91,42,-14
+Missouri,5,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Missouri,6,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Missouri,7,NA,No Incumbent,2022,-3,1.91,42,-14
+Missouri,8,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Montana,1,NA,No Incumbent,2022,-3,1.91,42,-14
+Montana,2,NA,No Incumbent,2022,-3,1.91,42,-14
+Nebraska,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Nebraska,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Nebraska,3,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Nevada,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Nevada,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Nevada,3,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Nevada,4,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New Hampshire,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New Hampshire,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New Jersey,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New Jersey,10,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New Jersey,11,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New Jersey,12,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New Jersey,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New Jersey,3,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New Jersey,4,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New Jersey,5,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New Jersey,6,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New Jersey,7,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New Jersey,8,NA,No Incumbent,2022,-3,1.91,42,-14
+New Jersey,9,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New Mexico,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New Mexico,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New Mexico,3,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New York,1,NA,No Incumbent,2022,-3,1.91,42,-14
+New York,10,NA,No Incumbent,2022,-3,1.91,42,-14
+New York,11,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New York,12,NA,No Incumbent,2022,-3,1.91,42,-14
+New York,13,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New York,14,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New York,15,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New York,16,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New York,17,NA,No Incumbent,2022,-3,1.91,42,-14
+New York,18,NA,No Incumbent,2022,-3,1.91,42,-14
+New York,19,NA,No Incumbent,2022,-3,1.91,42,-14
+New York,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New York,20,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New York,21,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New York,22,NA,No Incumbent,2022,-3,1.91,42,-14
+New York,23,NA,No Incumbent,2022,-3,1.91,42,-14
+New York,24,NA,No Incumbent,2022,-3,1.91,42,-14
+New York,25,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New York,26,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New York,3,NA,No Incumbent,2022,-3,1.91,42,-14
+New York,4,NA,No Incumbent,2022,-3,1.91,42,-14
+New York,5,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New York,6,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New York,7,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New York,8,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+New York,9,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+North Carolina,1,NA,No Incumbent,2022,-3,1.91,42,-14
+North Carolina,10,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+North Carolina,11,NA,No Incumbent,2022,-3,1.91,42,-14
+North Carolina,12,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+North Carolina,13,NA,No Incumbent,2022,-3,1.91,42,-14
+North Carolina,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+North Carolina,3,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+North Carolina,4,NA,No Incumbent,2022,-3,1.91,42,-14
+North Carolina,5,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+North Carolina,6,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+North Carolina,7,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+North Carolina,8,NA,No Incumbent,2022,-3,1.91,42,-14
+North Carolina,9,NA,No Incumbent,2022,-3,1.91,42,-14
+North Dakota,0,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Ohio,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Ohio,10,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Ohio,11,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Ohio,12,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Ohio,13,NA,No Incumbent,2022,-3,1.91,42,-14
+Ohio,14,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Ohio,15,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Ohio,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Ohio,3,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Ohio,4,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Ohio,5,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Ohio,6,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Ohio,7,NA,No Incumbent,2022,-3,1.91,42,-14
+Ohio,8,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Ohio,9,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Oklahoma,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Oklahoma,2,NA,No Incumbent,2022,-3,1.91,42,-14
+Oklahoma,3,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Oklahoma,4,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Oklahoma,5,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Oregon,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Oregon,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Oregon,3,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Oregon,4,NA,No Incumbent,2022,-3,1.91,42,-14
+Oregon,5,NA,No Incumbent,2022,-3,1.91,42,-14
+Pennsylvania,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Pennsylvania,10,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Pennsylvania,11,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Pennsylvania,12,NA,No Incumbent,2022,-3,1.91,42,-14
+Pennsylvania,13,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Pennsylvania,14,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Pennsylvania,15,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Pennsylvania,16,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Pennsylvania,17,NA,No Incumbent,2022,-3,1.91,42,-14
+Pennsylvania,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Pennsylvania,3,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Pennsylvania,4,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Pennsylvania,5,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Pennsylvania,6,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Pennsylvania,7,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Pennsylvania,8,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Pennsylvania,9,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Rhode Island,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Rhode Island,2,NA,No Incumbent,2022,-3,1.91,42,-14
+South Carolina,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+South Carolina,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+South Carolina,3,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+South Carolina,4,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+South Carolina,5,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+South Carolina,6,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+South Carolina,7,NA,No Incumbent,2022,-3,1.91,42,-14
+South Dakota,0,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Tennessee,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Tennessee,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Tennessee,3,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Tennessee,4,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Tennessee,5,NA,No Incumbent,2022,-3,1.91,42,-14
+Tennessee,6,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Tennessee,7,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Tennessee,8,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Tennessee,9,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,1,NA,No Incumbent,2022,-3,1.91,42,-14
+Texas,10,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,11,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,12,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,13,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,14,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,15,NA,No Incumbent,2022,-3,1.91,42,-14
+Texas,16,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,17,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,18,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,19,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,20,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,21,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,22,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,23,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,24,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,25,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,26,NA,No Incumbent,2022,-3,1.91,42,-14
+Texas,27,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,28,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,29,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,3,NA,No Incumbent,2022,-3,1.91,42,-14
+Texas,30,NA,No Incumbent,2022,-3,1.91,42,-14
+Texas,31,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,32,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,33,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,34,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,35,NA,No Incumbent,2022,-3,1.91,42,-14
+Texas,36,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,4,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,5,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,6,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,7,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Texas,8,NA,No Incumbent,2022,-3,1.91,42,-14
+Texas,9,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Utah,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Utah,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Utah,3,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Utah,4,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Vermont,0,NA,No Incumbent,2022,-3,1.91,42,-14
+Virginia,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Virginia,10,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Virginia,11,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Virginia,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Virginia,3,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Virginia,4,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Virginia,5,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Virginia,6,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Virginia,7,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Virginia,8,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Virginia,9,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Washington,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Washington,10,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Washington,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Washington,3,NA,No Incumbent,2022,-3,1.91,42,-14
+Washington,4,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Washington,5,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Washington,6,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Washington,7,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Washington,8,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Washington,9,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+West Virginia,1,NA,No Incumbent,2022,-3,1.91,42,-14
+West Virginia,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Wisconsin,1,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Wisconsin,2,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Wisconsin,3,NA,No Incumbent,2022,-3,1.91,42,-14
+Wisconsin,4,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Wisconsin,5,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Wisconsin,6,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Wisconsin,7,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Wisconsin,8,Incumbent Running,Incumbent Running,2022,-3,1.91,42,-14
+Wyoming,0,NA,No Incumbent,2022,-3,1.91,42,-14
