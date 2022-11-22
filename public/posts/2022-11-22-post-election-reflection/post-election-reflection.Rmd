@@ -1,0 +1,48 @@
+---
+title: Post-Election Reflection
+author: Luke Tomes
+date: '2022-11-22'
+slug: []
+categories: []
+tags: []
+authors: []
+description: ''
+externalLink: ''
+series: []
+---
+
+```{r setup, echo = FALSE, message = FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = FALSE,
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.align = "center")
+```
+
+```{r libraries, include = FALSE}
+# Load Libraries
+library(tidyverse)
+library(usmap)
+library(sf)
+library(rmapshaper)
+library(car)
+library(moderndive)
+library(janitor)
+library(lubridate)
+library(formattable)
+library(stargazer)
+library(vtable)
+library(sjPlot)
+library(sjmisc)
+library(sjlabelled)
+library(jtools)
+library(huxtable)
+```
+
+```{r load data, include = FALSE}
+# load existing datasets for model
+
+# load more datasets
+
+# uncut datasets
+```
