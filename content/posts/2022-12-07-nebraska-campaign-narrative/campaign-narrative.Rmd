@@ -1,7 +1,7 @@
 ---
 title: "Campaign Narrative: Nebraska's Second Congressional District"
 author: Luke Tomes
-date: '2022-12-07'
+date: '2022-11-25'
 slug: nebraska-campaign-narrative
 categories: []
 tags: []
