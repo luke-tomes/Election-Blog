@@ -2,7 +2,7 @@
 title: Post-Election Reflection
 author: Luke Tomes
 date: '2022-11-22'
-slug: []
+slug: post-election-reflection
 categories: []
 tags: []
 authors: []
@@ -37,12 +37,353 @@ library(sjmisc)
 library(sjlabelled)
 library(jtools)
 library(huxtable)
+library(OpenImageR)
+library(magick)
+library(ggrepel)
 ```
 
 ```{r load data, include = FALSE}
-# load existing datasets for model
+# load existing datasets with 2022 results
+natl_vote_and_seat_share_data <- read_csv("natl_vote_and_seat_share_data.csv")
 
-# load more datasets
+district_vote_share_data <- read_csv("district_vote_share_data.csv")
 
-# uncut datasets
+
+# load datasets for model
+national_election_data_for_vote_model <- read_csv("national_election_data_for_vote_model.csv")
+
+national_election_data_for_seat_model <- read_csv("national_election_data_for_seat_model.csv")
+
+district_election_data_model <- read_csv("district_election_data_model.csv")
+
+# load images
+
 ```
+
+```{r build models}
+# natl vote share
+national_vote_model <- lm(DemVotesMajorPercentAll ~
+                       democratic_president +
+                       midterm_election +
+                         previous_voteshare +
+                       mean_dem_natl_gb_margin,
+                     data = national_election_data_for_vote_model)
+
+
+# natl seat share
+national_seat_model <- lm(democratic_seats_won ~
+                       total_incumbents +
+                       democratic_house +
+                       democratic_president +
+                       midterm_election +
+                         previous_seatshare +
+                       mean_dem_natl_gb_margin,
+                     data = national_election_data_for_seat_model)
+
+
+# district vote share
+district_model <- lm(DemVotesMajorPercent ~
+                       incumb_district +
+                       democratic_house +
+                       democratic_president +
+                       midterm_election +
+                       previous_voteshare +
+                       total_avg_rating,
+                     data = district_election_data_model)
+
+```
+
+Two weeks ago, I released my [predictions](https://luke-tomes.github.io/election-blog/posts/election_forecast/) for the Fall 2022 midterm elections. Over the course of this fall season, I had explored potential variables that can influence my prediction for how candidates will fare in elections, and I refined those variables to maximize their predictive power. In summary, my model was not the most accurate on many fronts, providing me an opportunity to learn where I had went wrong. Despite the fun in trying to be as accurate as possible, this practice of predicting election results is valuable because it allows us to learn what matters to voters and how they behave. In today's blog post, I will look to analyze my predictions by comparing with the actual results.
+
+
+## Recap of My Model and My Predictions
+
+In last weeks [prediction post](https://luke-tomes.github.io/election-blog/posts/election_forecast/), I included three separate models to predict three distinct results:
+
+-   Democratic Party's National Vote Share
+-   Democratic Party's National Seat Share
+-   Democratic Party Candidate's Vote Share in a Specific District
+
+These three models gave me the tools to predict all important aspects to the midterm elections, such as if the mood towards the national Democratic Party, the Democrats would hold the majority in the House, and if a Democratic candidate would win their specific district. The last two points listed their are the ones that truly matter when it comes to power and policymaking, because winning elections and majorities is how a party gains power so they can legislate (especially by winning the majority of a congressional chamber).
+
+The variables I used are listed here, with more thorough descriptions of them written in my [final prediction blog post](https://luke-tomes.github.io/election-blog/posts/election_forecast/):
+
+-   Incumbency (On a *national-level model*, I will use the total number of incumbents running for re-election for the House of Representatives. On a *district-level model*, I will denote whether or not the incumbent is running for re-election in the specific district)
+    
+-   Party Control of the House of Representatives
+
+-   Party Control of the White House
+
+-   Whether or Not There is a Presidential Election
+
+-   Previous Vote Share/Seat Share
+
+-   Mean Democratic Party National Generic Ballot Margin
+
+-   Expert Ratings (Only for District Model)
+
+
+
+
+For Democrats, I predicted that they would lose both the national two-party vote share (coming in at 47.35% of the vote) and their majority status in the House (Winning only 204 seats, far short of the 218 mark needed for a majority). Those two have proven to be correct, but my predictions by how much they would lose proved to be off. Below I display graphs that show what my model predicted the result would be and compare the prediction to the actual result. It includes the predictions vs reality for all other years included in the model as well. The closer the points are to the 45-degree line in terms of verticality, the more accurate my prediction was to the actual result.
+
+### National Vote Share Graph
+```{r natl vote share graph}
+natl_vote_and_seat_share_data_for_graph <- natl_vote_and_seat_share_data %>%
+  filter(year != 2022)
+
+# natl vote share
+ggplot(aes(x = predict(national_vote_model,
+                       natl_vote_and_seat_share_data_for_graph),
+           y = DemVotesMajorPercentAll,
+           label = year), 
+       data = natl_vote_and_seat_share_data_for_graph) +
+  xlim(45,60) +
+  ylim(45,60) +
+  geom_text(alpha = 0.70,
+            size = 3) +
+  geom_text(x = 47.34632,
+             y = 48.10,
+             color = "red",
+            label = 2022,
+            size = 3) +
+  geom_abline(intercept = 0, slope = 1, color = "blue") +
+  geom_vline(xintercept = 50, lty = 2, color = "black") +
+  geom_hline(yintercept = 50, lty = 2, color = "black") +
+  labs(title = "National Congressional Model") +
+  xlab(label = "Predicted Democratic Party District Vote Share") +
+  ylab(label = "Actual Democratic Party District Vote Share") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+Here we can see that my Democratic national vote share prediction was not far off the mark. One should note how I underestimated the Democratic Party's performance, since the red 2022 point falls above the blue line.
+
+
+### National Seat Share Graph
+```{r natl seat share graph}
+# natl seat share
+ggplot(aes(x = predict(national_seat_model,
+                       natl_vote_and_seat_share_data_for_graph),
+           y = democratic_seats_won,
+           label = year), 
+       data = natl_vote_and_seat_share_data_for_graph) +
+  geom_text(alpha = 0.70,
+             size = 3) +
+  geom_text(x = 204.3809,
+             y = 213,
+             color = "red",
+            label = 2022,
+            size = 3) +
+  geom_abline(intercept = 0, slope = 1, color = "blue") +
+  geom_vline(xintercept = 218, lty = 2, color = "black") +
+  geom_hline(yintercept = 218, lty = 2, color = "black") +
+  labs(title = "National Congressional Model") +
+  xlab(label = "Predicted Democratic Party District Vote Share") +
+  ylab(label = "Actual Democratic Party District Vote Share") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+Again, it is evident that I underestimated the Democratic Party's ability to pick up seats in this cycle. Also, despite incorrectly predicting the number of seats Democrats would go on to win, my seat share model did not deviate from its characteristic of always correctly predicting who is to win a majority: in this case, I was correct that Democrats would lose their majority status in the House. 
+
+
+### NE-02 District Vote Share Graph
+```{r NE02 district vote share}
+# district vote share
+ggplot(aes(x = predict(district_model,
+                       district_vote_share_data),
+           y = DemVotesMajorPercent), 
+       data = district_vote_share_data) +
+  xlim(0,100) +
+  ylim(0,100) +
+  geom_point(alpha = 0.6,
+             size = 1.25) +
+  geom_point(x = 42.55625,
+             y = 48.66,
+             color = "red",
+             size = 1.25) +
+  geom_abline(intercept = 0, slope = 1, color = "blue") +
+  geom_vline(xintercept = 50, lty = 2, color = "black") +
+  geom_hline(yintercept = 50, lty = 2, color = "black") +
+  labs(title = "Congressional District Model") +
+  xlab(label = "Predicted Democratic Party District Vote Share") +
+  ylab(label = "Actual Democratic Party District Vote Share") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+Here in this graph, I attempted to predict how the Democratic candidate in Nebraska's 2nd district, Tony Vargas, would fare (predicting he would win 42.56% of the vote). Once again, it is evident I underestimated the Democratic Party in this election, since he wound up receiving 48.66% of the vote and made the election much closer than my model would go on to predict. To my model's credit, it successfully predicted that Vargas would lose the election.
+
+
+## My Model's Accuracy
+
+As we can see above, my three models possessed a habit of underestimating the Democratic Party. This was not entirely out-of-the-blue, as most of the professional outlets, like [FiveThiryEight](https://projects.fivethirtyeight.com/2022-election-forecast/house/?cid=rrpromo) and [Cook Political Report with Amy Walter](https://www.cookpolitical.com/ratings/house-race-ratings), had predicted Republicans winning back the House in sizable fashion. My models and theirs were predicated upon an environment that historically should have proved incredibly terrible for the party to which a newly-elected president belongs and that holds the House. High inflation, growing concerns about a recession, and rising concern about crime were thought to be [crushing factors](https://www.cnn.com/2022/06/20/politics/biden-inflation-recession-gas-prices-analysis/index.html) for Democrats' chances in these midterm elections. However, this prediction from pundits, expert forecasters, and my models proved to be wrong. Democrats bucked the trend of the president's party losing scores of seats in their first midterm election, as shown in Gov 1347 lecture by [Ryan D. Enos](https://www.ryandenos.com). 
+
+Below, I show just how accurate my models turned out to be. Predicting who wins and loses is ultimately what matters for legislating, but it is important to be accurate in how close the results will be. Striving for accuracy matters because, for example, predicting the Republicans win a super-majority in the House vs a narrow majority is crucial to understanding the upcoming legislative course.
+
+### National Vote Share Results
+```{r natl vote share}
+# natl vote share
+natl_vote_table <- data.frame(
+  Party = rep(c('Democrats', 'Republicans'), each=1),
+  Predicted_Vote_Share = rep(c('47.35', '52.65'), times=1),
+  Actual_Vote_Share = rep(c('48.10', '51.90'), times=1),
+  Error = rep(c('-0.75 Underestimation', ""), times=1))
+
+as.htmlwidget(
+  formattable(natl_vote_table,
+              align=c("l", "c", "c", "r"),
+              list("Error" = formatter("span", 
+                                         style = ~ style(color =
+                                                           ifelse(
+                                                             Error >= 0, 
+                                                             "green", 
+                                                             "#E9911C"))),
+                   "Party" = formatter("span", 
+                                         style = ~ style(color =
+                                                           ifelse(
+                                                             Party == "Democrats",
+                                                             "#18A3D3", 
+                                                             "#C81717"))),
+                   Predicted_Vote_Share = formatter("span", 
+                                         style = ~ style(color =
+                                                           ifelse(
+                                                             Predicted_Vote_Share <= 50,
+                                                             "#18A3D3", 
+                                                             "#C81717"))),
+                   Actual_Vote_Share = formatter("span", 
+                                         style = ~ style(color =
+                                                           ifelse(
+                                                              Actual_Vote_Share <= 50,
+                                                             "#18A3D3", 
+                                                             "#C81717"))))),
+              width = "82.5%")
+```
+
+Here is my national vote share reality check, using results as of this blog's release date of November 22, 2022. Fortunately, I was not far off the mark, but this prediction is the least important of the three.
+
+
+### National Seat Share Results
+```{r natl seat share}
+# natl seat share
+natl_seat_table <- data.frame(
+  Party = rep(c('Democrats', 'Republicans'), each=1),
+  Predicted_Seat_Share = rep(c('204', '231'), times=1),
+  Actual_Seat_Share = rep(c('213', '222'), times=1),
+  Error = rep(c('-9 Underestimation', ""), times=1))
+
+as.htmlwidget(
+  formattable(natl_seat_table,
+              align=c("l", "c", "c", "r"),
+              list("Error" = formatter("span", 
+                                         style = ~ style(color =
+                                                           ifelse(
+                                                             Error >= 0, 
+                                                             "green", 
+                                                             "#E9911C"))),
+                   "Party" = formatter("span", 
+                                         style = ~ style(color =
+                                                           ifelse(
+                                                             Party == "Democrats",
+                                                             "#18A3D3", 
+                                                             "#C81717"))),
+                   Predicted_Seat_Share = formatter("span", 
+                                         style = ~ style(color =
+                                                           ifelse(
+                                                             Predicted_Seat_Share <= 218,
+                                                             "#18A3D3", 
+                                                             "#C81717"))),
+                   Actual_Seat_Share = formatter("span", 
+                                         style = ~ style(color =
+                                                           ifelse(
+                                                              Actual_Seat_Share <= 218,
+                                                             "#18A3D3", 
+                                                             "#C81717"))))),
+              width = "82.5%")
+```
+
+My model begins to suffer from more extreme underestimation of the Democrats when predicting seat share. 9 seats in not a whole lot, but this difference matters since the Republicans possessing 231 vs 222 will matter greatly when determining how much they have to work with the Democrats. With 222 seats, they can only afford to lose 4 votes from their side when passing legislation, which is a slim margin for a majority (especially versus the margin with 231 seats).
+
+
+### NE-02 District Vote Share Results
+```{r NE-02 district vote share}
+# NE-02 district vote share
+district_vote_table <- data.frame(
+  Party = rep(c('Democrats', 'Republicans'), each=1),
+  Predicted_Vote_Share = rep(c('42.56', '57.44'), times=1),
+  Actual_Vote_Share = rep(c('48.66', '51.34'), times=1),
+  Error = rep(c('-6.10 Underestimation', ""), times=1))
+
+as.htmlwidget(
+  formattable(district_vote_table,
+              align=c("l", "c", "c", "r"),
+              list("Error" = formatter("span", 
+                                         style = ~ 
+                                         style(color =
+                                                 ifelse(
+                                                   Error >= 0,
+                                                   "green",
+                                                   "#E9911C"))),
+                   "Party" = formatter("span", 
+                                         style = ~ 
+                                         style(color =
+                                                 ifelse(
+                                                   Party == "Democrats",
+                                                   "#18A3D3",
+                                                   "#C81717"))),
+                   Predicted_Vote_Share = formatter("span", 
+                                         style = ~
+                                           style(color = ifelse(
+                                             Predicted_Vote_Share <= 50,
+                                             "#18A3D3",
+                                             "#C81717"))),
+                   Actual_Vote_Share = formatter("span", 
+                                         style = ~ 
+                                           style(color =
+                                                   ifelse(
+                                                     Actual_Vote_Share <= 50,
+                                                     "#18A3D3",
+                                                     "#C81717"))))),
+              width = "82.5%")
+```
+
+Lastly, my district-specific prediction failed to be accurate, showing a large underestimation. A prediction of 42.56% for the Democrats essentially indicates a noncompetitive race, and yet this race proved to be extremely close. However, like my national-level models, this one correctly predicted who would win and lose. However, my underestimation of Democrats certainly is a habitual error of these models and is worth examining.
+
+Despite these models being fairly accurate, their prediction intervals deservedly caused me great worry. This is because each 95% confidence interval in the three models possessed a range of values that included the Democratic Party winning the national vote share, national seat share, and the NE-02 congressional district. (while my best guess predictions forecasted the democratic party would lose in each case). Here is a link to [last week's blog post](https://luke-tomes.github.io/election-blog/posts/election_forecast/) that includes the intervals. This is one area that would need further refining in the future.
+
+
+## Reasons for the Inaccuracies
+
+My models' habitual underestimation of Democrats is their biggest point of inaccuracy. Democrats defied what seemed to be a terrible environment for an incumbent party. All throughout the summer, voters heard about raging inflation and growing concerns about crime in the United States. These are issues that typically get attributed to the incumbent party, with their response being critically assessed (and not so much the events happening), according to scholar [Andrew Healy.](https://hollis.harvard.edu/primo-explore/fulldisplay?docid=TN_cdi_crossref_primary_10_1561_100_00009057&context=PC&vid=HVD2&search_scope=everything&tab=everything&lang=en_US) Democrats seemed to be out of effective answers and across the country they began to sweat. However, what seemed to drown out these phenomena was the reality that the issue of abortion rights and candidate quality rose to significant importance. The New York Times' podcast The Daily [dove](https://open.spotify.com/episode/4HbV7yadyQAWvD1iwCaDw8?si=5dee0e6fc4304dee) into this, saying when abortion and candidate quality were major issues in a race (whether due to campaign messaging/extremism or if abortion was explicity on the ballot), the Democrats did extremely well, like in Michigan. When they were not major issues and candidates shied away from extreme positions, such as in Florida, Republicans swept the field. The Washington Post [proves this](https://www.washingtonpost.com/politics/interactive/2022/house-race-map-midterm-elections/) by showing how Florida uniformly shifted more to the GOP since 2020 and how Michigan shifted much more to the Democrats since 2020. 
+
+Thus, I believe that my models inaccuracies lie in the reality that they did not contain more variables specific to the voters and candidates. My models heavily relied on factors outside of the voters and candidates, like incumbency variables (whether the president and house were controlled by Democrats), matter of fact variables (like whether it was a midterm year or not), and polling (generic ballot) that was a snapshot of voters' preferences but not a snapshot into their level of motivation. This reliance proved to be less than ideal and insufficient because we saw that the issues of abortion and candidate quality/extremism played a large role in the turnout game, motivating some voters to go to the ballot box and some to stay home when they normally would not have. 
+
+Scholars Joshua L. Kalla and David E. Broockman have detailed that persuasive effects [rarely, if at all, emerge](https://hollis.harvard.edu/primo-explore/fulldisplay?docid=TN_cdi_proquest_journals_1990829523&context=PC&vid=HVD2&search_scope=everything&tab=everything&lang=en_US) from ground campaigning, arguing that persuasion resulting from ground campaigning appears only in circumstances of compounding effects from early on in a race and campaigns investing heavily in an extremely unpopular position taken by their candidate. Thus, it seems persuasion is not the name of the game when campaigning. Turnout is. After all, scholars Ryan D. Enos and Anthony Fowler find that turnout in states highly targeted by ground campaigning on average [increased by 7-8%](https://hollis.harvard.edu/primo-explore/fulldisplay?docid=TN_cdi_proquest_journals_2117059848&context=PC&vid=HVD2&search_scope=everything&tab=everything&lang=en_US) in the 2012 presidential election. My model lacked the component of issues and turnout, which can have a huge impact on the exact result of the election.
+
+
+## How I Would Change This Model
+
+To conclude this post, I want to dive into how I would incorporate these necessary changes into my models. Turnout with issues and candidate quality are the three main areas where I would like to focus:
+
+##### Issues:
+
+How I would like to bolster my models is accounting for how some issues convince more voters to head to the ballot or more to stay home, refraining from voting. For example, I am interested in seeing just how big of an issue abortion was in these elections. Directly after the Dobbs decision was released, the Democrats enjoyed a massive boost in support, with RealClearPolitics showing them [rapidly closing their deficit](https://www.realclearpolitics.com/epolls/other/2022-generic-congressional-vote-7361.html) in their generic congressional ballot aggregate. 
+
+Thus, to test out this theory that abortion rights benefited the Democrats and convinced more people to head to the ballot box, I would propose investigating primary elections where abortion became a headlining issue and contrast between different candidates. One way to do this is by comparing primaries that occurred before Dobbs and those that took place after the decision was released. Depending on the results of this, and if there was an uptick in primaries that had a renewed focus on abortion rights, one could apply a variable to the model that increases Democrats' chances of winning due to the potent issue of abortion. Especially in districts where there is an extreme contrast in sides taken on the issue of abortion, this variable would be valuable in predicting the increased turnout in favor of Democrats. Thus, on the basis of issues and turnout, this would be an advantageous variable to include.
+
+
+##### Candidate Quality:
+
+The measure of candidate quality rose to prominence as the elections neared, with Senate Majority Leader Mitch McConnell (R-KY) [commenting](https://www.youtube.com/watch?v=KZd9wrPK0BM) on his side's lack of candidate quality. This issue is rooted in a candidate's inclination to adopt extremist views or policy ideals that seem unhinged or out-of-touch to their voters. It does not take a genius to realize that people will not vote for someone they distrust, even if they might agree with that candidate's policy views more than the other candidate. Furthermore, if people see a candidate embracing extremist policies, they will look for other options. The Washington Post [highlighted](https://www.washingtonpost.com/politics/2022/09/30/midterm-elections-candidate-quality-governor-senate/) this candidate quality issue at the end of September, saying enthusiasm drops rapidly for poor-quality candidates. Thus, with this and the evidence in Michigan and Florida shown above, I believe candidate quality affects turnout. 
+
+Therefore, I would like to create an index of all candidates in all elections, with a numerical spectrum that ranks them on candidate quality. Ones who embrace seemingly far extremist positions are grouped together, while the ones who go along with the status quo, who have great relations/charisma with the voters, and who do not violate ethical and moral standards are grouped together. There should be some gray area/middle ground. Seeing the results of how they fared in elections would be interested, and this could be applied to my models easily: giving each party an average candidate quality score in a national-level model and giving each candidate a score in a particular district. This would be advantageous to my model to reinforce it with another variable that connects the model more to the voters and candidates alike. 
+
+
+## Conclusion
+
+To sum up, the upside to these three models is that they were all accurate on a more macro level: they correctly forecasted who won in each of the three cases: national vote share, national seat share, and in Nebraska's 2nd district. However, these models need to be reinforced with variables more specific to the voters and candidates, not entirely reliant on established, environment factors.
+
+
+##### Notes:
+
+*This blog is an analysis of my posts that progressively sought to understand how election data can be used to predict future outcomes. I have added to this site on a weekly basis under the direction of [Professor Ryan D. Enos](https://www.ryandenos.com).*
+
+[My project repository can be viewed here.](https://github.com/luke-tomes/election-blog)

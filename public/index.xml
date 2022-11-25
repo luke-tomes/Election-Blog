@@ -6,14 +6,24 @@
     <description>Recent content on Luke Tomes</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 22 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://www.example.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 07 Dec 2022 00:00:00 +0000</lastBuildDate><atom:link href="http://www.example.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Campaign Narrative: Nebraska&#39;s Second Congressional District</title>
+      <link>http://www.example.com/posts/2022-12-07-nebraska-campaign-narrative/nebraska-campaign-narrative/</link>
+      <pubDate>Wed, 07 Dec 2022 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.example.com/posts/2022-12-07-nebraska-campaign-narrative/nebraska-campaign-narrative/</guid>
+      <description>This website has been dedicated entirely toward learning how to predict political elections. For the first seven blog posts, I explored potential variables that can influence my prediction for how candidates will fare in elections, and I refined those variables to maximize their predictive power. Then, I went on to predict the Fall 2022 midterm elections, including forecasting in three separate cases:
+Democratic Party’s National Vote Share Democratic Party’s National Seat Share Democratic Party Candidate’s Vote Share in a Nebraska’s Second Congressional District After my initial analysis, prior to my prediction, I discovered seven useful variables (with more thorough descriptions here) that provided me a fairly accurate, predictive forecast:</description>
+    </item>
+    
     <item>
       <title>Post-Election Reflection</title>
       <link>http://www.example.com/posts/2022-11-22-post-election-reflection/post-election-reflection/</link>
       <pubDate>Tue, 22 Nov 2022 00:00:00 +0000</pubDate>
       
       <guid>http://www.example.com/posts/2022-11-22-post-election-reflection/post-election-reflection/</guid>
-      <description></description>
+      <description>Two weeks ago, I released my predictions for the Fall 2022 midterm elections. Over the course of this fall season, I had explored potential variables that can influence my prediction for how candidates will fare in elections, and I refined those variables to maximize their predictive power. In summary, my model was not the most accurate on many fronts, providing me an opportunity to learn where I had went wrong.</description>
     </item>
     
     <item>
