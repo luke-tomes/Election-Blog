@@ -218,10 +218,10 @@ ggplot() +
   facet_wrap(facets = raceYear ~.) +
   geom_sf_text(data = districtvote_plot_ne,
                aes(label = DISTRICT), 
-               colour = "white",
+               colour = "black",
                size = 2.25,
                check_overlap = TRUE) +
-  scale_fill_gradient(low = "Purple",
+  scale_fill_gradient(low = "White",
                       high = "Red",
                       name = "Vote Share Margin by Percentage") +
   labs(title = "GOP Vote Margin in Nebraska",
@@ -412,10 +412,10 @@ ggplot() +
           inherit.aes = FALSE,alpha = 0.9) +
   geom_sf_text(data = districtvote_plot_ne_pred,
                aes(label = DISTRICT), 
-               colour = "white",
+               colour = "black",
                size = 2.85,
                check_overlap = TRUE)  +
-  scale_fill_gradient(low = "Purple",
+  scale_fill_gradient(low = "White",
                       high = "Red",
                       name = 'Vote Share Margin by Percentage') +
   labs(title = "GOP Vote Margin by Congressional Districts in Nebraska, 2022",
