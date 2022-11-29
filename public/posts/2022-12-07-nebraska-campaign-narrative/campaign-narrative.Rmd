@@ -210,7 +210,7 @@ head(districtvote_ne2014thru2020)
 districtvote_plot_ne <- rmapshaper::ms_simplify(districtvote_ne2014thru2020, keep = 0.01)
 ```
 
-```{r, echo = FALSE, message = FALSE, warning = FALSE}
+```{r, echo = FALSE, message = TRUE, warning = FALSE}
 ggplot() +
   geom_sf(data = districtvote_plot_ne,
           aes(fill = VoteMargin),
@@ -274,7 +274,7 @@ For Nebraska's second congressional district, I attempted to predict how the Dem
 
 
 #### NE-02 District Vote Share Graph
-```{r NE02 district vote share}
+```{r NE02 district vote share, message = TRUE}
 # district vote share
 ggplot(aes(x = predict(district_model,
                        district_vote_share_data),
@@ -301,7 +301,7 @@ Here, we can see how my prediction for NE-02 was correct in that I accurately pr
 
 
 #### NE-02 District Vote Share Results
-```{r NE-02 district vote share}
+```{r NE-02 district vote share, message = TRUE}
 # NE-02 district vote share
 district_vote_table <- data.frame(
   Party = rep(c('Democrats', 'Republicans'), each=1),
@@ -405,7 +405,7 @@ district_pred_2022_vote_new_data <- cd114_ne3 %>%
 districtvote_plot_ne_pred <- rmapshaper::ms_simplify(district_pred_2022_vote_new_data, keep = 0.01)
 ```
 
-```{r pred map, echo = FALSE, message = FALSE, warning = FALSE}
+```{r pred map, echo = FALSE, message = FALSE, warning = FALSE, message = TRUE}
 ggplot() +
   geom_sf(data = districtvote_plot_ne_pred,
           aes(fill = vote_margin),

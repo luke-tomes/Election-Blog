@@ -128,7 +128,7 @@ The variables I used are listed here, with more thorough descriptions of them wr
 For Democrats, I predicted that they would lose both the national two-party vote share (coming in at 47.35% of the vote) and their majority status in the House (Winning only 204 seats, far short of the 218 mark needed for a majority). Those two have proven to be correct, but my predictions by how much they would lose proved to be off. Below I display graphs that show what my model predicted the result would be and compare the prediction to the actual result. It includes the predictions vs reality for all other years included in the model as well. The closer the points are to the 45-degree line in terms of verticality, the more accurate my prediction was to the actual result.
 
 ### National Vote Share Graph
-```{r natl vote share graph}
+```{r natl vote share graph, message = TRUE}
 natl_vote_and_seat_share_data_for_graph <- natl_vote_and_seat_share_data %>%
   filter(year != 2022)
 
@@ -160,7 +160,7 @@ Here we can see that my Democratic national vote share prediction was not far of
 
 
 ### National Seat Share Graph
-```{r natl seat share graph}
+```{r natl seat share graph, message = TRUE}
 # natl seat share
 ggplot(aes(x = predict(national_seat_model,
                        natl_vote_and_seat_share_data_for_graph),
@@ -187,7 +187,7 @@ Again, it is evident that I underestimated the Democratic Party's ability to pic
 
 
 ### NE-02 District Vote Share Graph
-```{r NE02 district vote share}
+```{r NE02 district vote share, message = TRUE}
 # district vote share
 ggplot(aes(x = predict(district_model,
                        district_vote_share_data),
@@ -220,7 +220,7 @@ As we can see above, my three models possessed a habit of underestimating the De
 Below, I show just how accurate my models turned out to be. Predicting who wins and loses is ultimately what matters for legislating, but it is important to be accurate in how close the results will be. Striving for accuracy matters because, for example, predicting the Republicans win a super-majority in the House vs a narrow majority is crucial to understanding the upcoming legislative course.
 
 ### National Vote Share Results
-```{r natl vote share}
+```{r natl vote share, message = TRUE}
 # natl vote share
 natl_vote_table <- data.frame(
   Party = rep(c('Democrats', 'Republicans'), each=1),
@@ -262,7 +262,7 @@ Here is my national vote share reality check, using results as of this blog's re
 
 
 ### National Seat Share Results
-```{r natl seat share}
+```{r natl seat share, message = TRUE}
 # natl seat share
 natl_seat_table <- data.frame(
   Party = rep(c('Democrats', 'Republicans'), each=1),
@@ -304,7 +304,7 @@ My model begins to suffer from more extreme underestimation of the Democrats whe
 
 
 ### NE-02 District Vote Share Results
-```{r NE-02 district vote share}
+```{r NE-02 district vote share, message = TRUE}
 # NE-02 district vote share
 district_vote_table <- data.frame(
   Party = rep(c('Democrats', 'Republicans'), each=1),
