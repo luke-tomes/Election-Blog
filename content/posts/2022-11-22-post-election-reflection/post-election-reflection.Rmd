@@ -8,7 +8,7 @@ tags: []
 authors: []
 description: ''
 externalLink: ''
-series: []
+series: [] 
 ---
 
 ```{r setup, echo = FALSE, message = FALSE}
@@ -156,6 +156,7 @@ ggplot(aes(x = predict(national_vote_model,
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
+
 Here we can see that my Democratic national vote share prediction was not far off the mark. One should note how I underestimated the Democratic Party's performance, since the red 2022 point falls above the blue line.
 
 
@@ -183,6 +184,7 @@ ggplot(aes(x = predict(national_seat_model,
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
+
 Again, it is evident that I underestimated the Democratic Party's ability to pick up seats in this cycle. Also, despite incorrectly predicting the number of seats Democrats would go on to win, my seat share model did not deviate from its characteristic of always correctly predicting who is to win a majority: in this case, I was correct that Democrats would lose their majority status in the House. 
 
 
@@ -209,6 +211,7 @@ ggplot(aes(x = predict(district_model,
   ylab(label = "Actual Democratic Party District Vote Share") +
   theme(plot.title = element_text(hjust = 0.5))
 ```
+
 
 Here in this graph, I attempted to predict how the Democratic candidate in Nebraska's 2nd district, Tony Vargas, would fare (predicting he would win 42.56% of the vote). Once again, it is evident I underestimated the Democratic Party in this election, since he wound up receiving 48.66% of the vote and made the election much closer than my model would go on to predict. To my model's credit, it successfully predicted that Vargas would lose the election.
 
@@ -258,6 +261,7 @@ as.htmlwidget(
               width = "82.5%")
 ```
 
+
 Here is my national vote share reality check, using results as of this blog's release date of November 22, 2022. Fortunately, I was not far off the mark, but this prediction is the least important of the three.
 
 
@@ -299,6 +303,7 @@ as.htmlwidget(
                                                              "#C81717"))))),
               width = "82.5%")
 ```
+
 
 My model begins to suffer from more extreme underestimation of the Democrats when predicting seat share. 9 seats in not a whole lot, but this difference matters since the Republicans possessing 231 vs 222 will matter greatly when determining how much they have to work with the Democrats. With 222 seats, they can only afford to lose 4 votes from their side when passing legislation, which is a slim margin for a majority (especially versus the margin with 231 seats).
 
@@ -344,6 +349,7 @@ as.htmlwidget(
                                                      "#C81717"))))),
               width = "82.5%")
 ```
+
 
 Lastly, my district-specific prediction failed to be accurate, showing a large underestimation. A prediction of 42.56% for the Democrats essentially indicates a noncompetitive race, and yet this race proved to be extremely close. However, like my national-level models, this one correctly predicted who would win and lose. However, my underestimation of Democrats certainly is a habitual error of these models and is worth examining.
 

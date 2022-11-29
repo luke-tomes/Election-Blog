@@ -241,6 +241,7 @@ ggplot() +
 #lost in NE01 and NE02 ish but gain in NE03
 ```
 
+
 NE-02 possesses a college graduation rate of 41% (larger than NE-01's 32.8% and NE-03's 22.9%), which is a demographic [highly inclined](https://www.pewresearch.org/social-trends/2019/08/19/the-growing-partisan-divide-in-views-of-higher-education-2/) to support the Democrat's, according to Pew Research. Also, the second district of Nebraska is much more racially diverse than the others, with a population that is 71% White (versus NE-01's 81% and NE-03's 84.2%). NE-02's diversity is actually higher than the United States as a whole, with the USA Census [finding](https://www.census.gov/quickfacts/fact/table/US/PST045221) the country is 75.8% white. The Democratic Party base [has trended](https://www.axios.com/2022/07/13/democrats-biden-white-college-graduates-poll) to a more diverse coalition in recent decades, making NE-02 a favorable environment on that front as well. Combining these educational, racial, and primarily urban demographic statistics, NE-02 is a district that has resisted recent trends of the GOP bolstering its strength in the rest of Nebraska.
 
 
@@ -297,6 +298,7 @@ ggplot(aes(x = predict(district_model,
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
+
 Here, we can see how my prediction for NE-02 was correct in that I accurately predicted Don Bacon, the Republican, would win by garnering more than 50% of the vote. Where my model went wrong (and shown by this graph) is that my prediction proved to be wrong in terms of the vote shares earned by both candidates. Because the red point, my NE-02 prediction, falls above the blue line, it is evident that I underestimated how Vargas would perform. Vargas, in line with how the experts saw this race, performed extremely competitively, earning just shy of 50% of the vote. In the interest of being more specific, I quantify this error below.
 
 
@@ -341,6 +343,7 @@ as.htmlwidget(
                                                      "#C81717"))))),
               width = "82.5%")
 ```
+
 
 In more quantitative terms, my district-specific prediction failed to be accurate, showing a rather large underestimation. A prediction of 42.56% for the Democrats essentially indicates a noncompetitive race, and yet this race proved to be extremely close. Nevertheless, I still take enjoyment from correctly predicting who would win this district. 
 
@@ -432,6 +435,7 @@ ggplot() +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(plot.subtitle = element_text(hjust = 0.5))
 ```
+
 
 By predicting elections through rigorous statistical analysis, I have learned more about what matters to voters and how certain factors of a race (fundraising, campaigning, and the environment) can influence the outcome of an election. It is fun to try and be accurate as possible, but there is inherently an intellectual pursuit included in this practice that proves to be valuable. I have learned how the environment surely matters, but so too do the local issues and candidates running in the race. Building models to forecast elections is an arduous task, a tweak one way lends problems in a different realm. At least as of this blog's post date, there is no exact formula for how to successfully do this, but that is what makes it exciting: there is still so much to learn about the voters of this great country.
 
