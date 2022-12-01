@@ -1,0 +1,445 @@
+---
+title: 'Nebraska''s Second Congressional District: Campaign Narrative'
+author: Luke Tomes
+date: '2022-12-01'
+slug: campaign-narrative
+categories: []
+tags: []
+authors: []
+description: ''
+externalLink: ''
+series: []
+---
+
+```{r setup, echo = FALSE, message = FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = FALSE,
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.align = "center")
+```
+
+```{r libraries, include = FALSE}
+# Load Libraries
+library(tidyverse)
+library(usmap)
+library(sf)
+library(rmapshaper)
+library(car)
+library(moderndive)
+library(janitor)
+library(lubridate)
+library(formattable)
+library(stargazer)
+library(vtable)
+library(sjPlot)
+library(sjmisc)
+library(sjlabelled)
+library(jtools)
+library(huxtable)
+library(OpenImageR)
+library(magick)
+library(ggrepel)
+```
+
+```{r load data, include = FALSE}
+# load existing datasets with 2022 results
+natl_vote_and_seat_share_data <- read_csv("natl_vote_and_seat_share_data.csv")
+
+district_vote_share_data <- read_csv("district_vote_share_data.csv")
+
+
+# load datasets for model
+national_election_data_for_vote_model <- read_csv("national_election_data_for_vote_model.csv")
+
+national_election_data_for_seat_model <- read_csv("national_election_data_for_seat_model.csv")
+
+district_election_data_model <- read_csv("district_election_data_model.csv")
+
+# load images
+
+```
+
+```{r build models}
+# natl vote share
+national_vote_model <- lm(DemVotesMajorPercentAll ~
+                       democratic_president +
+                       midterm_election +
+                         previous_voteshare +
+                       mean_dem_natl_gb_margin,
+                     data = national_election_data_for_vote_model)
+
+
+# natl seat share
+national_seat_model <- lm(democratic_seats_won ~
+                       total_incumbents +
+                       democratic_house +
+                       democratic_president +
+                       midterm_election +
+                         previous_seatshare +
+                       mean_dem_natl_gb_margin,
+                     data = national_election_data_for_seat_model)
+
+
+# district vote share
+district_model <- lm(DemVotesMajorPercent ~
+                       incumb_district +
+                       democratic_house +
+                       democratic_president +
+                       midterm_election +
+                       previous_voteshare +
+                       total_avg_rating,
+                     data = district_election_data_model)
+
+```
+
+```{r load in data, echo = FALSE, message = FALSE}
+# load in data
+popvote1 <- read_csv("house party vote share by district 1948-2020.csv")
+
+districtvote_ne3 <- read_csv("house party vote share by district 1948-2020.csv")
+```
+
+```{r, echo = FALSE,message = FALSE}
+# Select for variables and create new one
+# Exclude OK-01 Because Oklahoma) for 1b continuity?
+popvote_margin <- popvote1 %>%
+  filter(raceYear == 2014,
+         district_id != 'OK01') %>%
+  select(raceYear, State, DemVotes, RepVotes, district_num, district_id, WinnerParty) %>%
+  group_by(State) %>%
+  mutate(RepVoteMargin = (sum(RepVotes))/sum(RepVotes + DemVotes),
+         DemVoteMargin = (sum(DemVotes))/sum(RepVotes + DemVotes),
+         VoteMargin = RepVoteMargin - DemVoteMargin) %>%
+  rename(state = State)
+```
+
+This website has been dedicated entirely toward learning how to predict political elections. For the first seven blog posts, I explored potential variables that can influence my prediction for how candidates will fare in elections, and I refined those variables to maximize their predictive power. Then, I went on to predict the Fall 2022 midterm elections, including forecasting in three separate cases: 
+
+-   Democratic Party's National Vote Share
+-   Democratic Party's National Seat Share
+-   Democratic Party Candidate's Vote Share in a Nebraska's Second Congressional District
+
+After my initial analysis, prior to my prediction, I discovered seven useful variables (with more thorough descriptions [here](https://luke-tomes.github.io/election-blog/posts/election_forecast/)) that provided me a fairly accurate, predictive forecast: 
+
+-   Incumbency (On a *national-level model*, I will use the total number of incumbents running for re-election for the House of Representatives. On a *district-level model*, I will denote whether or not the incumbent is running for re-election in the specific district)
+    
+-   Party Control of the House of Representatives
+
+-   Party Control of the White House
+
+-   Whether or Not There is a Presidential Election
+
+-   Previous Vote Share/Seat Share
+
+-   Mean Democratic Party National Generic Ballot Margin
+
+-   Expert Ratings (Only for District Model)
+
+In this post today, I will finally dive into Nebraska's second congressional district, which I have chosen due to my familiarity with it (I'm a proud Nebraskan, albeit from its first district) and the reality that expert election predictors forecasted it to be a competitive race this cycle.
+
+
+## Introduction to the District
+ 
+In recent decades, Nebraska has begun to cement its reputation as a GOP stronghold. The Democratic Party's last presidential, senate, or gubernatorial electoral win came in 2006, when Ben Nelson [was elected](https://ballotpedia.org/United_States_congressional_delegations_from_Nebraska) to the U.S. Senate. Prior to 2006, it was not uncommon to see a Democrat [hold those offices.](https://www.270towin.com/states/Nebraska) However, it currently is a pipe dream for most Democrats.
+
+Nebraska's second congressional district [bucks this trend](https://www.270towin.com/states/Nebraska) in Nebraska. Within this district lies an environment and constituency becoming more and more favorable to the Democratic party: Nebraska's foremost urban city, Omaha, and its sprawling suburbs possess a larger share of educated and racially diverse individuals. In fact, this district [voted](https://www.270towin.com/states/Nebraska) for Obama in 2008 and Biden in 2020, handing each of them one electoral vote (due to Nebraska's irregular electoral college voting system where the statewide winner takes 2 electoral votes and district winners receive one vote from that congressional district). Additionally, in 2014 this district [voted](https://www.270towin.com/states/Nebraska) for a Democrat to represent them in the House. Therefore, with its history and ability of swaying side-to-side, the congressional election in NE-02 was watched closely. 
+
+Below, I have included the Republican Party's vote margins by Nebraska congressional districts in the previous two midterm elections (2014 and 2018) and in the most recent election (2020). As one can see, NE-02 remains uber competitive with its small margins, while NE-01 has tightened but seemingly hit a ceiling and NE-03 has rocketed to the right.
+
+```{r map data, echo = FALSE, message = FALSE, include = FALSE}
+# load geographic data
+get_congress_map <- function(cong=114) {
+  tmp_file <- tempfile()
+  tmp_dir  <- tempdir()
+  zp <- sprintf("http://cdmaps.polisci.ucla.edu/shp/districts%03i.zip",cong)
+  download.file(zp, tmp_file)
+  unzip(zipfile = tmp_file, exdir = tmp_dir)
+  fpath <- paste(tmp_dir, sprintf("districtShapes/districts%03i.shp",cong), sep = "/")
+  st_read(fpath)
+}
+
+# load in data for 2014 through 2020 Nebraska Vote Margins
+
+# load 114th congress data
+cd114_ne3 <- get_congress_map(114)
+```
+
+```{r data prep for map, echo = FALSE, message = FALSE, include = FALSE}
+# load house district data
+districtvote_ne3 <- read_csv("house party vote share by district 1948-2020.csv")
+
+# Facet Wrap: 2014 and 2020 Nebraska GOP Vote Share Margin
+# filter districtvote set for selected variables
+districtvote_ne2014thru2020 <- districtvote_ne3 %>%
+  filter(raceYear %in% c(2014, 2018, 2020),
+         State == "Nebraska") %>%
+  select(raceYear, State, DemVotes, RepVotes, district_num, district_id, WinnerParty, state_abb) %>%
+  group_by(district_num) %>%
+  # find vote share margins and total vote share margin
+  mutate(RepVoteMargin = ((RepVotes)/(RepVotes + DemVotes)),
+         DemVoteMargin = ((DemVotes)/(RepVotes + DemVotes)),
+         VoteMargin = (RepVoteMargin - DemVoteMargin)) %>%
+  rename(DISTRICT = district_num) %>%
+  rename(STATENAME = State)
+
+
+# checking which variable class to merge on
+class(districtvote_ne2014thru2020$DISTRICT)
+
+# checking which variable class to merge on
+class(cd114_ne3$DISTRICT)
+
+# need to match up these classes of variables so I can merge
+# change cd114 variable class to numeric
+cd114_ne3$DISTRICT <- as.numeric(cd114_ne3$DISTRICT)
+
+# verifying new variable class
+class(cd114_ne3$DISTRICT)
+
+# join datasets based on DISTRICT
+districtvote_ne2014thru2020 <- cd114_ne3 %>%
+  left_join(districtvote_ne2014thru2020,
+            by = c("DISTRICT","STATENAME")) %>%
+  filter(STATENAME == "Nebraska") %>%
+  mutate(VoteMargin = VoteMargin*100) %>%
+  select(STATENAME, DISTRICT, raceYear, DemVotes, RepVotes, DemVoteMargin, RepVoteMargin, VoteMargin)
+head(districtvote_ne2014thru2020)
+
+# To plot faster
+districtvote_plot_ne <- rmapshaper::ms_simplify(districtvote_ne2014thru2020, keep = 0.01)
+```
+
+```{r, echo = FALSE, message = TRUE, warning = FALSE}
+ggplot() +
+  geom_sf(data = districtvote_plot_ne,
+          aes(fill = VoteMargin),
+          inherit.aes = FALSE,alpha = 0.9) +
+  facet_wrap(facets = raceYear ~.) +
+  geom_sf_text(data = districtvote_plot_ne,
+               aes(label = DISTRICT), 
+               colour = "black",
+               size = 2.25,
+               check_overlap = TRUE) +
+  scale_fill_gradient(low = "White",
+                      high = "Red",
+                      name = "Vote Share Margin by Percentage") +
+  labs(title = "GOP Vote Margin in Nebraska",
+       caption = "Data Provided by Professor Ryan Enos of Harvard\nUniversity along with Jeffrey B. Lewis of UCLA, et al.",
+       subtitle = "A positive margin indicates a GOP victory.\nA negative margin indicates a Democratic Party victory.\nA margin larger in magnitude indicates a more decisive victory.\n") +
+  theme_void() +
+  theme(legend.position = "bottom",
+        axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(plot.subtitle = element_text(hjust = 0.5))
+
+#lost in NE01 and NE02 ish but gain in NE03
+```
+
+
+NE-02 possesses a college graduation rate of 41% (larger than NE-01's 32.8% and NE-03's 22.9%), which is a demographic [highly inclined](https://www.pewresearch.org/social-trends/2019/08/19/the-growing-partisan-divide-in-views-of-higher-education-2/) to support the Democrat's, according to Pew Research. Also, the second district of Nebraska is much more racially diverse than the others, with a population that is 71% White (versus NE-01's 81% and NE-03's 84.2%). NE-02's diversity is actually higher than the United States as a whole, with the USA Census [finding](https://www.census.gov/quickfacts/fact/table/US/PST045221) the country is 75.8% white. The Democratic Party base [has trended](https://www.axios.com/2022/07/13/democrats-biden-white-college-graduates-poll) to a more diverse coalition in recent decades, making NE-02 a favorable environment on that front as well. Combining these educational, racial, and primarily urban demographic statistics, NE-02 is a district that has resisted recent trends of the GOP bolstering its strength in the rest of Nebraska.
+
+
+## Campaigning in the District
+The campaign to be the next representative of Nebraska's second congressional district in the House consisted of two candidates:
+
+-   [Don Bacon](https://bacon.house.gov/about/), incumbent congressman, who formerly was a Brigadier General in the Air Force.
+-   [Tony Vargas](https://www.vargasfornebraska.com/about), a state senator in Nebraska's unicameral legislature.
+
+By most standards, these candidates did not prove to be flashy types, ones who brought wild backgrounds, hoards of money, or affinities for the limelight. This lent the race the ability to be more focused on the issues and environment.
+
+Due to the history of this competitive district, most professional election forecasters [predicted](https://ballotpedia.org/Nebraska%27s_2nd_Congressional_District_election,_2022) this district to be a toss-up and one that slightly tilted in the direction of Republican Don Bacon's favor. For example, FiveThirtyEight [rated](https://projects.fivethirtyeight.com/2022-election-forecast/house/nebraska/2/) this race a "lean R," giving Bacon a >80% chance of winning and a vote prediction no less than 53% during the course of the campaign. Cook Political Report, on the other hand, [placed](https://www.cookpolitical.com/ratings/house-race-ratings) this race in their "Republican Toss Up" category. Inside Elections also [determined](https://ballotpedia.org/Nebraska%27s_2nd_Congressional_District_election,_2022) this race to be a toss-up, as well. Additionally, [the most recent public polling](https://projects.fivethirtyeight.com/2022-election-forecast/house/nebraska/2/) for the 2022 race specifically had the candidates within 1% of each other. The Democrat, Tony Vargas, boasted a 1% lead in late June, notably after the Dobbs decision on abortion. The Republican, Don Bacon, retook the 1% lead in early August.
+
+Recognizing this election could swing either way, money flooded into this race. Each candidate [raised](https://ballotpedia.org/Nebraska%27s_2nd_Congressional_District_election,_2022) just over $3 million to their campaign accounts, with Bacon taking the edge by raising 20% more than Vargas. Punchbowl News even [highlighted](https://punchbowl.news/archive/1042022-punchbowl-news-pm/) how the national Democratic Party donated funds to the tune of hundreds of thousands of dollars to Vargas. A PAC aligned with House Republican Leader Kevin McCarthy also [entered](https://punchbowl.news/archive/1042022-punchbowl-news-pm/) the race, supporting Bacon with ads. These ads centered on inflation, the economy, and even healthcare (with Vargas running an [ad](https://www.youtube.com/watch?v=50kkUp8qhH8) on accessibility and affordability.)
+
+The issues of this election, where big personalities from the candidates remained absent, [proved](https://omaha.com/news/local/govt-and-politics/election-guide-2022-nebraskas-2nd-congressional-district/article_d705ddb6-397a-11ed-9f01-079a3bfb52cf.html) to be combatting inflation, the economy, and abortion (something similar to the national environment). 
+
+Knowing this race would be competitive and the district could swing to the Democrats, Bacon took a less extreme position on the issue of abortion, bucking those from his party who have called for an all-out ban: Bacon [supports](https://omaha.com/news/local/govt-and-politics/election-guide-2022-nebraskas-2nd-congressional-district/article_d705ddb6-397a-11ed-9f01-079a3bfb52cf.html) a ban on abortions after the 15-week mark of pregnancy. Vargas, on the other hand, [called](https://omaha.com/news/local/govt-and-politics/election-guide-2022-nebraskas-2nd-congressional-district/article_d705ddb6-397a-11ed-9f01-079a3bfb52cf.html) for regulations akin to those enacted by Roe v. Wade to be cemented in law by Congress.
+
+On the basis of inflation, Bacon [blamed](https://omaha.com/news/local/govt-and-politics/election-guide-2022-nebraskas-2nd-congressional-district/article_d705ddb6-397a-11ed-9f01-079a3bfb52cf.html) the Biden administration for "reckless spending," calling for a reduction in government spending and for lowering health care costs through market-based policies. Vargas [looked](https://omaha.com/news/local/govt-and-politics/election-guide-2022-nebraskas-2nd-congressional-district/article_d705ddb6-397a-11ed-9f01-079a3bfb52cf.html) to the United States' supply chains, saying their deficiencies needed to be solved, and he called for middle-class and child-tax cuts as a solution. Both candidates [did not offer](https://www.cnn.com/2022/10/19/politics/republicans-inflation-midterm-what-matters) anything relatively new, compared to their respective national parties. Same with the economy, Bacon and Vargas [demanded](https://www.cnn.com/2022/10/19/politics/republicans-inflation-midterm-what-matters) renewed focus on job-making and bipartisanship when it comes to finding solutions for Americans, because they saw Washington as being dysfunctional.
+
+Where these candidates differentiated their race from the national political conversation were less attention on the strength of the United States' democracy and on former President Donald Trump. Vargas highlighted his solutions to the issues with the country's inflation and economy moreso than worries regarding democracy in the United States. Across the country, Democrats pushed the narrative that Republicans were dangerous to the United States' democracy, saying they actively flouted the country's norms, but Vargas largely avoided making that his primary argument. Instead, he focused on people's pocketbooks and promoted bipartisanship, knowing that is what voters [were increasingly seeking.](https://www.nytimes.com/2022/10/17/us/politics/republicans-economy-nyt-siena-poll.html) On the other side of the coin, Bacon avoided bringing Donald Trump into the conversation. While Don Bacon [did not vote](https://omaha.com/news/local/govt-and-politics/4-out-of-5-in-nebraskas-congressional-delegation-vote-to-certify-bidens-win/article_21d8c5b0-50e8-11eb-af79-ab0eb69f4051.html) to impeach Trump a second time after the January 6 Insurrection, he voted to certify the 2020 election, validating that Joe Biden won the presidency, and voted for Biden's infrastructure bill. Only a small number of Republicans fit into both camps, making him appear like a bipartisan member of the House and someone more concerned with helping his constituents rather than his own interests as a politician. Furthermore, Don Bacon, even after he had won this election in 2022, [publicly stated](https://omaha.com/news/local/govt-and-politics/bacon-would-work-with-dems-to-elect-moderate-house-speaker-if-gops-mccarthy-falls-short/article_ecfa7c66-6491-11ed-9123-5393236e49c4.html) how he is open to working with the Democrats to elect a more moderate speaker of the House. Therefore, while the two candidates differed on personality, their measures of "candidate quality" were equally matched: people who knew the ins-and-outs of lawmaking, middle-of-the-road politicians, and those without outsized public personas.
+
+
+## My Prediction for the 2022 Congressional Election
+
+For Nebraska's second congressional district, I attempted to predict how the Democratic candidate, Tony Vargas, would perform. According to my model that included the variables above as indicators, I predicted Vargas would lose to the Republican Don Bacon, gaining only 42.56% of the vote to Bacon's 57.44. Below I display a graph that shows the result of what my model predicted and compares its prediction to the actual result. It includes the predictions vs reality for all other districts in several prior cycles that were included in the model as reference data points as well. The closer the points are to the 45-degree line in terms of verticality, the more accurate my prediction was to the actual result.
+
+
+#### NE-02 District Vote Share Graph
+```{r NE02 district vote share, message = TRUE}
+# district vote share
+ggplot(aes(x = predict(district_model,
+                       district_vote_share_data),
+           y = DemVotesMajorPercent), 
+       data = district_vote_share_data) +
+  xlim(0,100) +
+  ylim(0,100) +
+  geom_point(alpha = 0.6,
+             size = 1.25) +
+  geom_point(x = 42.55625,
+             y = 48.66,
+             color = "red",
+             size = 1.25) +
+  geom_abline(intercept = 0, slope = 1, color = "blue") +
+  geom_vline(xintercept = 50, lty = 2, color = "black") +
+  geom_hline(yintercept = 50, lty = 2, color = "black") +
+  labs(title = "Congressional District Model") +
+  xlab(label = "Predicted Democratic Party District Vote Share") +
+  ylab(label = "Actual Democratic Party District Vote Share") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+Here, we can see how my prediction for NE-02 was correct in that I accurately predicted Don Bacon, the Republican, would win by garnering more than 50% of the vote. Where my model went wrong (and shown by this graph) is that my prediction proved to be wrong in terms of the vote shares earned by both candidates. Because the red point, my NE-02 prediction, falls above the blue line, it is evident that I underestimated how Vargas would perform. Vargas, in line with how the experts saw this race, performed extremely competitively, earning just shy of 50% of the vote. In the interest of being more specific, I quantify this error below.
+
+
+#### NE-02 District Vote Share Results
+```{r NE-02 district vote share, message = TRUE}
+# NE-02 district vote share
+district_vote_table <- data.frame(
+  Party = rep(c('Democrats', 'Republicans'), each=1),
+  Predicted_Vote_Share = rep(c('42.56', '57.44'), times=1),
+  Actual_Vote_Share = rep(c('48.66', '51.34'), times=1),
+  Error = rep(c('-6.10 Underestimation', ""), times=1))
+
+as.htmlwidget(
+  formattable(district_vote_table,
+              align=c("l", "c", "c", "r"),
+              list("Error" = formatter("span", 
+                                         style = ~ 
+                                         style(color =
+                                                 ifelse(
+                                                   Error >= 0,
+                                                   "green",
+                                                   "#E9911C"))),
+                   "Party" = formatter("span", 
+                                         style = ~ 
+                                         style(color =
+                                                 ifelse(
+                                                   Party == "Democrats",
+                                                   "#18A3D3",
+                                                   "#C81717"))),
+                   Predicted_Vote_Share = formatter("span", 
+                                         style = ~
+                                           style(color = ifelse(
+                                             Predicted_Vote_Share <= 50,
+                                             "#18A3D3",
+                                             "#C81717"))),
+                   Actual_Vote_Share = formatter("span", 
+                                         style = ~ 
+                                           style(color =
+                                                   ifelse(
+                                                     Actual_Vote_Share <= 50,
+                                                     "#18A3D3",
+                                                     "#C81717"))))),
+              width = "82.5%")
+```
+
+
+In more quantitative terms, my district-specific prediction failed to be accurate, showing a rather large underestimation. A prediction of 42.56% for the Democrats essentially indicates a noncompetitive race, and yet this race proved to be extremely close. Nevertheless, I still take enjoyment from correctly predicting who would win this district. 
+
+One cause of concern is how wide my [prediction interval](https://luke-tomes.github.io/election-blog/posts/election_forecast/) turned out to be. My model was 95% confident that Vargas would win between 31.25% and 53.86% of the vote, which is way too wide since it includes the possibility that Vargas could win or lose. This is far from ideal, even if my best guess prediction that the Democrat Vargas would lose.
+
+Predicting who wins and loses is ultimately what matters for legislating, but it is important to be accurate in how close the results will be. Striving for accuracy matters because, for example, predicting the Republicans win a super-majority in the House vs a narrow majority is crucial to understanding the upcoming legislative course.
+
+
+## What I Have Learned
+
+My model's underestimation of the Democratic is a big point of inaccuracy. Democrats across the country defied what seemed to be a terrible environment for an incumbent party. All throughout the summer, voters heard about raging inflation and growing concerns about crime in the United States. These are issues that typically get attributed to the incumbent party, with their response being critically assessed (and not so much the events happening), according to scholar [Andrew Healy.](https://hollis.harvard.edu/primo-explore/fulldisplay?docid=TN_cdi_crossref_primary_10_1561_100_00009057&context=PC&vid=HVD2&search_scope=everything&tab=everything&lang=en_US) Democrats seemed to be out of effective answers, and across the country they began to sweat. 
+
+However, what seemed to drown out this phenomena was the reality that the issue of abortion rights and candidate quality rose to significant importance. The New York Times' podcast The Daily [dove](https://open.spotify.com/episode/4HbV7yadyQAWvD1iwCaDw8?si=5dee0e6fc4304dee) into this, saying when abortion and candidate quality were major issues in a race (whether due to campaign messaging/extremism or if abortion was explicitly on the ballot), the Democrats did extremely well, like in Michigan. When they were not major issues and candidates shied away from extreme positions, such as in Florida, Republicans swept the field. The Washington Post [proves this](https://www.washingtonpost.com/politics/interactive/2022/house-race-map-midterm-elections/) by showing how Florida uniformly shifted more to the GOP since 2020 and how Michigan shifted much more to the Democrats since 2020. 
+
+Therefore, I believe why this race deviated so much from my model's prediction was due to my models' significant reliance on the environment on the race and smaller emphasis on the issues and candidates. My models heavily depended on factors outside of the voters and candidates, like incumbency variables (whether the president and house were controlled by Democrats), matter-of-fact variables (like whether it was a midterm year or not), and polling (generic ballot margin) that was a snapshot of voters' preferences but not a snapshot into their level of motivation to vote in a specific district. This reliance proved to be less than ideal and insufficient because we saw that the issues of abortion and candidate quality/extremism played a large role in the turnout game, motivating some voters to go to the ballot box and some to stay home when they normally would not have. 
+
+Relating this to the race in NE-02, we saw a campaign devoid of any extremism. In fact, both candidates actively promoted bipartisanship and took standings that involved much compromise. Even where the candidates differed on a crucial issue, like abortion for instance, Bacon bucked voices in his national party calling for an outright ban and Vargas did the same by calling for Roe v. Wade to be coded into law and not demanding full access throughout a woman's whole pregnancy. This lack of extremism prevented the reality where scores of voters would feel disaffected and motivated to stay home, unlike other races where some extremist Republicans missed out on the votes of moderate Republicans and independents who did not trust and agree with them. On the issue of abortion, an issue largely disagreed on by the candidates allowed Vargas to potentially close the wide gap that my model predicted as well, just as so many Democrats forced closer races with increased turnout due to underscoring the abortion issue. In essence, this race became a game of turnout where campaigns sought to turn out those who agreed with them. 
+
+Scholars Joshua L. Kalla and David E. Broockman have detailed that persuasive effects on an election's outcome [rarely, if at all, emerge](https://hollis.harvard.edu/primo-explore/fulldisplay?docid=TN_cdi_proquest_journals_1990829523&context=PC&vid=HVD2&search_scope=everything&tab=everything&lang=en_US) from ground campaigning, arguing that persuasion resulting from ground campaigning appears only in circumstances of compounding effects from early on in a race and campaigns investing heavily in an extremely unpopular position taken by their candidate. Thus, it seems persuasion is not the name of the game when campaigning. Turnout is. After all, scholars Ryan D. Enos and Anthony Fowler find that turnout in states highly targeted by ground campaigning on average [increased by 7-8%](https://hollis.harvard.edu/primo-explore/fulldisplay?docid=TN_cdi_proquest_journals_2117059848&context=PC&vid=HVD2&search_scope=everything&tab=everything&lang=en_US) in the 2012 presidential election, and each candidate wanted to gain the edge in turnout in this race. And it seems abortion was a motivating factor in this race, bucking the seemingly terrible environment for the Democrats.
+
+Therefore, my biggest takeaway from this campaign in Nebraska's second congressional district is that specific aspects of a race matter. Not all congressional races will be solely dependent on environmental factors outside of the control of the candidates. The quality of the candidates matter, and so do the issues. Voters experience time and time again the reality when politicians become "out-of-touch" with their constituencies, focusing more on their own interests, the national conversation, or enriching themselves with the spoils of their job. In the case of forecasting, I made the mistake of being out-of-touch and not grounding myself in the interests of the voters and the specifics of the candidates who face the voters.
+
+
+## Conclusions
+
+```{r data for pred map, echo = FALSE, message = FALSE, include = FALSE}
+# create a dataset
+STATENAME <- "Nebraska"
+DISTRICT <- c(rep(1, 2), rep(2, 2), rep(3, 2))
+CD <- c(rep("NE-01" , 2), rep("NE-02" , 2), rep("NE-03" , 2))
+party <- rep(c("Democratic Party", "Republican Party") , 3)
+vote_share <- c(rep(c(42.08, 100 - 42.08)),
+                rep(c(48.66, 100 - 48.66)),
+                rep(c(16.78, 100 -16.78)))
+vote_margin <- c(rep(c(-15.84, 15.84)),
+                rep(c(-2.68, 2.68)),
+                rep(c(-66.44, 66.44)))
+district_pred_2022_vote_df <- data.frame(STATENAME, DISTRICT, CD, party, vote_share, vote_margin) %>%
+  mutate(STATENAME = as.character(STATENAME),
+         DISTRICT = as.numeric(DISTRICT))
+
+# checking which variable class to merge on
+class(district_pred_2022_vote_df$DISTRICT)
+
+# checking which variable class to merge on
+class(cd114_ne3$DISTRICT)
+
+# need to match up these classes of variables so I can merge
+# change cd114 variable class to numeric
+cd114_ne3$DISTRICT <- as.numeric(cd114_ne3$DISTRICT)
+
+# verifying new variable class
+class(cd114_ne3$DISTRICT)
+
+# join datasets based on DISTRICT
+district_pred_2022_vote_new_data <- cd114_ne3 %>%
+  left_join(district_pred_2022_vote_df,
+            by = c("DISTRICT", "STATENAME")) %>%
+  filter(party == "Republican Party")
+
+# To plot faster
+districtvote_plot_ne_pred <- rmapshaper::ms_simplify(district_pred_2022_vote_new_data, keep = 0.01)
+```
+
+```{r pred map, echo = FALSE, message = FALSE, warning = FALSE, message = TRUE}
+ggplot() +
+  geom_sf(data = districtvote_plot_ne_pred,
+          aes(fill = vote_margin),
+          inherit.aes = FALSE,alpha = 0.9) +
+  geom_sf_text(data = districtvote_plot_ne_pred,
+               aes(label = DISTRICT), 
+               colour = "black",
+               size = 2.85,
+               check_overlap = TRUE)  +
+  scale_fill_gradient(low = "White",
+                      high = "Red",
+                      name = 'Vote Share Margin by Percentage') +
+  labs(title = "GOP Vote Margin by Congressional Districts in Nebraska, 2022",
+       caption = "Data Provided by Professor Ryan Enos of Harvard\nUniversity along with Jeffrey B. Lewis of UCLA, et al.",
+       subtitle = "A positive margin indicates a GOP victory.\nA negative margin indicates a Democratic Party victory.\nA margin larger in magnitude indicates a more decisive victory.\n") +
+  theme_void() +
+  theme(legend.position = "bottom",
+        axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(plot.subtitle = element_text(hjust = 0.5))
+```
+
+
+By predicting elections through rigorous statistical analysis, I have learned more about what matters to voters and how certain factors of a race (fundraising, campaigning, and the environment) can influence the outcome of an election. It is fun to try to be accurate as possible, but there is inherently an intellectual pursuit included in this practice that proves to be valuable. I have learned how the environment surely matters, but so too do the local issues and candidates running in the race. Building models to forecast elections is an arduous task: a tweak one way lends problems in a different realm. At least as of this blog's post date, there is no exact formula for how to successfully do this, but that is what makes it exciting: there is still so much to learn about the voters of this great country.
+
+
+##### Notes:
+
+*This blog is an analysis of my posts that progressively sought to understand how election data can be used to predict future outcomes. I have added to this site on a weekly basis under the direction of [Professor Ryan D. Enos](https://www.ryandenos.com).*
+
+[My project repository can be viewed here.](https://github.com/luke-tomes/election-blog)
+
